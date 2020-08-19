@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../../../admin.svg" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
+
+
+{% block head %}
+    <title>Admin</title>
+{% endblock %}
+
+</head>
+<body>
+    <div class="all admin">
+        <header>
+            <nav class="menu">
+                    <ul>
+                        <li class="logo"><a href="/admin/recipes"><img src="/logo-admin.png" alt="logo do site"></a></li>
+                    </ul>
+            </nav>
+        </header>
+
+        {% block content %}{% endblock %}
+
+    <div class="push"></div>
+
+    </div>
+
+    <footer>
+        <div><p>Todos os direitos reservados, receitas Foodfy</p></div>
+    </footer>
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

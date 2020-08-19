@@ -1,0 +1,73 @@
+{% extends "../layout-recipe.njk" %}
+
+{% block head %}
+
+<title>{{recipe.title}} - Foodfy</title>
+
+{% endblock head %}
+
+{% block content %}
+
+<div class="recipe">
+    <div class="head">
+        <span><h1>Receita: {{recipe.title}}</h1></span>
+        <a href="/admin/recipes/{{recipe.id}}/edit" class="button"><span>Editar receita</span></a>
+
+    </div>
+    <img
+        src= "{{recipe.image}}"
+        alt="Imagem de {{recipe.title}}"
+    />
+    <h1>{{recipe.title}}</h1>
+    <h3>por {{recipe.author}}</h3>
+    <div class="step">
+        <section class="info-content">
+            <h2>Ingredientes</h2>
+            <p>Esconder</p>
+        </section>
+        <div class="preparation">
+            <ul>
+
+                {% for ingredient in recipe.ingredients %}
+
+                    <li>{{ingredient}}</li>
+
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="step">
+        <section class="info-content">
+            <h2>Modo de preparo</h2>
+            <p>Esconder</p>
+        </section>
+
+        <div class="preparation">
+            {% for preparation in recipe.preparation %}
+
+                <p>{{preparation}}</p>
+
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="step">
+        <section class="info-content">
+            <h2>Informações adicionais</h2>
+            <p class="hide">Esconder</p>
+        </section>
+        <div class="preparation">
+
+            <p>{{recipe.information}}</p>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="../../contentControl.js"></script>
+{% endblock scripts %}
