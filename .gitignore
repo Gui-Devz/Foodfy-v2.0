@@ -1,0 +1,11 @@
+bootcamp-launchbase-desafios-03-master/*
+
+node_modules/*
+
+public/img/*
+
+.prettierrc
+
+.editorconfig
+
+assets/test.js

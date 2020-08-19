@@ -1,0 +1,615 @@
+@import "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+}
+
+body {
+  background-color: rgb(255, 255, 255);
+
+  height: 100%;
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin: 0;
+  padding: 0;
+
+  font-family: "Roboto", sans-serif;
+  color: black;
+}
+
+body .all {
+  width: 940px;
+  min-height: 100%;
+
+  margin: 0 auto -40px auto;
+}
+
+body .push,
+footer {
+  height: 50px;
+}
+
+footer {
+  box-sizing: content-box;
+  min-width: 940px;
+
+  background-color: rgb(238, 238, 238);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer div p {
+  text-align: center;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: rgb(153, 153, 153);
+}
+
+.menu {
+  width: 100%;
+
+  margin-top: 36px;
+  margin-bottom: 30px;
+}
+
+.menu ul {
+  display: flex;
+
+  padding: 0;
+
+  list-style: none;
+
+  margin: 0;
+}
+
+.menu ul .logo {
+  margin-right: 123px;
+}
+
+.menu ul li {
+  margin-right: 30px;
+
+  width: fit-content;
+  height: fit-content;
+}
+
+.menu ul a {
+  text-decoration: none;
+
+  color: black;
+
+  line-height: 19px;
+
+  width: fit-content;
+  height: fit-content;
+}
+
+.content {
+  background-color: rgba(250, 128, 114, 0.4);
+
+  border-radius: 30px;
+
+  display: flex;
+
+  width: auto;
+  height: 366px;
+}
+
+.goal {
+  max-width: 316px;
+
+  margin-top: 117px;
+  margin-left: 4vw;
+}
+
+.goal h1 {
+  margin: 0 0 10px 0;
+
+  font-size: 32px;
+}
+
+.goal p {
+  margin: 0;
+
+  opacity: 0.7;
+
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.chef {
+  margin-left: 25%;
+  margin-bottom: 0;
+
+  position: relative;
+}
+
+.chef img {
+  position: absolute;
+
+  bottom: 0;
+}
+
+.wrapper-grid {
+  width: auto;
+  height: auto;
+
+  margin-top: 50px;
+}
+
+.wrapper-grid h1 {
+  margin: 0 0 20px 0;
+
+  font-size: 24px;
+  line-height: 28px;
+  color: rgb(17, 17, 17);
+}
+
+.cards {
+  max-width: 940px;
+  height: auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  max-width: 300px;
+  height: auto;
+
+  cursor: pointer;
+}
+
+.card img {
+  width: 300px;
+  height: 120px;
+
+  object-fit: cover;
+
+  border-radius: 15px;
+
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  font-size: 18px;
+  line-height: 21px;
+
+  font-weight: 500;
+
+  color: rgb(17, 17, 17);
+
+  margin: 0 0 5px 0;
+}
+
+.card p {
+  margin: 0 0 10px 0;
+
+  font-size: 14px;
+  line-height: 16px;
+
+  color: rgb(119, 119, 119);
+}
+
+/*=== About page ===*/
+
+.text-about h1 {
+  font-size: 24px;
+  line-height: 28px;
+
+  margin: 50px 0 20px 0;
+}
+
+.text-about h2 {
+  font-size: 20px;
+  line-height: 24px;
+
+  margin: 25px 0 12px;
+}
+
+.text-about p {
+  font-size: 18px;
+  line-height: 28px;
+
+  color: rgb(68, 68, 68);
+}
+
+/* === Recipe Page === */
+
+.recipe {
+  margin: 0 auto;
+  width: 940px;
+}
+
+.recipe img {
+  max-width: 100%;
+
+  border-radius: 20px;
+}
+
+.recipe h1,
+.recipe h3 {
+  text-align: center;
+}
+
+.recipe h1 {
+  margin-top: 50px;
+}
+
+.recipe h3 {
+  margin-bottom: 50px;
+
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: normal;
+
+  color: #777777;
+}
+
+.step {
+  box-sizing: border-box;
+}
+
+.step .info-content {
+  margin-bottom: 20px;
+  margin-top: 39px;
+
+  display: flex;
+
+  justify-content: left;
+
+  align-items: center;
+}
+
+.step .info-content h2 {
+  padding: 0;
+  margin: 0;
+
+  font-size: 24px;
+  line-height: 28px;
+}
+
+.step .info-content p {
+  margin-left: 8px;
+
+  font-size: 12px;
+  line-height: 14px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  color: #999999;
+}
+
+.preparation.hidden {
+  visibility: hidden;
+  display: none;
+}
+
+.preparation ul {
+  list-style-position: inside;
+}
+
+.preparation ul li,
+.preparation p {
+  font-size: 18px;
+  line-height: 28px;
+
+  color: #444444;
+}
+
+.preparation {
+  visibility: visible;
+}
+
+/* === ADMIN SESSION === */
+
+.all.admin {
+  width: 100%;
+  min-height: 100%;
+
+  margin: 0 auto -50px auto;
+}
+
+.all.admin .recipe {
+  margin: 0 auto;
+  width: 940px;
+}
+
+.all.admin header {
+  background-color: black;
+}
+
+.all.admin header nav {
+  margin: 0;
+  margin-bottom: 50px;
+  height: 80px;
+}
+
+.all.admin nav img {
+  box-sizing: border-box;
+  padding: 25px;
+}
+.all.admin .admin {
+  width: 800px;
+  height: auto;
+
+  margin: 0 auto;
+}
+
+.admin .wrapper-grid {
+  box-sizing: border-box;
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+}
+
+.card-content {
+  width: 350px;
+
+  display: grid;
+
+  grid-template-columns: 192px 1fr;
+
+  height: 80px;
+
+  margin-bottom: 20px;
+}
+
+.card-content span {
+  width: 172px;
+  height: 80px;
+
+  border-radius: 10px;
+  box-shadow: 1px 0px 8px 2px #ccc;
+
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+}
+
+.card-content h2 {
+  font-size: 16px;
+  line-height: 21px;
+
+  margin-bottom: 5px;
+}
+
+.card-content p {
+  font-size: 14px;
+  line-height: 16px;
+  color: #777777;
+
+  margin-bottom: 10px;
+}
+
+.card-content a {
+  text-decoration: none;
+  color: #6558c3;
+
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: bold;
+}
+
+/* === ADMIN RECIPE PAGE ===*/
+
+.recipe .head {
+  width: 100%;
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+}
+
+.recipe .button-edit {
+  width: 136px;
+  height: 37px;
+
+  cursor: pointer;
+
+  border: none;
+  border-radius: 4px;
+  box-shadow: 1px 2px 7px 1px rgba(7, 7, 7, 0.17);
+  box-sizing: border-box;
+
+  text-decoration: none;
+  background-color: #6558c3;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 19px;
+}
+
+.head .button-edit:hover {
+  background-color: #6056aa;
+}
+
+.head .button-edit:active {
+  background-color: #6558c3;
+}
+
+header {
+  min-width: 940px;
+}
+
+.head h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: bold;
+}
+
+/* === FORM AND ITS FIELDS ===*/
+
+.recipe .form {
+  width: 100%;
+  position: relative;
+}
+
+.form .delete {
+  position: absolute;
+
+  top: 0;
+  right: 165px;
+}
+
+.recipe {
+  min-width: 940px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.recipe .fields {
+  width: 100%;
+}
+
+.head .button-wrapper {
+  width: fit-content;
+  position: absolute;
+  right: 0px;
+  top: 0;
+}
+
+.form .button-delete {
+  width: 92px;
+  height: 37px;
+
+  cursor: pointer;
+
+  border: none;
+  border-radius: 4px;
+  box-shadow: 1px 2px 7px 1px rgba(7, 7, 7, 0.17);
+  box-sizing: border-box;
+
+  box-sizing: border-box;
+
+  text-decoration: none;
+  background-color: #dc4747;
+  color: white;
+
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 19px;
+}
+
+.form .button-delete:hover {
+  background-color: #b40b0b;
+}
+
+.form .button-delete:active {
+  background-color: #dc4747;
+}
+
+.head .button {
+  width: 136px;
+  height: 37px;
+
+  cursor: pointer;
+
+  border: none;
+  border-radius: 4px;
+  box-shadow: 1px 2px 7px 1px rgba(7, 7, 7, 0.17);
+  box-sizing: border-box;
+
+  text-decoration: none;
+  background-color: #6558c3;
+  color: white;
+
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 19px;
+}
+
+.head .button:hover {
+  background-color: #6056aa;
+}
+
+.head .button:active {
+  background-color: #6558c3;
+}
+
+.fields .item {
+  margin-top: 30px;
+  max-width: 940px;
+}
+
+.fields .item div:first-child {
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: bold;
+
+  margin-bottom: 10px;
+}
+
+.fields .item .ingredient,
+.item .step {
+  margin-bottom: 10px;
+}
+
+.fields .item input {
+  width: 100%;
+  height: 49px;
+
+  border-radius: 4px;
+  border: 1px solid #dddddd;
+  padding: 15px 20px;
+  box-sizing: border-box;
+
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.item button {
+  width: fit-content;
+  height: 25px;
+
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 19px;
+  text-align: left;
+
+  border: none;
+  background-color: white;
+  color: #6558c3;
+
+  cursor: pointer;
+}
+
+.item:last-child textarea {
+  min-width: 900px;
+  height: 257px;
+  box-sizing: border-box;
+
+  border-radius: 4px;
+  border: 1px solid #dddddd;
+  padding: 15px 20px;
+
+  font-size: 16px;
+  line-height: 19px;
+}
