@@ -25,12 +25,26 @@ module.exports = {
       dataPost.information,
       formatBrowser(Date.now()).iso,
     ];
-    console.log(values[3]);
-    console.log(dataPost);
+    console.log(dataPost.chef_id);
     db.query(query, values, function (err, results) {
       if (err) throw `Database Error! ${err}`;
 
       callback(results.rows[0].id);
+    });
+  },
+
+  //Function that gives all the chef's id and names of the database
+
+  chefsIdAndNames(callback) {
+    const query = `
+        SELECT id, name FROM chefs
+    `;
+
+    db.query(query, function (err, results) {
+      if (err) throw `Database error! ${err}`;
+
+      console.log(results.rows);
+      callback(results.rows);
     });
   },
 };

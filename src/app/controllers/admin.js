@@ -18,7 +18,10 @@ module.exports = {
   },
 
   create(req, res) {
-    return res.render("admin/create");
+    adminDB.chefsIdAndNames(function (chefs) {
+      console.log(chefs[0].name);
+      return res.render("admin/create", { chefs });
+    });
   },
 
   // FORM routes
