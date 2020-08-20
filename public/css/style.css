@@ -574,7 +574,7 @@ header {
 }
 
 .fields .item input,
-#chefs {
+.item #chefs {
   width: 100%;
   height: 49px;
 
@@ -585,12 +585,17 @@ header {
 
   font-size: 16px;
   line-height: 19px;
+  color: #444444;
 }
 
-#chefs:first-child {
+#chefs option:first-child {
   font-size: 16px;
   line-height: 19px;
   color: #999999;
+}
+
+#chefs option {
+  color: #444444;
 }
 
 .item button {
