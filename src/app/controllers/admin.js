@@ -5,19 +5,23 @@ module.exports = {
     return res.render("admin/index");
   },
 
-  show(req, res) {
+  showRecipe(req, res) {
     const { id } = req.params;
 
     return res.render("admin/recipe", {});
   },
 
-  edit(req, res) {
+  editRecipe(req, res) {
     const { id } = req.params;
 
-    return res.render("admin/edit", {});
+    adminDB.showRecipe(id, function (recipe) {
+      adminDB.chefsIdAndNames(function (chefs) {
+        return res.render("admin/edit", { recipe, chefs });
+      });
+    });
   },
 
-  create(req, res) {
+  createRecipe(req, res) {
     adminDB.chefsIdAndNames(function (chefs) {
       console.log(chefs[0].name);
       return res.render("admin/create", { chefs });

@@ -16,13 +16,13 @@ routes.get("/recipes/:id", recipes.show);
 
 routes.get("/admin/recipes", admin.index);
 
-routes.get("/admin/recipes/create", admin.create);
+routes.get("/admin/recipes/create", admin.createRecipe);
 
-routes.get("/admin/recipes/:id", admin.show);
+routes.get("/admin/recipes/:id", admin.showRecipe);
 
-routes.get("/admin/recipes/:id/edit", admin.edit);
+routes.get("/admin/recipes/:id/edit", admin.editRecipe);
 
-//ADMIN FORM
+//ADMIN RECIPES FORM
 
 routes.post("/admin/recipes", admin.post);
 routes.put("/admin/recipes", admin.put);

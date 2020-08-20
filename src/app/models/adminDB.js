@@ -25,7 +25,7 @@ module.exports = {
       dataPost.information,
       formatBrowser(Date.now()).iso,
     ];
-    console.log(dataPost.chef_id);
+
     db.query(query, values, function (err, results) {
       if (err) throw `Database Error! ${err}`;
 
@@ -43,8 +43,24 @@ module.exports = {
     db.query(query, function (err, results) {
       if (err) throw `Database error! ${err}`;
 
-      console.log(results.rows);
       callback(results.rows);
     });
   },
+
+  showRecipe(id, callback) {
+    const query = `
+        SELECT * FROM recipes
+        WHERE recipes.id = $1
+      `;
+
+    db.query(query, [id], function (err, results) {
+      if (err) throw `Database error! ${err}`;
+
+      callback(results.rows[0]);
+    });
+  },
+
+  deleteRecipe(id, callback) {},
+
+  updateRecipe(id, callback) {},
 };
