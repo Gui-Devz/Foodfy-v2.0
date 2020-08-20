@@ -2,7 +2,7 @@ const db = require("../../config/db");
 const { arrayDB, formatBrowser } = require("../../lib/utils");
 
 module.exports = {
-  saving(dataPost, callback) {
+  savingRecipe(dataPost, callback) {
     const query = `
             INSERT INTO recipes (
                 chef_id,
@@ -60,7 +60,42 @@ module.exports = {
     });
   },
 
-  deleteRecipe(id, callback) {},
+  deleteRecipe(id, callback) {
+    const query = `DELETE FROM recipes WHERE = $1`;
 
-  updateRecipe(id, callback) {},
+    db.query(query, [id], function (err) {
+      if (err) throw `Database error! ${err}`;
+
+      callback();
+    });
+  },
+
+  updateRecipe(dataPut, callback) {
+    const query = `
+        UPDATE recipes SET
+        chef_id = $1,
+        image = $2,
+        title = $3,
+        ingredients = $4,
+        preparation = $5,
+        information = $6
+      WHERE id=$7
+      RETURNING id`;
+
+    let values = [
+      dataPut.chef_id,
+      dataPut.image,
+      dataPut.title,
+      arrayDB(dataPut.ingredients),
+      arrayDB(dataPut.preparation),
+      dataPut.information,
+      dataPut.id,
+    ];
+
+    db.query(query, values, function (err, result) {
+      if (err) throw `Database error! ${err}`;
+
+      callback(result.rows[0].id);
+    });
+  },
 };

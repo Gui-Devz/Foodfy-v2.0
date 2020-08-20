@@ -38,13 +38,12 @@ module.exports = {
       }
     }
 
-    adminDB.saving(req.body, function (recipeID) {
+    adminDB.savingRecipe(req.body, function (recipeID) {
       return res.redirect(`/admin/recipes/${recipeID}`);
     });
   },
 
   put(req, res) {
-    const { id, image, ingredients, preparation, information } = req.body;
     const keys = Object.keys(req.body);
 
     for (const key of keys) {
@@ -53,16 +52,16 @@ module.exports = {
       }
     }
 
-    /* data.recipes[foundIndex] = {
-      ...recipe,
-      ...req.body,
-      id: Number(id),
-      ingredients: newIngredients,
-      preparation: newPreparation,
-    }; */
+    adminDB.updateRecipe(req.body, function (recipeID) {
+      return res.redirect(`/admin/recipes/${recipeID}`);
+    });
   },
 
   delete(req, res) {
     const { id } = req.body;
+
+    adminDB.deleteRecipe(id, function () {
+      res.redirect("/admin/recipes/index");
+    });
   },
 };
