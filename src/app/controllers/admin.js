@@ -8,7 +8,9 @@ module.exports = {
   showRecipe(req, res) {
     const { id } = req.params;
 
-    return res.render("admin/recipe", {});
+    adminDB.showRecipe(id, function (recipe) {
+      return res.render("admin/recipe", { recipe });
+    });
   },
 
   editRecipe(req, res) {

@@ -49,7 +49,8 @@ module.exports = {
 
   showRecipe(id, callback) {
     const query = `
-        SELECT * FROM recipes
+        SELECT recipes.*, chefs.name AS chef
+        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.id = $1
       `;
 
