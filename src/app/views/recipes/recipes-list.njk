@@ -1,0 +1,35 @@
+{% extends "../layout-recipes_chefs.njk" %}
+
+{% block content %}
+    <div class="wrapper-grid">
+        <div class="cards">
+        {% for recipe in recipes %}
+
+            <div class="card" id="{{recipe.id}}">
+                <img src="{{recipe.image}}" alt="imagem de {{recipe.title}}">
+                <h2>{{recipe.title}}</h2>
+                <span><p>por {{recipe.chef}}</p></span>
+            </div>
+
+        {% endfor %}
+
+        {% for recipe in recipes %}
+
+            <div class="card" id="{{recipe.id}}">
+                <img src="{{recipe.image}}" alt="imagem de {{recipe.title}}">
+                <h2>{{recipe.title}}</h2>
+                <span><p>por {{recipe.chef}}</p></span>
+            </div>
+
+        {% endfor %}
+        </div>
+    </div>
+    <div class="filter"
+    data-filter = {{filter}}>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="/recipeLogic.js"></script>
+{% endblock scripts %}
