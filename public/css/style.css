@@ -142,6 +142,7 @@ footer div p {
 
   color: #ffffff;
   font-size: 16px;
+  font-weight: bold;
   line-height: 19px;
 
   background: #6558c3;
@@ -150,6 +151,10 @@ footer div p {
   border-radius: 4px;
 
   cursor: pointer;
+}
+
+.menu form button:hover {
+  background-color: #6056aa;
 }
 
 .content {
@@ -476,7 +481,8 @@ footer div p {
   margin-bottom: 24px;
 }
 
-.recipe .button-edit {
+.recipe .button-edit,
+.recipe .button {
   width: 136px;
   height: 37px;
 
