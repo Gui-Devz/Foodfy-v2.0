@@ -1,8 +1,11 @@
 const Recipe = require("../models/recipe");
+const adminDB = require("../models/adminDB");
 
 module.exports = {
   index(req, res) {
-    return res.render("recipes/index");
+    Recipe.showRecipes(function (recipes) {
+      return res.render("index", { recipes });
+    });
   },
 
   about(req, res) {
@@ -10,12 +13,24 @@ module.exports = {
   },
 
   list(req, res) {
-    return res.render("recipes/recipes", {});
+    let { filter } = req.query;
+
+    if (!filter) {
+      Recipe.showRecipes(function (recipes) {
+        return res.render("recipes/recipes-list", { recipes });
+      });
+    } else {
+      Recipe.filterRecipes(filter, function (recipes) {
+        return res.render("recipes/recipes-list", { recipes, filter });
+      });
+    }
   },
 
   show(req, res) {
     const { id } = req.params;
 
-    return res.render("recipes/edit", {});
+    Recipe.showRecipe(id, function (recipe) {
+      return res.render("recipes/edit", { recipe });
+    });
   },
 };
