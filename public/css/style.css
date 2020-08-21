@@ -64,6 +64,10 @@ footer div p {
   margin-top: 36px;
   margin-bottom: 30px;
 }
+.menu {
+  display: grid;
+  grid-template: 1fr / 1fr 400px;
+}
 
 .menu ul {
   display: flex;
@@ -95,6 +99,57 @@ footer div p {
 
   width: fit-content;
   height: fit-content;
+}
+
+.menu div:nth-child(2) {
+  position: relative;
+}
+
+.menu form {
+  position: absolute;
+  right: 0;
+}
+
+.menu form input {
+  width: 246px;
+  height: 37px;
+  padding-top: 11px;
+  padding-left: 15px;
+  padding-bottom: 10px;
+
+  margin-right: 8px;
+
+  font-size: 15px;
+  line-height: 16px;
+
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  border-radius: 4px;
+
+  box-sizing: border-box;
+}
+
+.menu form input::placeholder {
+  color: #999999;
+}
+
+.menu form button {
+  width: 91px;
+  height: 37px;
+
+  box-sizing: border-box;
+
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 19px;
+
+  background: #6558c3;
+  border: none;
+  border-radius: 4px;
+  border-radius: 4px;
+
+  cursor: pointer;
 }
 
 .content {
