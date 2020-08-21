@@ -1,4 +1,5 @@
 const adminDB = require("../models/adminDB");
+const Recipe = require("../models/recipe");
 
 module.exports = {
   index(req, res) {
@@ -6,11 +7,11 @@ module.exports = {
 
     if (filter) {
       console.log(filter);
-      adminDB.filterRecipes(filter, function (recipes) {
+      Recipe.filterRecipes(filter, function (recipes) {
         return res.render("admin/index", { recipes });
       });
     } else {
-      adminDB.showRecipes(function (recipes) {
+      Recipe.showRecipes(function (recipes) {
         return res.render("admin/index", { recipes });
       });
     }
@@ -19,15 +20,14 @@ module.exports = {
   showRecipe(req, res) {
     const { id } = req.params;
 
-    adminDB.showRecipe(id, function (recipe) {
+    Recipe.showRecipe(id, function (recipe) {
       return res.render("admin/recipe", { recipe });
     });
   },
 
   editRecipe(req, res) {
     const { id } = req.params;
-
-    adminDB.showRecipe(id, function (recipe) {
+    Recipe.showRecipe(id, function (recipe) {
       adminDB.chefsIdAndNames(function (chefs) {
         return res.render("admin/edit", { recipe, chefs });
       });
@@ -36,7 +36,6 @@ module.exports = {
 
   createRecipe(req, res) {
     adminDB.chefsIdAndNames(function (chefs) {
-      console.log(chefs[0].name);
       return res.render("admin/create", { chefs });
     });
   },
