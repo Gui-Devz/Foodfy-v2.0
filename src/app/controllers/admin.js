@@ -2,7 +2,18 @@ const adminDB = require("../models/adminDB");
 
 module.exports = {
   index(req, res) {
-    return res.render("admin/index");
+    let { filter } = req.query;
+
+    if (filter) {
+      console.log(filter);
+      adminDB.filterRecipes(filter, function (recipes) {
+        return res.render("admin/index", { recipes });
+      });
+    } else {
+      adminDB.showRecipes(function (recipes) {
+        return res.render("admin/index", { recipes });
+      });
+    }
   },
 
   showRecipe(req, res) {
