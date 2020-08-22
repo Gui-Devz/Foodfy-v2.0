@@ -84,4 +84,6 @@ module.exports = {
       callback(result.rows[0].id);
     });
   },
+
+  createChef(dataPost, callback) {},
 };
