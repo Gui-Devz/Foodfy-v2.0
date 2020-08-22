@@ -8,11 +8,11 @@ module.exports = {
     if (filter) {
       console.log(filter);
       Recipe.filterRecipes(filter, function (recipes) {
-        return res.render("recipes/index", { recipes });
+        return res.render("index", { recipes });
       });
     } else {
       Recipe.showRecipes(function (recipes) {
-        return res.render("recipes/index", { recipes });
+        return res.render("index", { recipes });
       });
     }
   },
