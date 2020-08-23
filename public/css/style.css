@@ -164,16 +164,18 @@ footer div p {
 
   border-radius: 30px;
 
-  display: flex;
-
   width: auto;
   height: 366px;
+
+  display: grid;
+  grid-template-columns: 350px 1fr 300px;
+
+  align-items: center;
 }
 
 .goal {
   max-width: 316px;
 
-  margin-top: 117px;
   margin-left: 4vw;
 }
 
@@ -192,24 +194,16 @@ footer div p {
   line-height: 28px;
 }
 
-.chef {
-  margin-left: 25%;
-  margin-bottom: 0;
-
-  position: relative;
-}
-
-.chef img {
+.content chef {
   position: absolute;
-
-  bottom: 0;
+  right: 0;
 }
 
 .wrapper-grid {
   width: auto;
   height: auto;
 
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .wrapper-grid h1 {
@@ -487,18 +481,23 @@ header .links {
 
 /* === ADMIN RECIPE PAGE ===*/
 
-.recipe .head {
-  width: 100%;
+.recipe .head,
+.chef .head {
+  width: 940px;
+  margin-top: 50px;
   display: flex;
 
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 24px;
+  margin-bottom: 30px;
+
+  box-sizing: border-box;
 }
 
 .recipe .button-edit,
-.recipe .button {
+.recipe .button,
+.chef .button-edit {
   width: 136px;
   height: 37px;
 
@@ -702,4 +701,56 @@ header {
 
   font-size: 16px;
   line-height: 19px;
+}
+
+/* CHEFS PAGES */
+
+.all.admin .chef {
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.chef .chef-info {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.chef .chef-info img {
+  width: 200px;
+  height: 200px;
+
+  border-radius: 50%;
+}
+
+.chef-info .name-recipes {
+  width: fit-content;
+  margin: 0 auto;
+  margin-bottom: 50px;
+
+  display: grid;
+  grid-template: 1fr 1fr / 1fr;
+
+  gap: 4px;
+
+  justify-content: center;
+}
+
+.chef-info h1 {
+  margin-top: 30px;
+
+  width: fit-content;
+}
+
+.name-recipes h1 {
+  font-size: 36px;
+  line-height: 42px;
+}
+
+.name-recipes h2 {
+  margin: 0 auto;
+
+  color: #777777;
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 24px;
 }

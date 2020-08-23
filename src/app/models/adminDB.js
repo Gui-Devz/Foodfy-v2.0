@@ -104,6 +104,7 @@ module.exports = {
     db.query(query, values, function (err, result) {
       if (err) throw `Database error! ${err}`;
 
+      console.log(result.rows[0]);
       callback(result.rows[0].id);
     });
   },

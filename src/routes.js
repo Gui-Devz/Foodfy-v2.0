@@ -29,6 +29,12 @@ routes.get("/admin/chefs", chefs.chefsList);
 
 routes.get("/admin/chefs/create", chefs.create);
 
+routes.get("/admin/chefs/:id", chefs.show);
+
+//ADMIN CHEFS FORM
+
+routes.post("/admin/chefs", admin.postChef);
+
 //ADMIN RECIPES FORM
 
 routes.post("/admin/recipes", admin.post);

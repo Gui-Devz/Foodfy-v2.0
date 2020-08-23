@@ -84,5 +84,17 @@ module.exports = {
     });
   },
 
-  postChef(req, res) {},
+  postChef(req, res) {
+    const keys = Object.keys(req.body);
+
+    for (const key of keys) {
+      if (key == "") {
+        return res.send("Fill all the fields!");
+      }
+    }
+
+    adminDB.createChef(req.body, function (id) {
+      return res.redirect(`/admin/chefs/${id}`);
+    });
+  },
 };

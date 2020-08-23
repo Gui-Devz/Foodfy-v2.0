@@ -3,18 +3,9 @@ const adminDB = require("../models/adminDB");
 
 module.exports = {
   index(req, res) {
-    let { filter } = req.query;
-
-    if (filter) {
-      console.log(filter);
-      Recipe.filterRecipes(filter, function (recipes) {
-        return res.render("index", { recipes });
-      });
-    } else {
-      Recipe.showRecipes(function (recipes) {
-        return res.render("index", { recipes });
-      });
-    }
+    Recipe.showRecipes(function (recipes) {
+      return res.render("index", { recipes });
+    });
   },
 
   about(req, res) {
@@ -39,7 +30,7 @@ module.exports = {
     const { id } = req.params;
 
     Recipe.showRecipe(id, function (recipe) {
-      return res.render("recipes/edit", { recipe });
+      return res.render("recipes/show", { recipe });
     });
   },
 };
