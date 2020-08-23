@@ -1,0 +1,34 @@
+{% extends "../layout-admin.njk" %}
+
+{% block head %}
+
+<title>Admin - Criando</title>
+
+{% endblock head %}
+
+{% block content %}
+
+<div class="recipe">
+
+    <div class="form">
+        <form method="POST" action="/admin/chefs">
+            <div class="head">
+                <div>
+                    <span><h1>Criando Chef</h1></span>
+                </div>
+                <div class="button-wrapper">
+                    <button class="button" type="submit"><span>Salvar Chef</span></a>
+                </div>
+            </div>
+            {%include "chefs/fields.njk"%}
+        </form>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="/addNewInput.js"></script>
+<script src="/confirmationOfButtons.js"></script>
+{% endblock %}

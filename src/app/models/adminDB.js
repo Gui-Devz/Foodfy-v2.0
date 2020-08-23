@@ -85,5 +85,26 @@ module.exports = {
     });
   },
 
-  createChef(dataPost, callback) {},
+  createChef(dataPost, callback) {
+    const query = `
+        INSERT INTO chefs (
+        name,
+        avatar_url,
+        created_at
+        ) VALUES ($1, $2, $3)
+        RETURNING id
+      `;
+
+    let values = [
+      dataPost.name,
+      dataPost.avatar_url,
+      formatBrowser(Date.now()).iso,
+    ];
+
+    db.query(query, values, function (err, result) {
+      if (err) throw `Database error! ${err}`;
+
+      callback(result.rows[0].id);
+    });
+  },
 };

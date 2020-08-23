@@ -1,5 +1,6 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
+const Chef = require("../models/chef");
 
 module.exports = {
   index(req, res) {
@@ -76,4 +77,12 @@ module.exports = {
       res.redirect("/admin/recipes/index");
     });
   },
+
+  editChef(req, res) {
+    Chef.showChef(function (chef) {
+      return res.render("/admin/chefs/edit", { chef });
+    });
+  },
+
+  postChef(req, res) {},
 };
