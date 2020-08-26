@@ -80,7 +80,7 @@ module.exports = {
 
   editChef(req, res) {
     Chef.showChef(function (chef) {
-      return res.render("/admin/chefs/edit", { chef });
+      return res.render("admin/chefs/edit", { chef });
     });
   },
 
