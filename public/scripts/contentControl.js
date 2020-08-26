@@ -10,7 +10,7 @@ function activateMenuLinksCSS(arrayObj, filter, content) {
 
     for (const link of menuLinks) {
       if (link.firstChild.innerHTML == `${content}`) {
-        link.classList.toggle("active");
+        link.firstChild.classList.toggle("activated");
       }
     }
   }
