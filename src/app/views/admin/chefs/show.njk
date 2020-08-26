@@ -1,4 +1,4 @@
-{% extends "../layout-admin.njk" %}
+{% extends "../../layout-admin.njk" %}
 
 {% block head %}
 
@@ -14,7 +14,7 @@
         <a href="/admin/chefs/{{chef.id}}/edit" class="button-edit"><span>Editar chef</span></a>
     </div>
     <div class="chef-info">
-        <div>
+        <div class="chef-img">
             <img src="{{chef.avatar_url}}" alt="Imagem de {{chef.name}}">
         </div>
         <div class="name-recipes">

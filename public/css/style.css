@@ -102,6 +102,10 @@ footer div p {
   height: fit-content;
 }
 
+.menu ul .activated {
+  font-weight: bold;
+}
+
 .menu div:nth-child(2) {
   position: relative;
 }
@@ -406,7 +410,13 @@ header .links {
 }
 
 .menu.admin ul li a {
-  color: white;
+  color: #999999;
+  font-weight: bold;
+}
+
+.menu.admin ul li .activated {
+  color: #ffffff;
+  font-weight: bold;
 }
 
 .all nav img {
@@ -722,6 +732,12 @@ header {
   border-radius: 50%;
 }
 
+.chef-info .chef-img {
+  display: flex;
+
+  justify-content: center;
+}
+
 .chef-info .name-recipes {
   width: fit-content;
   margin: 0 auto;
@@ -753,4 +769,30 @@ header {
   font-size: 20px;
   font-weight: normal;
   line-height: 24px;
+}
+
+/* LIST OF CHEFS */
+
+.wrapper-grid.admin {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+
+  column-gap: 28px;
+  row-gap: 30px;
+}
+
+.wrapper-grid.admin .card-content span {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+}
+
+.wrapper-grid.admin .card-content {
+  width: fit-content;
+  height: 64px;
+
+  grid-template: 1fr 1fr / 64px 1fr;
+
+  column-gap: 20px;
 }
