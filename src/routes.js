@@ -13,6 +13,8 @@ routes.get("/recipes", recipes.list);
 
 routes.get("/recipes/:id", recipes.show);
 
+routes.get("/chefs", chefs.chefsList);
+
 // ADMIN SESSION
 
 //RECIPES PAGES
@@ -25,7 +27,7 @@ routes.get("/admin/recipes/:id", admin.showRecipe);
 routes.get("/admin/recipes/:id/edit", admin.editRecipe);
 
 //CHEFS PAGES
-routes.get("/admin/chefs", chefs.chefsList);
+routes.get("/admin/chefs", chefs.chefsListAdmin);
 
 routes.get("/admin/chefs/create", chefs.create);
 
