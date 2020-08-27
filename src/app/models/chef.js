@@ -3,7 +3,9 @@ const db = require("../../config/db");
 module.exports = {
   showChefs(callback) {
     const query = `
-    SELECT * FROM chefs
+        SELECT chefs.*, (SELECT count(*) FROM recipes WHERE chefs.id=recipes.chef_id) AS qt_recipes
+        FROM chefs LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
+        GROUP BY chefs.id
     `;
 
     db.query(query, function (err, results) {
