@@ -27,4 +27,12 @@ module.exports = {
       });
     });
   },
+
+  edit(req, res) {
+    const { id } = req.params;
+
+    Chef.showChef(id, function (chef) {
+      return res.render("admin/chefs/edit", { chef });
+    });
+  },
 };

@@ -1,0 +1,42 @@
+{% extends "../../layout-admin.njk" %}
+
+{% block head %}
+
+<title>Admin - Editando</title>
+
+{% endblock head %}
+
+{% block content %}
+
+<div class="recipe">
+
+    <div class="form">
+        <div class="delete">
+            <form method="POST" action="/admin/chefs?_method=DELETE">
+                <input type="hidden" name="id" value="{{chef.id}}">
+                <button class="button-delete" type="submit"><span>Deletar</span></a>
+            </form>
+        </div>
+        <form method="POST" action="/admin/chefs?_method=PUT">
+            <div class="head">
+                <div>
+
+                <span><h1>Editando Chef</h1></span>
+                </div>
+                <div class="button-wrapper">
+                    <button class="button" type="submit"><span>Salvar Chef</span></a>
+                </div>
+            </div>
+            {%include "admin/chefs/fields.njk"%}
+            <input type="hidden" name="id" value="{{chef.id}}">
+        </form>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="/addNewInput.js"></script>
+<script src="/confirmationOfButtons.js"></script>
+{% endblock %}
