@@ -2,7 +2,7 @@
 
 {% block head %}
 
-<title>Admin - Criando</title>
+<title>Admin - Editando</title>
 
 {% endblock head %}
 
@@ -11,16 +11,24 @@
 <div class="recipe">
 
     <div class="form">
-        <form method="POST" action="/admin/recipes">
+        <div class="delete">
+            <form method="POST" action="/admin/recipes?_method=DELETE">
+                <input type="hidden" name="id" value="{{recipe.id}}">
+                <button class="button-delete" type="submit"><span>Deletar</span></a>
+            </form>
+        </div>
+        <form method="POST" action="/admin/recipes?_method=PUT">
             <div class="head">
                 <div>
-                    <span><h1>Criando Receita</h1></span>
+
+                <span><h1>Editando Receita</h1></span>
                 </div>
                 <div class="button-wrapper">
                     <button class="button" type="submit"><span>Salvar Receita</span></a>
                 </div>
             </div>
-            {%include "admin/fields.njk"%}
+            {%include "admin/recipes/fields.njk"%}
+            <input type="hidden" name="id" value="{{recipe.id}}">
         </form>
     </div>
 </div>

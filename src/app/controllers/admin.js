@@ -22,7 +22,7 @@ module.exports = {
     const { id } = req.params;
 
     Recipe.showRecipe(id, function (recipe) {
-      return res.render("admin/recipe", { recipe });
+      return res.render("admin/recipes/recipe", { recipe });
     });
   },
 
@@ -30,14 +30,14 @@ module.exports = {
     const { id } = req.params;
     Recipe.showRecipe(id, function (recipe) {
       adminDB.chefsIdAndNames(function (chefs) {
-        return res.render("admin/edit", { recipe, chefs });
+        return res.render("admin/recipes/edit", { recipe, chefs });
       });
     });
   },
 
   createRecipe(req, res) {
     adminDB.chefsIdAndNames(function (chefs) {
-      return res.render("admin/create", { chefs });
+      return res.render("admin/recipes/create", { chefs });
     });
   },
 
