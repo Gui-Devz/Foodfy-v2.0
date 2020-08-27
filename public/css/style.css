@@ -777,7 +777,7 @@ header {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto;
 
-  column-gap: 28px;
+  column-gap: 20px;
   row-gap: 30px;
 }
 
@@ -789,10 +789,25 @@ header {
 }
 
 .wrapper-grid.admin .card-content {
-  width: fit-content;
+  width: 250px;
   height: 64px;
+  margin-bottom: 0;
 
   grid-template: 1fr 1fr / 64px 1fr;
 
   column-gap: 20px;
+  row-gap: 0px;
+}
+
+.card-info h2 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: normal;
+}
+
+.card-info div {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 16px;
+  color: hsla(0, 0%, 60%);
 }
