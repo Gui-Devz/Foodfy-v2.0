@@ -38,11 +38,13 @@ routes.get("/admin/chefs/:id/edit", chefs.edit);
 //ADMIN CHEFS FORM
 
 routes.post("/admin/chefs", admin.postChef);
+routes.put("/admin/chefs", admin.putChef);
+routes.delete("/admin/chefs", admin.deleteChef);
 
 //ADMIN RECIPES FORM
 
-routes.post("/admin/recipes", admin.post);
-routes.put("/admin/recipes", admin.put);
-routes.delete("/admin/recipes", admin.delete);
+routes.post("/admin/recipes", admin.postRecipe);
+routes.put("/admin/recipes", admin.putRecipe);
+routes.delete("/admin/recipes", admin.deleteRecipe);
 
 module.exports = routes;

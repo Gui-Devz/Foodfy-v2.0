@@ -42,7 +42,7 @@ module.exports = {
   },
 
   // FORM routes
-  post(req, res) {
+  postRecipe(req, res) {
     const keys = Object.keys(req.body);
 
     for (const key of keys) {
@@ -56,7 +56,7 @@ module.exports = {
     });
   },
 
-  put(req, res) {
+  putRecipe(req, res) {
     const keys = Object.keys(req.body);
 
     for (const key of keys) {
@@ -70,7 +70,7 @@ module.exports = {
     });
   },
 
-  delete(req, res) {
+  deleteRecipe(req, res) {
     const { id } = req.body;
 
     adminDB.deleteRecipe(id, function () {
@@ -95,6 +95,28 @@ module.exports = {
 
     adminDB.createChef(req.body, function (id) {
       return res.redirect(`/admin/chefs/${id}`);
+    });
+  },
+
+  putChef(req, res) {
+    const keys = Object.keys(req.body);
+
+    for (const key of keys) {
+      if (key == "") {
+        return res.send("Fill all the fields!");
+      }
+    }
+
+    adminDB.updateChef(req.body, function (id) {
+      return res.redirect(`/admin/chefs/${id}`);
+    });
+  },
+
+  deleteChef(req, res) {
+    const { id } = req.body;
+
+    adminDB.deleteChef(id, function () {
+      return res.redirect("/admin/chefs");
     });
   },
 };
