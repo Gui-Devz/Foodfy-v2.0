@@ -15,7 +15,7 @@ routes.get("/recipes/:id", recipes.show);
 
 routes.get("/chefs", chefs.chefsList);
 
-// ADMIN SESSION
+// ADMIN-SESSION
 
 //RECIPES PAGES
 routes.get("/admin/recipes", admin.index);
