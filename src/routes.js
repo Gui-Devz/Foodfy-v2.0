@@ -5,7 +5,7 @@ const chefs = require("./app/controllers/chefs");
 
 const routes = express.Router();
 
-routes.get("/", recipes.index);
+routes.get("/index", recipes.index);
 
 routes.get("/about", recipes.about);
 
