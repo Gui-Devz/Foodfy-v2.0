@@ -5,7 +5,7 @@ let filter = document.querySelector(".filter").dataset.filter;
 for (const card of cards) {
   card.addEventListener("click", () => {
     const id = card.getAttribute("id");
-    console.log(id);
+
     window.location.href = `/recipes/${id}`;
   });
 }
