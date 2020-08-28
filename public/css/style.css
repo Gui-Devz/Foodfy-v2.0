@@ -108,6 +108,12 @@ footer div p {
 
 .menu div:nth-child(2) {
   position: relative;
+
+  display: none;
+}
+
+.menu .filter.show {
+  display: block;
 }
 
 .menu form {
