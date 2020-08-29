@@ -2,13 +2,13 @@ const Chef = require("../models/chef");
 const adminDB = require("../models/adminDB");
 
 module.exports = {
-  chefsListAdmin(req, res) {
+  listAdmin(req, res) {
     Chef.showChefs(function (chefs) {
       return res.render("admin/chefs/list", { chefs });
     });
   },
 
-  chefsList(req, res) {
+  list(req, res) {
     Chef.showChefs(function (chefs) {
       return res.render("recipes/chefs/list", { chefs });
     });

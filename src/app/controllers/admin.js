@@ -18,29 +18,6 @@ module.exports = {
     }
   },
 
-  showRecipe(req, res) {
-    const { id } = req.params;
-
-    Recipe.showRecipe(id, function (recipe) {
-      return res.render("admin/recipes/recipe", { recipe });
-    });
-  },
-
-  editRecipe(req, res) {
-    const { id } = req.params;
-    Recipe.showRecipe(id, function (recipe) {
-      adminDB.chefsIdAndNames(function (chefs) {
-        return res.render("admin/recipes/edit", { recipe, chefs });
-      });
-    });
-  },
-
-  createRecipe(req, res) {
-    adminDB.chefsIdAndNames(function (chefs) {
-      return res.render("admin/recipes/create", { chefs });
-    });
-  },
-
   // FORM routes
   postRecipe(req, res) {
     const keys = Object.keys(req.body);
@@ -76,12 +53,6 @@ module.exports = {
 
     adminDB.deleteRecipe(id, function () {
       res.redirect("/admin/recipes");
-    });
-  },
-
-  editChef(req, res) {
-    Chef.showChef(function (chef) {
-      return res.render("admin/chefs/edit", { chef });
     });
   },
 

@@ -28,7 +28,7 @@ module.exports = {
     });
   },
 
-  filterRecipes(filter, callback) {
+  filter(filter, callback) {
     let query = "",
       filterQuery = "";
 

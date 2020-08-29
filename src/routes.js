@@ -13,21 +13,21 @@ routes.get("/recipes", recipes.list);
 
 routes.get("/recipes/:id", recipes.show);
 
-routes.get("/chefs", chefs.chefsList);
+routes.get("/chefs", chefs.list);
 
 // ADMIN-SESSION
 
 //RECIPES PAGES
 routes.get("/admin/recipes", admin.index);
 
-routes.get("/admin/recipes/create", admin.createRecipe);
+routes.get("/admin/recipes/create", recipes.create);
 
-routes.get("/admin/recipes/:id", admin.showRecipe);
+routes.get("/admin/recipes/:id", recipes.show);
 
-routes.get("/admin/recipes/:id/edit", admin.editRecipe);
+routes.get("/admin/recipes/:id/edit", recipes.edit);
 
 //CHEFS PAGES
-routes.get("/admin/chefs", chefs.chefsListAdmin);
+routes.get("/admin/chefs", chefs.listAdmin);
 
 routes.get("/admin/chefs/create", chefs.create);
 

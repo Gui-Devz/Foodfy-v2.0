@@ -33,4 +33,19 @@ module.exports = {
       return res.render("recipes/show", { recipe });
     });
   },
+
+  edit(req, res) {
+    const { id } = req.params;
+    Recipe.showRecipe(id, function (recipe) {
+      adminDB.chefsIdAndNames(function (chefs) {
+        return res.render("admin/recipes/edit", { recipe, chefs });
+      });
+    });
+  },
+
+  create(req, res) {
+    adminDB.chefsIdAndNames(function (chefs) {
+      return res.render("admin/recipes/create", { chefs });
+    });
+  },
 };
