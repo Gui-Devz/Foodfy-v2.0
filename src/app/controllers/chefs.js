@@ -33,11 +33,13 @@ module.exports = {
 
     Chef.showChef(id, function (chef) {
       let recipes = false;
-      if (chef.qt_recipes > 0) {
-        recipes = true;
-      } else {
+      if (chef.qt_recipes != 0) {
         recipes = false;
+      } else {
+        recipes = true;
       }
+
+      console.log(recipes);
 
       return res.render("admin/chefs/edit", { chef, recipes });
     });

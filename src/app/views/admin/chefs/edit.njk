@@ -12,7 +12,7 @@
 
     <div class="form">
         <div class="delete"
-        data-delete = {{chef.recipes}}>
+        data-has_recipes = {{chef.recipes}}>
             <form method="POST" action="/admin/chefs?_method=DELETE">
                 <input type="hidden" name="id" value="{{chef.id}}">
                 <button class="button-delete" type="submit"><span>Deletar</span></a>
