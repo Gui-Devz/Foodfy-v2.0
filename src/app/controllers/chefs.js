@@ -32,7 +32,14 @@ module.exports = {
     const { id } = req.params;
 
     Chef.showChef(id, function (chef) {
-      return res.render("admin/chefs/edit", { chef });
+      let recipes = false;
+      if (chef.qt_recipes > 0) {
+        recipes = true;
+      } else {
+        recipes = false;
+      }
+
+      return res.render("admin/chefs/edit", { chef, recipes });
     });
   },
 };

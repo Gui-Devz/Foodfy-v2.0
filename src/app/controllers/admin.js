@@ -72,9 +72,10 @@ module.exports = {
 
   deleteRecipe(req, res) {
     const { id } = req.body;
+    console.log(id);
 
     adminDB.deleteRecipe(id, function () {
-      res.redirect("/admin/recipes/index");
+      res.redirect("/admin/recipes");
     });
   },
 

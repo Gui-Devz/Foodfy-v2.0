@@ -47,7 +47,7 @@ module.exports = {
     });
   },
   deleteRecipe(id, callback) {
-    const query = `DELETE FROM recipes WHERE = $1`;
+    const query = `DELETE FROM recipes WHERE id = $1`;
 
     db.query(query, [id], function (err) {
       if (err) throw `Database error! ${err}`;
