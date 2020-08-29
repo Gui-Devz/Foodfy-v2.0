@@ -1,7 +1,15 @@
 const buttonDelete = document.querySelector(".button-delete");
 const buttonSave = document.querySelector(".button");
+let urlPage = window.location.href;
 
 if (buttonDelete) {
+  if (urlPage.includes("chefs")) {
+    if (buttonDelete.dataset.recipes) {
+      console.log("true");
+    } else {
+      console.log("false");
+    }
+  }
   buttonDelete.addEventListener("click", (event) => {
     const confirmation = confirm("Deseja excluir essa receita?!");
 

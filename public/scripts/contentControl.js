@@ -14,33 +14,38 @@ function activateMenuLinksCSS(arrayObj, filter, content) {
   }
 }
 
-/* RECIPE DETAILS PAGE
--- This code allows to hide or show details about the recipe like the ingredients and the steps */
-if (divSteps) {
-  for (const divStep of divSteps) {
-    const button = divStep.querySelector(".info-content p");
+if (!urlCheck.includes("edit")) {
+  /* RECIPE DETAILS PAGE
+    -- This code allows to hide or show details about the recipe like the ingredients and the steps */
+  if (divSteps) {
+    for (const divStep of divSteps) {
+      const button = divStep.querySelector(".info-content p");
 
-    button.addEventListener("click", () => {
-      const content = divStep.querySelector("div");
+      button.addEventListener("click", () => {
+        const content = divStep.querySelector("div");
 
-      if (content.classList.contains("hidden")) {
-        content.classList.remove("hidden");
+        if (content.classList.contains("hidden")) {
+          content.classList.remove("hidden");
 
-        button.innerHTML = "Esconder";
-      } else {
-        content.classList.add("hidden");
+          button.innerHTML = "Esconder";
+        } else {
+          content.classList.add("hidden");
 
-        button.innerHTML = "Mostrar";
-      }
-    });
+          button.innerHTML = "Mostrar";
+        }
+      });
+    }
   }
-}
 
-/* CODE THAT DEFINES WHAT PAGES SHOULD SHOW THE OPTION FOR THE FILTER OF RECIPES */
-if (urlCheck.includes("index") || urlCheck.includes("recipes")) {
-  const filterDiv = document.querySelector(".filter");
+  /* CODE THAT DEFINES WHAT PAGES SHOULD SHOW THE OPTION FOR THE FILTER OF RECIPES */
+  if (
+    urlCheck.includes("index") ||
+    (urlCheck.includes("recipes") && !urlCheck.includes("admin"))
+  ) {
+    const filterDiv = document.querySelector(".filter");
 
-  filterDiv.classList.toggle("show");
+    filterDiv.classList.toggle("show");
+  }
 }
 
 activateMenuLinksCSS(urlCheck, "recipes", "Receitas");

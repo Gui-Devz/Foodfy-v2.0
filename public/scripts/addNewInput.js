@@ -25,8 +25,14 @@ function addStep() {
   steps.appendChild(newField);
 }
 
-document
-  .querySelector(".add-ingredient")
-  .addEventListener("click", addIngredient);
+let newIngredient = document.querySelector(".add-ingredient");
 
-document.querySelector(".add-step").addEventListener("click", addStep);
+if (newIngredient) {
+  newIngredient.addEventListener("click", addIngredient);
+}
+
+let newStep = document.querySelector(".add-step");
+
+if (newStep) {
+  newStep.addEventListener("click", addStep);
+}
