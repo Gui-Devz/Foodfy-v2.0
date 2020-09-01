@@ -34,9 +34,9 @@ module.exports = {
     Chef.showChef(id, function (chef) {
       let recipes = false;
       if (chef.qt_recipes != 0) {
-        recipes = false;
-      } else {
         recipes = true;
+      } else {
+        recipes = false;
       }
 
       console.log(recipes);

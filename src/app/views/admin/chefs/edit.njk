@@ -12,7 +12,7 @@
 
     <div class="form">
         <div class="delete"
-        data-has_recipes = {{chef.recipes}}>
+        data-has_recipes = {{recipes}}>
             <form method="POST" action="/admin/chefs?_method=DELETE">
                 <input type="hidden" name="id" value="{{chef.id}}">
                 <button class="button-delete" type="submit"><span>Deletar</span></a>
@@ -28,7 +28,7 @@
                     <button class="button" type="submit"><span>Salvar Chef</span></a>
                 </div>
             </div>
-            {%include "admin/chefs/fields.njk"%}
+            {%include "./fields.njk"%}
             <input type="hidden" name="id" value="{{chef.id}}">
         </form>
     </div>

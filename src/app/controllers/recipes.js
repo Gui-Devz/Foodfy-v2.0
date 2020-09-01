@@ -30,7 +30,7 @@ module.exports = {
     const { id } = req.params;
 
     Recipe.showRecipe(id, function (recipe) {
-      return res.render("recipes/show", { recipe });
+      return res.render("admin/recipes/recipe", { recipe });
     });
   },
 
