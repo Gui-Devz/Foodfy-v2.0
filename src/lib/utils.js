@@ -42,6 +42,9 @@ module.exports = {
     return `{${newArray}}`;
   },
 
+  /* Function guarantees that inputs that are arrays don't have blank content
+  inside it like ""
+  */
   validationOfInputs(inputs) {
     let newInputs = [];
     for (let i = 0; i < inputs.length; i++) {
