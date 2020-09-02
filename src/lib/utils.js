@@ -39,7 +39,19 @@ module.exports = {
       newArray.push(i);
     }
 
-    console.log(newArray);
     return `{${newArray}}`;
+  },
+
+  validationOfInputs(inputs) {
+    let newInputs = [];
+    for (let i = 0; i < inputs.length; i++) {
+      const inputClone = inputs[i].trim();
+
+      if (inputClone != "") {
+        newInputs.push(inputs[i]);
+      }
+    }
+
+    return newInputs;
   },
 };

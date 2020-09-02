@@ -1,6 +1,7 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
 const Chef = require("../models/chef");
+const { validationOfInputs } = require("../../lib/utils");
 
 module.exports = {
   index(req, res) {
@@ -21,6 +22,7 @@ module.exports = {
   // FORM routes
   postRecipe(req, res) {
     const keys = Object.keys(req.body);
+    const { ingredients, steps } = req.body;
 
     for (const key of keys) {
       if (key == "") {
@@ -28,13 +30,20 @@ module.exports = {
       }
     }
 
-    adminDB.savingRecipe(req.body, function (recipeID) {
+    const createdRecipe = {
+      ...req.body,
+      ingredients: validationOfInputs(ingredients),
+      steps: validationOfInputs(steps),
+    };
+
+    adminDB.savingRecipe(createdRecipe, function (recipeID) {
       return res.redirect(`/admin/recipes/${recipeID}`);
     });
   },
 
   putRecipe(req, res) {
     const keys = Object.keys(req.body);
+    const { ingredients, steps } = req.body;
 
     for (const key of keys) {
       if (key == "") {
@@ -42,7 +51,13 @@ module.exports = {
       }
     }
 
-    adminDB.updateRecipe(req.body, function (recipeID) {
+    const createdRecipe = {
+      ...req.body,
+      ingredients: validationOfInputs(ingredients),
+      steps: validationOfInputs(steps),
+    };
+
+    adminDB.updateRecipe(createdRecipe, function (recipeID) {
       return res.redirect(`/admin/recipes/${recipeID}`);
     });
   },
