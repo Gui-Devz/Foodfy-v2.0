@@ -22,7 +22,7 @@ module.exports = {
   // FORM routes
   postRecipe(req, res) {
     const keys = Object.keys(req.body);
-    const { ingredients, steps } = req.body;
+    const { ingredients, preparation } = req.body;
 
     for (const key of keys) {
       if (key == "") {
@@ -33,7 +33,7 @@ module.exports = {
     const createdRecipe = {
       ...req.body,
       ingredients: validationOfInputs(ingredients),
-      steps: validationOfInputs(steps),
+      preparation: validationOfInputs(preparation),
     };
 
     adminDB.savingRecipe(createdRecipe, function (recipeID) {
@@ -43,7 +43,7 @@ module.exports = {
 
   putRecipe(req, res) {
     const keys = Object.keys(req.body);
-    const { ingredients, steps } = req.body;
+    const { ingredients, preparation } = req.body;
 
     for (const key of keys) {
       if (key == "") {
@@ -54,7 +54,7 @@ module.exports = {
     const createdRecipe = {
       ...req.body,
       ingredients: validationOfInputs(ingredients),
-      steps: validationOfInputs(steps),
+      preparation: validationOfInputs(preparation),
     };
 
     adminDB.updateRecipe(createdRecipe, function (recipeID) {
