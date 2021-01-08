@@ -1,6 +1,6 @@
 const cards = document.querySelectorAll(".card");
 
-let filter = document.querySelector(".filter").dataset.filter;
+let filter = document.querySelector("#filter").dataset.filter;
 
 for (const card of cards) {
   card.addEventListener("click", () => {
