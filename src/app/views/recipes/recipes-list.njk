@@ -1,6 +1,9 @@
 {% extends "../layout-recipes_chefs.njk" %}
 
 {% block content %}
+    <div id="filter"
+    data-filter = {{filter}}>
+    </div>
     <div class="wrapper-grid">
         <div class="cards">
         {% for recipe in recipes %}
