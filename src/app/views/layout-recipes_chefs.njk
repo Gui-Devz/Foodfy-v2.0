@@ -27,7 +27,12 @@
                 </div>
                 <div class="filter">
                     <form action="/recipes" method="GET">
-                        <input type="text" name="filter" placeholder="Buscar receitas">
+                        <input type="text" name="filter"
+                        {% if filter %}
+                            placeholder="{{filter}}"
+                        {%else%}
+                            placeholder="Buscar receitas"
+                        {% endif %}>
                         <button type="submit">Buscar</button>
                     </form>
                 </div>
@@ -37,10 +42,6 @@
         {% block content %}{% endblock %}
     <div class="push"></div>
 
-    </div>
-
-    <div class="filter"
-    data-filter = {{filter}}>
     </div>
 
     <footer>
