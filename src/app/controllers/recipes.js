@@ -13,14 +13,14 @@ module.exports = {
   },
 
   list(req, res) {
-    let { filter } = req.query;
+    const { filter } = req.query;
 
     if (!filter) {
       Recipe.showRecipes(function (recipes) {
         return res.render("recipes/recipes-list", { recipes });
       });
     } else {
-      Recipe.filterRecipes(filter, function (recipes) {
+      Recipe.filter(filter, function (recipes) {
         return res.render("recipes/recipes-list", { recipes, filter });
       });
     }
