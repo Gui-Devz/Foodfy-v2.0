@@ -1,6 +1,6 @@
 const cards = document.querySelectorAll(".card");
 
-let filter = document.querySelector("#filter").dataset.filter;
+let filter = document.querySelector("#filter").dataset.filter || 0;
 
 for (const card of cards) {
   card.addEventListener("click", () => {
@@ -18,6 +18,6 @@ function addingH1() {
   wrapperGrid.insertBefore(element, wrapperGrid.firstChild);
 }
 
-if (filter) {
+if (filter != 0) {
   addingH1();
 }

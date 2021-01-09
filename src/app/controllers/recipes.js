@@ -4,12 +4,12 @@ const adminDB = require("../models/adminDB");
 module.exports = {
   index(req, res) {
     Recipe.showRecipes(function (recipes) {
-      return res.render("index", { recipes });
+      return res.render("user/index", { recipes });
     });
   },
 
   about(req, res) {
-    return res.render("recipes/about");
+    return res.render("user/recipes/about");
   },
 
   list(req, res) {
@@ -17,11 +17,11 @@ module.exports = {
 
     if (!filter) {
       Recipe.showRecipes(function (recipes) {
-        return res.render("recipes/recipes-list", { recipes });
+        return res.render("user/recipes/recipes-list", { recipes });
       });
     } else {
       Recipe.filter(filter, function (recipes) {
-        return res.render("recipes/recipes-list", { recipes, filter });
+        return res.render("user/recipes/recipes-list", { recipes, filter });
       });
     }
   },
@@ -30,7 +30,7 @@ module.exports = {
     const { id } = req.params;
 
     Recipe.showRecipe(id, function (recipe) {
-      return res.render("admin/recipes/recipe", { recipe });
+      return res.render("user/recipes/show", { recipe });
     });
   },
 

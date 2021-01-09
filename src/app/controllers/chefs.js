@@ -10,7 +10,7 @@ module.exports = {
 
   list(req, res) {
     Chef.showChefs(function (chefs) {
-      return res.render("recipes/chefs/list", { chefs });
+      return res.render("user/chefs/list", { chefs });
     });
   },
 
