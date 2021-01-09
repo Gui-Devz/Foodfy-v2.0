@@ -34,6 +34,14 @@ module.exports = {
     });
   },
 
+  showAdmin(req, res) {
+    const { id } = req.params;
+
+    Recipe.showRecipe(id, function (recipe) {
+      return res.render("admin/recipes/show", { recipe });
+    });
+  },
+
   edit(req, res) {
     const { id } = req.params;
     Recipe.showRecipe(id, function (recipe) {
