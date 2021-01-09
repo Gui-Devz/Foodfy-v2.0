@@ -22,7 +22,7 @@ routes.get("/admin/recipes", admin.index);
 
 routes.get("/admin/recipes/create", recipes.create);
 
-routes.get("/admin/recipes/:id", recipes.show);
+routes.get("/admin/recipes/:id", recipes.showAdmin);
 
 routes.get("/admin/recipes/:id/edit", recipes.edit);
 
