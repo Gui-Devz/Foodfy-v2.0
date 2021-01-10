@@ -100,6 +100,63 @@ const confirmationOfButtons = {
   },
 };
 
+const controlContentRecipe = {
+  showOrHide(e) {
+    const button = e.target;
+    const divStep = button.parentElement.parentElement.childNodes[3];
+
+    console.log(divStep);
+
+    if (divStep.classList.contains("hidden")) {
+      divStep.classList.remove("hidden");
+
+      button.innerHTML = "Esconder";
+    } else {
+      divStep.classList.add("hidden");
+
+      button.innerHTML = "Mostrar";
+    }
+  },
+};
+
+const showingSearchBar = {
+  showing() {
+    const url = window.location.href;
+    if (
+      url.includes("index") ||
+      (url.includes("recipes") &&
+        !url.includes("recipes/") &&
+        !url.includes("admin") &&
+        !url.includes("edit"))
+    ) {
+      const filterDiv = document.querySelector(".filter");
+
+      filterDiv.classList.add("show");
+    }
+  },
+};
+
+const menuLinksActivation = {
+  activated(filter, content) {
+    const url = window.location.href;
+    if (url.includes(`${filter}`)) {
+      const menuLinks = document.querySelectorAll(".menu div ul li");
+
+      for (const link of menuLinks) {
+        if (link.firstChild.innerHTML == `${content}`) {
+          link.firstChild.classList.toggle("activated");
+        }
+      }
+    }
+  },
+};
+
 filteringFunctions.commonFiltering(["filter"], [addingFilterSearchH1.h1]);
 
 addingLinksToCards.linking();
+
+showingSearchBar.showing();
+
+menuLinksActivation.activated("recipes", "Receitas");
+menuLinksActivation.activated("about", "Sobre");
+menuLinksActivation.activated("chefs", "Chefs");
