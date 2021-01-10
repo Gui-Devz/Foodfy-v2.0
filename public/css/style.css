@@ -112,6 +112,10 @@ footer div p {
   display: none;
 }
 
+/* .menu .filter {
+  display: none;
+} */
+
 .menu .filter.show {
   display: block;
 }
