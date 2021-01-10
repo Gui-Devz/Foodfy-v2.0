@@ -17,7 +17,7 @@
                     <span><h1>Criando Receita</h1></span>
                 </div>
                 <div class="button-wrapper">
-                    <button class="button" type="submit"><span>Salvar Receita</span></a>
+                    <button class="button" type="submit" onClick="confirmationOfButtons.verifyingBeforeSavingRecipe(event)"><span>Salvar Receita</span></a>
                 </div>
             </div>
             {%include "admin/recipes/fields.njk"%}
@@ -28,7 +28,3 @@
 
 {% endblock content %}
 
-{% block scripts %}
-<script src="/addNewInput.js"></script>
-<script src="/confirmationOfButtons.js"></script>
-{% endblock %}

@@ -14,7 +14,7 @@
         <div class="delete">
             <form method="POST" action="/admin/recipes?_method=DELETE">
                 <input type="hidden" name="id" value="{{recipe.id}}">
-                <button class="button-delete" type="submit"><span>Deletar</span></a>
+                <button class="button-delete" type="submit" onClick="confirmationOfButtons.verifyingBeforeDeleteRecipe(event)"><span>Deletar</span></a>
             </form>
         </div>
         <form method="POST" action="/admin/recipes?_method=PUT">
@@ -24,7 +24,7 @@
                 <span><h1>Editando Receita</h1></span>
                 </div>
                 <div class="button-wrapper">
-                    <button class="button" type="submit"><span>Salvar Receita</span></a>
+                    <button class="button" type="submit" onClick="confirmationOfButtons.verifyingBeforeSavingRecipe(event)"><span>Salvar Receita</span></a>
                 </div>
             </div>
             {%include "admin/recipes/fields.njk"%}
@@ -36,7 +36,3 @@
 
 {% endblock content %}
 
-{% block scripts %}
-<script src="/addNewInput.js"></script>
-<script src="/confirmationOfButtons.js"></script>
-{% endblock %}
