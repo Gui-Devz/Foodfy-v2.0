@@ -23,7 +23,7 @@
     <div class="step">
         <section class="info-content">
             <h2>Ingredientes</h2>
-            <p>Esconder</p>
+            <p onClick="controlContentRecipe.showOrHide(event)">Esconder</p>
         </section>
         <div class="preparation">
             <ul>
@@ -41,22 +41,25 @@
     <div class="step">
         <section class="info-content">
             <h2>Modo de preparo</h2>
-            <p>Esconder</p>
+            <p onClick="controlContentRecipe.showOrHide(event)">Esconder</p>
         </section>
 
         <div class="preparation">
+          <ul>
+
             {% for preparation in recipe.preparation %}
 
-                <p>{{preparation}}</p>
+                <li>{{preparation}}</li>
 
             {% endfor %}
+          </ul>
         </div>
     </div>
 
     <div class="step">
         <section class="info-content">
             <h2>Informações adicionais</h2>
-            <p class="hide">Esconder</p>
+            <p class="hide" onClick="controlContentRecipe.showOrHide(event)">Esconder</p>
         </section>
         <div class="preparation">
 
