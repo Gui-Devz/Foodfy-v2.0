@@ -1,7 +1,27 @@
 <div class="fields">
     <div class="item">
         <div>Imagem da receita</div>
-        <div><input type="url" name="image" value="{{recipe.image}}" required></div>
+        <div class="images-wrapper">
+          <div>
+            <div class="images-upload">
+              <input
+                type="file"
+                name="images"
+                multiple
+                accept="images/*"
+                required
+              >
+              <div><i class="material-icons">add</i></div>
+            </div>
+          </div>
+          <div class="preview-images">
+            <div>ola</div>
+            <div>ola</div>
+            <div>ola</div>
+            <div>ola</div>
+            <div>ola</div>
+          </div>
+        </div>
     </div>
     <div class="item">
         <div>Nome da receita</div>
