@@ -151,6 +151,116 @@ const menuLinksActivation = {
   },
 };
 
+const uploadingImages = {
+  previewImages: document.querySelector(".preview-images"),
+  uploadLimit: 5,
+  files: [],
+  input: "",
+
+  handleFilesInput(event) {
+    uploadingImages.input = event.target;
+    const { files: fileList } = event.target;
+    const { loadImageDiv } = uploadingImages;
+
+    if (uploadingImages.hasLimit(event)) return;
+
+    loadImageDiv(fileList);
+
+    event.target.files = uploadingImages.getAllFiles();
+  },
+  loadImageDiv(list) {
+    const { createContainerForImage } = uploadingImages;
+
+    Array.from(list).forEach((file) => {
+      uploadingImages.files.push(file);
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        createContainerForImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  },
+
+  getAllFiles() {
+    const dataTransfer =
+      new ClipboardEvent("").clipboardData || new DataTransfer();
+
+    uploadingImages.files.forEach((file) => dataTransfer.items.add(file));
+
+    return dataTransfer.files;
+  },
+
+  hasLimit(event) {
+    const { files, uploadLimit, input } = uploadingImages;
+
+    const totalFiles = files.length + input.files.length;
+
+    if (totalFiles > uploadingImages.uploadLimit) {
+      alert(`Adicione no máximo ${uploadLimit} imagens!`);
+      event.preventDefault();
+      return true;
+    }
+
+    return false;
+  },
+
+  getContainer(img) {
+    const container = document.createElement("div");
+
+    container.appendChild(img);
+
+    container.appendChild(uploadingImages.getCloseButton());
+
+    return container;
+  },
+
+  getCloseButton() {
+    const icon = document.createElement("i");
+
+    icon.classList.add("material-icons");
+
+    icon.innerHTML = "close";
+
+    icon.onclick = uploadingImages.removeImage;
+
+    return icon;
+  },
+
+  createContainerForImage(readerResult) {
+    const { previewImages, getContainer } = uploadingImages;
+
+    const image = new Image();
+    image.src = String(readerResult);
+
+    previewImages.appendChild(getContainer(image));
+  },
+
+  removeImage(event) {
+    const imgContainer = event.target.parentNode;
+
+    const allContainers = document.querySelectorAll(".preview-images div");
+
+    const index = Array.from(allContainers).indexOf(imgContainer);
+
+    uploadingImages.files.splice(index, 1);
+
+    uploadingImages.input.files = uploadingImages.getAllFiles();
+
+    uploadingImages.addRemovedPhotoIntoInput(event);
+
+    imgContainer.remove();
+  },
+
+  addRemovedPhotoIntoInput(event) {
+    const file_id = event.target.id; // getting the id from <i>
+    let inputRemoved = document.querySelector(".removed-files");
+
+    if (inputRemoved) inputRemoved.value += `${file_id},`;
+  },
+};
+
 filteringFunctions.commonFiltering(["filter"], [addingFilterSearchH1.h1]);
 
 addingLinksToCards.linking();
