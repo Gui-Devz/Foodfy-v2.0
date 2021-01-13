@@ -1,7 +1,10 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
 const Chef = require("../models/chef");
-const { validationOfInputs } = require("../../lib/utils");
+const {
+  validationOfInputs,
+  validationOfBlankForms,
+} = require("../../lib/utils");
 
 module.exports = {
   index(req, res) {
@@ -21,14 +24,10 @@ module.exports = {
 
   // FORM routes
   postRecipe(req, res) {
-    const keys = Object.keys(req.body);
     const { ingredients, preparation } = req.body;
 
-    for (const key of keys) {
-      if (key == "") {
-        return res.send("Fill all the fields!");
-      }
-    }
+    if (validationOfBlankForms(req.body))
+      return res.send("Fill all the fields");
 
     const createdRecipe = {
       ...req.body,
