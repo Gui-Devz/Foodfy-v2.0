@@ -57,4 +57,15 @@ module.exports = {
 
     return newInputs;
   },
+
+  validationOfBlankForms(fields) {
+    const keys = Object.keys(fields);
+
+    for (const key of keys) {
+      if (fields[key] == "" && key != "removed_photos") {
+        return true;
+      }
+      return false;
+    }
+  },
 };
