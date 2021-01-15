@@ -2,23 +2,21 @@ const db = require("../../config/db");
 const { arrayDB, formatBrowser } = require("../../lib/utils");
 
 module.exports = {
-  savingRecipe(dataPost, callback) {
+  savingRecipe(dataPost) {
     const query = `
             INSERT INTO recipes (
                 chef_id,
-                image,
                 title,
                 ingredients,
                 preparation,
                 information,
                 created_at
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+            ) VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING id
         `;
 
     const values = [
-      dataPost.chef_id,
-      dataPost.image,
+      dataPost.chef_id || 2,
       dataPost.title,
       arrayDB(dataPost.ingredients),
       arrayDB(dataPost.preparation),
@@ -26,11 +24,7 @@ module.exports = {
       formatBrowser(Date.now()).iso,
     ];
 
-    db.query(query, values, function (err, results) {
-      if (err) throw `Database Error! ${err}`;
-
-      callback(results.rows[0].id);
-    });
+    return db.query(query, values);
   },
 
   //Function that gives all the chef's id and names of the database
