@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("./app/middlewares/multer");
 const admin = require("./app/controllers/admin");
 const recipes = require("./app/controllers/recipes");
 const chefs = require("./app/controllers/chefs");
@@ -43,8 +44,8 @@ routes.delete("/admin/chefs", admin.deleteChef);
 
 //ADMIN RECIPES FORM
 
-routes.post("/admin/recipes", admin.postRecipe);
-routes.put("/admin/recipes", admin.putRecipe);
+routes.post("/admin/recipes", multer.array("images", 5), admin.postRecipe);
+routes.put("/admin/recipes", multer.array("images", 5), admin.putRecipe);
 routes.delete("/admin/recipes", admin.deleteRecipe);
 
 module.exports = routes;
