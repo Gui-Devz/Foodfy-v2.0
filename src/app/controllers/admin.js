@@ -1,10 +1,12 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
 const Chef = require("../models/chef");
+const File = require("../models/file");
 const {
   validationOfInputs,
   validationOfBlankForms,
 } = require("../../lib/utils");
+const { values } = require("lodash");
 
 module.exports = {
   index(req, res) {
@@ -23,11 +25,16 @@ module.exports = {
   },
 
   // FORM routes
-  postRecipe(req, res) {
+  async postRecipe(req, res) {
     const { ingredients, preparation } = req.body;
 
     if (validationOfBlankForms(req.body))
       return res.send("Fill all the fields");
+
+    //Validation of quantity of photos sent
+    if (req.files === 0) {
+      return res.send("Please send at least one image");
+    }
 
     const createdRecipe = {
       ...req.body,
@@ -35,9 +42,17 @@ module.exports = {
       preparation: validationOfInputs(preparation),
     };
 
-    adminDB.savingRecipe(createdRecipe, function (recipeID) {
-      return res.redirect(`/admin/recipes/${recipeID}`);
+    let result = await adminDB.savingRecipe(createdRecipe);
+    const recipeID = result.rows[0].id;
+
+    const imagesPromises = req.files.map((file) => {
+      return File.savingFile(file.filename, file.path);
     });
+
+    result = await Promise.all(imagesPromises);
+    const filesID = result.map((file) => file.rows[0].id);
+
+    return;
   },
 
   putRecipe(req, res) {
