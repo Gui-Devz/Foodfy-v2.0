@@ -129,4 +129,22 @@ module.exports = {
       callback();
     });
   },
+
+  savingFile(filename, file) {
+    const query = `
+            INSERT INTO files (
+                name,
+                path
+            ) VALUES ($1, $2)
+            RETURNING id
+        `;
+
+    return db.query(query, [filename, file]);
+  },
+
+  deleteFile(fileID) {
+    const query = `DELETE FROM files WHERE id = $1`;
+
+    return (db.query = (query, [fileID]));
+  },
 };
