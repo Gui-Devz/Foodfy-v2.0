@@ -68,4 +68,15 @@ module.exports = {
       return false;
     }
   },
+  formatPath(files, req) {
+    let photos = files.map((file) => ({
+      ...file,
+      src: `${req.protocol}://${req.headers.host}${file.path.replace(
+        "public",
+        ""
+      )}`,
+    }));
+
+    return photos;
+  },
 };
