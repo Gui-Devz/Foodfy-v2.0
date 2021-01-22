@@ -31,7 +31,7 @@ module.exports = {
     if (validationOfBlankForms(req.body))
       return res.send("Fill all the fields");
 
-    //Validation of quantity of photos sent
+    //Validation of quantity of images sent
     if (req.files === 0) {
       return res.send("Please send at least one image");
     }
@@ -46,13 +46,19 @@ module.exports = {
     const recipeID = result.rows[0].id;
 
     const imagesPromises = req.files.map((file) => {
-      return File.savingFile(file.filename, file.path);
+      return adminDB.savingFile(file.filename, file.path);
     });
 
     result = await Promise.all(imagesPromises);
     const filesID = result.map((file) => file.rows[0].id);
 
-    return;
+    const populateRecipeFiles = filesID.map((fileID) =>
+      adminDB.savingRecipeFiles(fileID, recipeID)
+    );
+
+    result = await Promise.all(populateRecipeFiles);
+
+    return res.redirect(`/admin/recipes/${recipeID}`);
   },
 
   putRecipe(req, res) {
