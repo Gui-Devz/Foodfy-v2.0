@@ -142,6 +142,16 @@ module.exports = {
     return db.query(query, [filename, file]);
   },
 
+  savingRecipeFiles(FileID, RecipeID) {
+    const query = `
+            INSERT INTO recipe_files (
+              recipe_id,
+              file_id
+            ) VALUES ($1, $2)`;
+
+    return db.query(query, [RecipeID, FileID]);
+  },
+
   deleteFile(fileID) {
     const query = `DELETE FROM files WHERE id = $1`;
 
