@@ -1,5 +1,7 @@
-const Recipe = require("../models/recipe");
 const adminDB = require("../models/adminDB");
+const Recipe = require("../models/recipe");
+const File = require("../models/file");
+const { formatPath } = require("../../lib/utils");
 
 module.exports = {
   index(req, res) {
@@ -34,12 +36,20 @@ module.exports = {
     });
   },
 
-  showAdmin(req, res) {
+  async showAdmin(req, res) {
     const { id } = req.params;
 
-    Recipe.showRecipe(id, function (recipe) {
-      return res.render("admin/recipes/show", { recipe });
-    });
+    let result = await Recipe.showRecipe(id);
+    const recipe = result.rows[0];
+
+    result = await File.showRecipeFiles(id);
+    let recipeFiles = result.rows;
+
+    //Formatting the path of the photos to send to the front-end
+    recipeFiles = formatPath(recipeFiles, req);
+
+    console.log(recipeFiles);
+    return res.render("admin/recipes/show", { recipe, recipeFiles });
   },
 
   edit(req, res) {
