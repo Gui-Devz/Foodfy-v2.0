@@ -71,12 +71,35 @@ module.exports = {
   formatPath(files, req) {
     let photos = files.map((file) => ({
       ...file,
-      src: `${req.protocol}://${req.headers.host}${file.path.replace(
+      file_path: `${req.protocol}://${req.headers.host}${file.file_path.replace(
         "public",
         ""
       )}`,
     }));
 
     return photos;
+  },
+
+  //Assigning each file to the related recipe
+  assignFilesToRecipes(recipes, files) {
+    let recipesWithFiles = [];
+    recipes.forEach((recipe) => {
+      let recipeImages = [];
+      files.forEach((file) => {
+        if (recipe.id === file.recipe_id) {
+          recipeImages.push({
+            fileName: file.file_name,
+            filePath: file.file_path,
+          });
+        }
+      });
+      const recipeWithFiles = {
+        ...recipe,
+        files: recipeImages,
+      };
+
+      recipesWithFiles.push(recipeWithFiles);
+    });
+    return recipesWithFiles;
   },
 };
