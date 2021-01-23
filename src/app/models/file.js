@@ -3,12 +3,19 @@ const db = require("../../config/db");
 module.exports = {
   showRecipeFiles(recipe_ID) {
     const query = `
-        SELECT files.name, files.path
+        SELECT files.name AS file_name, files.path AS file_path
         FROM recipe_files LEFT JOIN files ON (recipe_files.file_id = files.id)
         WHERE recipe_files.recipe_id = $1
       `;
 
     return db.query(query, [recipe_ID]);
+  },
+
+  showAllFiles() {
+    const query = `SELECT recipe_files.recipe_id,files.name AS file_name, files.path AS file_path
+    FROM recipe_files LEFT JOIN files ON (recipe_files.file_id = files.id)`;
+
+    return db.query(query);
   },
 
   showChefAvatar(chef_ID) {
