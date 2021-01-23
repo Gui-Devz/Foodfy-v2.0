@@ -24,15 +24,13 @@ const addingFilterSearchH1 = {
   },
 };
 
-const filteringFunctions = {
-  commonFiltering(keyWords, functionsCalled) {
+const filteringFunction = {
+  commonFiltering(keyWords, functionCalled) {
     const url = window.location.href;
 
     for (const keyWord of keyWords) {
       if (url.includes(keyWord)) {
-        for (const exec of functionsCalled) {
-          exec();
-        }
+        functionCalled();
       }
     }
   },
@@ -261,9 +259,11 @@ const uploadingImages = {
   },
 };
 
-filteringFunctions.commonFiltering(["filter"], [addingFilterSearchH1.h1]);
-
-addingLinksToCards.linking();
+filteringFunction.commonFiltering(["filter"], addingFilterSearchH1.h1);
+filteringFunction.commonFiltering(
+  ["index", "filter"],
+  addingLinksToCards.linking
+);
 
 showingSearchBar.showing();
 
