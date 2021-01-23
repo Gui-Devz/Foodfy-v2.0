@@ -9,7 +9,7 @@
         {% for recipe in recipes %}
 
             <div class="card" id="{{recipe.id}}">
-                <img src="{{recipe.image}}" alt="imagem de {{recipe.title}}">
+                <img src="{{recipe.file_path}}" alt="imagem de {{recipe.file_name}}">
                 <h2>{{recipe.title}}</h2>
                 <span><p>por {{recipe.chef}}</p></span>
             </div>
@@ -19,7 +19,7 @@
         {% for recipe in recipes %}
 
             <div class="card" id="{{recipe.id}}">
-                <img src="{{recipe.image}}" alt="imagem de {{recipe.title}}">
+                <img src="{{recipe.file_path}}" alt="imagem de {{recipe.file_name}}">
                 <h2>{{recipe.title}}</h2>
                 <span><p>por {{recipe.chef}}</p></span>
             </div>
