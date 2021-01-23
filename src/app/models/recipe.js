@@ -1,3 +1,4 @@
+const { Query } = require("pg");
 const db = require("../../config/db");
 
 module.exports = {
@@ -11,20 +12,23 @@ module.exports = {
     return db.query(query, [id]);
   },
 
-  showRecipes(callback) {
-    const query = `
-        SELECT recipes.*, chefs.name AS chef
-        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-      `;
+  showRecipesWithOnlyOneImage(limit) {
+    let query = "";
+    let limitQuery = "";
 
-    db.query(query, function (err, results) {
-      if (err) throw `Database error! ${err}`;
+    if (limit)
+      limitQuery = `ORDER BY recipes.id DESC
+                      LIMIT 6`;
 
-      callback(results.rows);
-    });
+    query = `SELECT DISTINCT ON (recipes.id)recipes.*, files.name AS file_name, files.path AS file_path
+            FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
+            INNER JOIN files ON (recipe_files.file_id = files.id)
+            ${limitQuery}`;
+
+    return db.query(query);
   },
 
-  filter(filter, callback) {
+  filter(filter) {
     let query = "",
       filterQuery = "";
 
@@ -33,14 +37,11 @@ module.exports = {
     }
 
     query = `
-        SELECT recipes.*, chefs.name AS chef
-        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+        SELECT DISTINCT ON (recipes.id)recipes.*, files.name AS file_name, files.path AS file_path
+            FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
+            INNER JOIN files ON (recipe_files.file_id = files.id)
         ${filterQuery}
       `;
-    db.query(query, function (err, results) {
-      if (err) throw `Database error! ${err}`;
-
-      callback(results.rows);
-    });
+    return db.query(query);
   },
 };
