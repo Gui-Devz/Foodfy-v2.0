@@ -1,30 +1,41 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
 const File = require("../models/file");
-const { formatPath } = require("../../lib/utils");
+const { formatPath, assignFilesToRecipes } = require("../../lib/utils");
 
 module.exports = {
-  index(req, res) {
-    Recipe.showRecipes(function (recipes) {
-      return res.render("user/index", { recipes });
-    });
+  async index(req, res) {
+    let result = await Recipe.showRecipesWithOnlyOneImage(true);
+    const recipesNotFormated = result.rows;
+
+    let recipes = formatPath(recipesNotFormated, req);
+    console.log(recipes);
+
+    return res.render("user/index", { recipes });
   },
 
   about(req, res) {
     return res.render("user/recipes/about");
   },
 
-  list(req, res) {
+  async list(req, res) {
     const { filter } = req.query;
-
+    let result = "";
+    let recipesNotFormated = "";
     if (!filter) {
-      Recipe.showRecipes(function (recipes) {
-        return res.render("user/recipes/recipes-list", { recipes });
-      });
+      result = await Recipe.showRecipesWithOnlyOneImage();
+      recipesNotFormated = result.rows;
+
+      const recipes = formatPath(recipesNotFormated, req);
+
+      return res.render("user/recipes/recipes-list", { recipes });
     } else {
-      Recipe.filter(filter, function (recipes) {
-        return res.render("user/recipes/recipes-list", { recipes, filter });
-      });
+      result = await Recipe.filter();
+      recipesNotFormated = result.rows;
+
+      const recipes = formatPath(recipesNotFormated, req);
+
+      return res.render("user/recipes/recipes-list", { recipes, filter });
     }
   },
 
