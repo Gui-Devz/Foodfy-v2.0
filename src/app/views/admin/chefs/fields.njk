@@ -9,4 +9,15 @@
             <input type="url" name="avatar_url" value="{{chef.avatar_url}}" required>
         </div>
     </div>
+    <div class="chef-avatar">
+      <input
+        class="avatar-image"
+        type="file"
+        name="avatar"
+        style="display:none"
+        accept="images/*"
+        onchange="uploadChefAvatar.handleFile(event)">
+      <p class="avatar" onclick="activatingInputFiles.activate()">Enviar Avatar</p>
+      <div class="preview-images"></div>
+    </div>
 </div>
