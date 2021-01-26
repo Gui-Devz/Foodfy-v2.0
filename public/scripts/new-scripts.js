@@ -195,7 +195,7 @@ const uploadingImages = {
 
     const totalFiles = files.length + input.files.length;
 
-    if (totalFiles > uploadingImages.uploadLimit) {
+    if (totalFiles > uploadLimit) {
       alert(`Adicione no máximo ${uploadLimit} imagens!`);
       event.preventDefault();
       return true;
@@ -259,12 +259,31 @@ const uploadingImages = {
   },
 };
 
+const activatingInputFiles = {
+  activate() {
+    const inputFile = document.querySelector(".avatar-image");
+
+    inputFile.click();
+  },
+};
+
+const uploadChefAvatar = {
+  handleFile(event) {
+    const inputValue = event.target.value;
+    const inputUrl = document.querySelector("input[type=url]");
+    const filteredName = Array.from(inputValue).slice(12).join("");
+
+    inputUrl.value = filteredName;
+  },
+};
+
 filteringFunction.commonFiltering(["filter"], addingFilterSearchH1.h1);
-filteringFunction.commonFiltering(
+/* filteringFunction.commonFiltering(
   ["index", "filter"],
   addingLinksToCards.linking
-);
+); */
 
+addingLinksToCards.linking();
 showingSearchBar.showing();
 
 menuLinksActivation.activated("recipes", "Receitas");
