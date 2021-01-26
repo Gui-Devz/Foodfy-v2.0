@@ -307,6 +307,10 @@ footer div p {
 
 .recipe img {
   max-width: 100%;
+  min-width: 100%;
+  max-height: 280px;
+
+  object-fit: cover;
 
   border-radius: 20px;
 }
@@ -504,7 +508,7 @@ header .links {
 
 .recipe .head,
 .chef .head {
-  width: 940px;
+  width: 910px;
   margin-top: 50px;
   display: flex;
 
@@ -825,6 +829,37 @@ header {
   border: none;
   background-color: white;
   color: #6558c3;
+
+  box-sizing: border-box;
+
+  cursor: pointer;
+}
+
+.chef-avatar {
+  max-width: 140px;
+  min-height: 50px;
+  margin-top: 20px;
+}
+
+p.avatar {
+  background-color: #6558c3;
+  color: white;
+
+  margin-top: 20px;
+
+  min-width: 100%;
+  min-height: 37px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+  font-size: 16px;
+
+  border-radius: 4px;
+  border: none;
+  box-sizing: border-box;
 
   cursor: pointer;
 }
