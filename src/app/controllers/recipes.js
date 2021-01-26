@@ -30,7 +30,7 @@ module.exports = {
 
       return res.render("user/recipes/recipes-list", { recipes });
     } else {
-      result = await Recipe.filter();
+      result = await Recipe.filter(filter);
       recipesNotFormated = result.rows;
 
       const recipes = formatPath(recipesNotFormated, req);
@@ -39,12 +39,20 @@ module.exports = {
     }
   },
 
-  show(req, res) {
+  async show(req, res) {
     const { id } = req.params;
 
-    Recipe.showRecipe(id, function (recipe) {
-      return res.render("user/recipes/show", { recipe });
-    });
+    let result = await Recipe.showRecipe(id);
+    const recipe = result.rows[0];
+
+    console.log(recipe);
+
+    result = await File.showRecipeFiles(id);
+    const filesPathNotFormated = result.rows;
+    const files = formatPath(filesPathNotFormated, req);
+    console.log(files);
+
+    return res.render("user/recipes/show", { recipe, files });
   },
 
   async showAdmin(req, res) {
