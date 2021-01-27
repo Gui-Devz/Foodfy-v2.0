@@ -38,8 +38,8 @@ routes.get("/admin/chefs/:id/edit", chefs.edit);
 
 //ADMIN CHEFS FORM
 
-routes.post("/admin/chefs", admin.postChef);
-routes.put("/admin/chefs", admin.putChef);
+routes.post("/admin/chefs", multer.array("avatar", 1), admin.postChef);
+routes.put("/admin/chefs", multer.array("avatar", 1), admin.putChef);
 routes.delete("/admin/chefs", admin.deleteChef);
 
 //ADMIN RECIPES FORM
