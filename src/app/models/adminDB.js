@@ -79,28 +79,16 @@ module.exports = {
     });
   },
 
-  createChef(dataPost, callback) {
+  createChef(name, fileID) {
     const query = `
         INSERT INTO chefs (
         name,
-        avatar_url,
-        created_at
-        ) VALUES ($1, $2, $3)
+        file_id
+        ) VALUES ($1, $2)
         RETURNING id
       `;
 
-    let values = [
-      dataPost.name,
-      dataPost.avatar_url,
-      formatBrowser(Date.now()).iso,
-    ];
-
-    db.query(query, values, function (err, result) {
-      if (err) throw `Database error! ${err}`;
-
-      console.log(result.rows[0]);
-      callback(result.rows[0].id);
-    });
+    return db.query(query, [name, fileID]);
   },
 
   updateChef(dataPut, callback) {
@@ -130,7 +118,7 @@ module.exports = {
     });
   },
 
-  savingFile(filename, file) {
+  savingFile(filename, filePath) {
     const query = `
             INSERT INTO files (
                 name,
@@ -139,7 +127,7 @@ module.exports = {
             RETURNING id
         `;
 
-    return db.query(query, [filename, file]);
+    return db.query(query, [filename, filePath]);
   },
 
   savingRecipeFiles(FileID, RecipeID) {
