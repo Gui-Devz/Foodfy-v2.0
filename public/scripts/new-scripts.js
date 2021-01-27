@@ -270,7 +270,7 @@ const activatingInputFiles = {
 const uploadChefAvatar = {
   handleFile(event) {
     const inputValue = event.target.value;
-    const inputUrl = document.querySelector("input[type=url]");
+    const inputUrl = document.querySelector(".file-name");
     const filteredName = Array.from(inputValue).slice(12).join("");
 
     inputUrl.value = filteredName;
