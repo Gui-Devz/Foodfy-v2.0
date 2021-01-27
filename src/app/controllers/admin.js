@@ -32,9 +32,7 @@ module.exports = {
       return res.send("Fill all the fields");
 
     //Validation of quantity of images sent
-    if (req.files === 0) {
-      return res.send("Please send at least one image");
-    }
+    if (req.files === 0) return res.send("Please send at least one image");
 
     const createdRecipe = {
       ...req.body,
@@ -91,18 +89,22 @@ module.exports = {
     });
   },
 
-  postChef(req, res) {
-    const keys = Object.keys(req.body);
+  async postChef(req, res) {
+    if (validationOfBlankForms(req.body))
+      return res.send("fill all the fields");
 
-    for (const key of keys) {
-      if (key == "") {
-        return res.send("Fill all the fields!");
-      }
-    }
+    if (req.files === 0) return res.send("Send at least one image");
 
-    adminDB.createChef(req.body, function (id) {
-      return res.redirect(`/admin/chefs/${id}`);
-    });
+    let result = await adminDB.savingFile(
+      req.files[0].filename,
+      req.files[0].path
+    );
+    const fileID = result.rows[0].id;
+
+    result = await adminDB.createChef(req.body.name, fileID);
+    const chefID = result.rows[0].id;
+
+    return res.redirect(`/admin/chefs/${chefID}`);
   },
 
   putChef(req, res) {
