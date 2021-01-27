@@ -45,12 +45,9 @@ module.exports = {
     let result = await Recipe.showRecipe(id);
     const recipe = result.rows[0];
 
-    console.log(recipe);
-
     result = await File.showRecipeFiles(id);
     const filesPathNotFormated = result.rows;
     const files = formatPath(filesPathNotFormated, req);
-    console.log(files);
 
     return res.render("user/recipes/show", { recipe, files });
   },
@@ -67,7 +64,6 @@ module.exports = {
     //Formatting the path of the photos to send to the front-end
     recipeFiles = formatPath(recipeFiles, req);
 
-    console.log(recipeFiles);
     return res.render("admin/recipes/show", { recipe, recipeFiles });
   },
 
