@@ -1,34 +1,42 @@
-const Chef = require("../models/chef");
 const adminDB = require("../models/adminDB");
+const { showChef, showChefsRecipes, showChefs } = require("../models/chef");
+const { formatPath } = require("../../lib/utils");
 
 module.exports = {
-  listAdmin(req, res) {
-    Chef.showChefs(function (chefs) {
-      return res.render("admin/chefs/list", { chefs });
-    });
+  async listAdmin(req, res) {
+    const result = await showChefs();
+    const chefsWithAvatarFormated = formatPath(result.rows, req);
+
+    return res.render("admin/chefs/list", { chefs: chefsWithAvatarFormated });
   },
 
-  list(req, res) {
-    Chef.showChefs(function (chefs) {
-      return res.render("user/chefs/list", { chefs });
-    });
+  async list(req, res) {
+    const result = await Chef.showChefs();
+    const chefsWithAvatarFormated = formatPath(result.rows, req);
+
+    return res.render("user/chefs/list", { chefs: chefsWithAvatarFormated });
   },
 
   create(req, res) {
     return res.render("admin/chefs/create");
   },
 
-  show(req, res) {
+  async show(req, res) {
     const { id } = req.params;
 
-    Chef.showChef(id, function (chef) {
-      Chef.showChefsRecipes(id, function (recipes) {
-        return res.render("admin/chefs/show", { chef, recipes });
-      });
+    let result = await showChef(id);
+    const chefWithAvatarPathFormated = formatPath(result.rows, req);
+
+    result = await showChefsRecipes(id);
+    const chefsRecipesPathFormated = formatPath(result.rows, req);
+
+    return res.render("admin/chefs/show", {
+      chef: chefWithAvatarPathFormated,
+      recipes: chefsRecipesPathFormated,
     });
   },
 
-  edit(req, res) {
+  async edit(req, res) {
     const { id } = req.params;
 
     Chef.showChef(id, function (chef) {
