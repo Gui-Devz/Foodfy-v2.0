@@ -20,7 +20,6 @@ module.exports = {
         FROM chefs LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
         INNER JOIN files ON (chefs.file_id = files.id)
         WHERE chefs.id = $1
-        GROUP BY chefs.id, files.path, files.name
       `;
 
     return db.query(query, [id]);
