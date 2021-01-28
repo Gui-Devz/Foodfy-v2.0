@@ -2,7 +2,7 @@
 
 {% block head %}
 
-<title>Admin - chefs</title>
+<title>Foodfy - chefs</title>
 
 {% endblock head %}
 
@@ -12,7 +12,7 @@
         {% for chef in chefs %}
 
             <div class="card-content">
-                <span style="background-image: url({{chef.avatar_url}});"></span>
+                <span style="background-image: url({{chef.file_path}});"></span>
                 <div class="card-info">
                     <h2>{{chef.name}}</h2>
                     <div>{{chef.qt_recipes}} receitas</div>
@@ -23,7 +23,7 @@
         {% for chef in chefs %}
 
             <div class="card-content">
-                <span style="background-image: url({{chef.avatar_url}});"></span>
+                <span style="background-image: url({{chef.file_path}});"></span>
                 <div class="card-info">
                     <h2>{{chef.name}}</h2>
                     <div>{{chef.qt_recipes}} receitas</div>
