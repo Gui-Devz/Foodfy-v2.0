@@ -31,10 +31,10 @@ module.exports = {
   },
 
   //Function guarantees that the arrays are set for the database
-  arrayDB(array) {
+  arrayDB(name) {
     let newArray = [];
 
-    for (let i of array) {
+    for (let i of name) {
       i = `"${i}"`;
       newArray.push(i);
     }
@@ -45,7 +45,7 @@ module.exports = {
   /* Function guarantees that inputs that are arrays don't have blank content
   inside it like ""
   */
-  validationOfInputs(inputs) {
+  validationOfRecipeInputs(inputs) {
     let newInputs = [];
     for (let i = 0; i < inputs.length; i++) {
       const inputClone = inputs[i].trim();
@@ -56,6 +56,12 @@ module.exports = {
     }
 
     return newInputs;
+  },
+
+  validationOfChefName(name) {
+    let newName = name.replace(/^\s+|\s+$/g, "");
+
+    return newName;
   },
 
   validationOfBlankForms(fields) {
