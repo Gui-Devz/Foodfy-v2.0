@@ -103,8 +103,6 @@ const controlContentRecipe = {
     const button = e.target;
     const divStep = button.parentElement.parentElement.childNodes[3];
 
-    console.log(divStep);
-
     if (divStep.classList.contains("hidden")) {
       divStep.classList.remove("hidden");
 
@@ -277,12 +275,64 @@ const uploadChefAvatar = {
   },
 };
 
-filteringFunction.commonFiltering(["filter"], addingFilterSearchH1.h1);
-/* filteringFunction.commonFiltering(
-  ["index", "filter"],
-  addingLinksToCards.linking
-); */
+const shortingTextsOnCards = {
+  shortChefsName() {
+    let chefsName = document.querySelectorAll(".card-info h2");
+    if (chefsName) {
+      chefsName.forEach((chef) => {
+        const newName = shortingTextsOnCards.restrainingTextSize(
+          chef.innerHTML
+        );
 
+        chef.innerHTML = newName;
+      });
+    }
+  },
+
+  shortRecipeChefName() {
+    let chefsName = document.querySelectorAll(".card span p span");
+    let adminRecipes = document.querySelectorAll(".card-content p span");
+    if (chefsName) {
+      chefsName.forEach((chef) => {
+        const newName = shortingTextsOnCards.restrainingTextSize(
+          chef.innerHTML
+        );
+
+        chef.innerHTML = newName;
+      });
+    }
+    if (adminRecipes) {
+      adminRecipes.forEach((chef) => {
+        const newName = shortingTextsOnCards.restrainingTextSize(
+          chef.innerHTML
+        );
+
+        chef.innerHTML = newName;
+      });
+    }
+  },
+
+  restrainingTextSize(text) {
+    let count = 0;
+    let indexCut = 0;
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === " ") count++;
+
+      if (count === 2) {
+        indexCut = i;
+        break;
+      }
+    }
+
+    const newName = text.slice(0, indexCut);
+    return newName;
+  },
+};
+
+filteringFunction.commonFiltering(["filter"], addingFilterSearchH1.h1);
+
+shortingTextsOnCards.shortChefsName();
+shortingTextsOnCards.shortRecipeChefName();
 addingLinksToCards.linking();
 showingSearchBar.showing();
 
