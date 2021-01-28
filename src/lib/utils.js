@@ -31,10 +31,10 @@ module.exports = {
   },
 
   //Function guarantees that the arrays are set for the database
-  arrayDB(name) {
+  arrayDB(array) {
     let newArray = [];
 
-    for (let i of name) {
+    for (let i of array) {
       i = `"${i}"`;
       newArray.push(i);
     }
