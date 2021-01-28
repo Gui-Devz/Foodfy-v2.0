@@ -1,4 +1,3 @@
-const { Query } = require("pg");
 const db = require("../../config/db");
 
 module.exports = {
@@ -20,9 +19,11 @@ module.exports = {
       limitQuery = `ORDER BY recipes.id DESC
                       LIMIT 6`;
 
-    query = `SELECT DISTINCT ON (recipes.id)recipes.*, files.name AS file_name, files.path AS file_path
+    query = `SELECT DISTINCT ON (recipes.id)recipes.*, files.name AS file_name,
+              files.path AS file_path, chefs.name AS chef
             FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
             INNER JOIN files ON (recipe_files.file_id = files.id)
+            INNER JOIN chefs ON (recipes.chef_id = chefs.id)
             ${limitQuery}`;
 
     return db.query(query);
