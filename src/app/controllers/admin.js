@@ -1,27 +1,18 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
-const Chef = require("../models/chef");
-const File = require("../models/file");
+const { formatPath } = require("../../lib/utils");
 const {
   validationOfInputs,
   validationOfBlankForms,
 } = require("../../lib/utils");
-const { values } = require("lodash");
 
 module.exports = {
-  index(req, res) {
-    let { filter } = req.query;
+  async index(req, res) {
+    let result = await Recipe.showRecipesWithOnlyOneImage(true);
+    const recipesNotFormated = result.rows;
 
-    if (filter) {
-      console.log(filter);
-      Recipe.filterRecipes(filter, function (recipes) {
-        return res.render("admin/index", { recipes });
-      });
-    } else {
-      Recipe.showRecipes(function (recipes) {
-        return res.render("admin/index", { recipes });
-      });
-    }
+    let recipes = formatPath(recipesNotFormated, req);
+    return res.render("admin/index", { recipes });
   },
 
   // FORM routes
