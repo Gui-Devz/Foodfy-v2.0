@@ -1,9 +1,10 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
-const { formatPath } = require("../../lib/utils");
 const {
-  validationOfInputs,
+  formatPath,
+  validationOfRecipeInputs,
   validationOfBlankForms,
+  validationOfChefName,
 } = require("../../lib/utils");
 
 module.exports = {
@@ -27,8 +28,8 @@ module.exports = {
 
     const createdRecipe = {
       ...req.body,
-      ingredients: validationOfInputs(ingredients),
-      preparation: validationOfInputs(preparation),
+      ingredients: validationOfRecipeInputs(ingredients),
+      preparation: validationOfRecipeInputs(preparation),
     };
 
     let result = await adminDB.savingRecipe(createdRecipe);
@@ -62,8 +63,8 @@ module.exports = {
 
     const createdRecipe = {
       ...req.body,
-      ingredients: validationOfInputs(ingredients),
-      preparation: validationOfInputs(preparation),
+      ingredients: validationOfRecipeInputs(ingredients),
+      preparation: validationOfRecipeInputs(preparation),
     };
 
     adminDB.updateRecipe(createdRecipe, function (recipeID) {
@@ -92,7 +93,8 @@ module.exports = {
     );
     const fileID = result.rows[0].id;
 
-    result = await adminDB.createChef(req.body.name, fileID);
+    const chefName = validationOfChefName(req.body.name);
+    result = await adminDB.createChef(chefName, fileID);
     const chefID = result.rows[0].id;
 
     return res.redirect(`/admin/chefs/${chefID}`);
