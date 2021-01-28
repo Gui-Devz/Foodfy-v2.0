@@ -30,6 +30,7 @@ body {
 body .all {
   width: 940px;
   min-height: 100%;
+  box-sizing: border-box;
 
   margin: 0 auto -40px auto;
 }
@@ -466,7 +467,7 @@ header .links {
   margin-bottom: 20px;
 }
 
-.card-content span {
+.card-content > span {
   width: 172px;
   height: 80px;
 
@@ -836,18 +837,22 @@ header {
 }
 
 .chef-avatar {
-  max-width: 140px;
+  max-width: 940px;
   min-height: 50px;
-  margin-top: 20px;
+
+  display: flex;
+
+  box-sizing: border-box;
+
+  align-items: center;
+  gap: 30px;
 }
 
 p.avatar {
   background-color: #6558c3;
   color: white;
 
-  margin-top: 20px;
-
-  min-width: 100%;
+  width: 140px;
   min-height: 37px;
 
   display: flex;
@@ -972,6 +977,7 @@ p.avatar {
   font-size: 18px;
   line-height: 21px;
   font-weight: normal;
+  color: #111111;
 }
 
 .card-info div {
