@@ -115,6 +115,18 @@ const controlContentRecipe = {
   },
 };
 
+/* const controlContentChef = {
+  ShowOrHideInput() {
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes("chefs") && currentUrl.includes("create")) {
+      let input = document.querySelector(".item #avatar");
+
+      input.style.display = "none";
+    }
+  },
+}; */
+
 const showingSearchBar = {
   showing() {
     const url = window.location.href;
@@ -268,10 +280,10 @@ const activatingInputFiles = {
 const uploadChefAvatar = {
   handleFile(event) {
     const inputValue = event.target.value;
-    const inputUrl = document.querySelector(".file-name");
+    const inputUrl = document.querySelector("#avatar-img");
     const filteredName = Array.from(inputValue).slice(12).join("");
 
-    inputUrl.value = filteredName;
+    inputUrl.innerHTML = filteredName;
   },
 };
 
@@ -325,7 +337,9 @@ const shortingTextsOnCards = {
     }
 
     const newName = text.slice(0, indexCut);
-    return newName;
+    console.log(text);
+    console.log(text.length);
+    return count == 2 ? newName : text.trim();
   },
 };
 
@@ -335,6 +349,7 @@ shortingTextsOnCards.shortChefsName();
 shortingTextsOnCards.shortRecipeChefName();
 addingLinksToCards.linking();
 showingSearchBar.showing();
+//controlContentChef.ShowOrHideInput();
 
 menuLinksActivation.activated("recipes", "Receitas");
 menuLinksActivation.activated("about", "Sobre");
