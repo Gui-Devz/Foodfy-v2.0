@@ -15,7 +15,7 @@
     </div>
     <div class="chef-info">
         <div class="chef-img">
-            <img src="{{chef.avatar_url}}" alt="Imagem de {{chef.name}}">
+            <img src="{{chef.file_path}}" alt="Imagem de {{chef.file_name}}">
         </div>
         <div class="name-recipes">
             <h1>{{chef.name}}</h1>
@@ -28,7 +28,7 @@
         {% for recipe in recipes %}
 
             <div class="card-content">
-                <span style="background-image: url({{recipe.image}});"></span>
+                <span style="background-image: url({{recipe.file_path}});"></span>
                 <div>
                     <h2>{{recipe.title}}</h2>
                     <p>por {{recipe.chef}}</p>
