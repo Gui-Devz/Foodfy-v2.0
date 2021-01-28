@@ -7,11 +7,13 @@ module.exports = {
     const result = await showChefs();
     const chefsWithAvatarFormated = formatPath(result.rows, req);
 
+    //console.log(chefsWithAvatarFormated);
+
     return res.render("admin/chefs/list", { chefs: chefsWithAvatarFormated });
   },
 
   async list(req, res) {
-    const result = await Chef.showChefs();
+    const result = await showChefs();
     const chefsWithAvatarFormated = formatPath(result.rows, req);
 
     return res.render("user/chefs/list", { chefs: chefsWithAvatarFormated });
@@ -30,8 +32,10 @@ module.exports = {
     result = await showChefsRecipes(id);
     const chefsRecipesPathFormated = formatPath(result.rows, req);
 
+    //console.log(chefsRecipesPathFormated);
+
     return res.render("admin/chefs/show", {
-      chef: chefWithAvatarPathFormated,
+      chef: chefWithAvatarPathFormated[0],
       recipes: chefsRecipesPathFormated,
     });
   },
@@ -39,17 +43,11 @@ module.exports = {
   async edit(req, res) {
     const { id } = req.params;
 
-    Chef.showChef(id, function (chef) {
-      let recipes = false;
-      if (chef.qt_recipes != 0) {
-        recipes = true;
-      } else {
-        recipes = false;
-      }
+    let result = await showChef(id);
+    const chefWithFilePathFormated = formatPath(result.rows, req);
 
-      console.log(recipes);
-
-      return res.render("admin/chefs/edit", { chef, recipes });
+    return res.render("admin/chefs/edit", {
+      chef: chefWithFilePathFormated[0],
     });
   },
 };
