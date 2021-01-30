@@ -91,29 +91,23 @@ module.exports = {
     return db.query(query, [name, fileID]);
   },
 
-  updateChef(dataPut, callback) {
+  updateChef(id, name) {
     const query = `
         UPDATE chefs SET
-            name = $1,
-            avatar_url = $2
-        WHERE id = $3
-        RETURNING id`;
+          name = $1
+        WHERE id = $2
+        RETURNING id;`;
 
-    let values = [dataPut.name, dataPut.avatar_url, dataPut.id];
+    let values = [name, id];
 
-    db.query(query, values, function (err, result) {
-      if (err) throw `Database error! ${err}`;
-
-      callback(result.rows[0].id);
-    });
+    return db.query(query, values);
   },
 
   deleteChef(id, callback) {
     const query = `DELETE FROM chefs WHERE id = $1`;
 
-    db.query(query, [id], function (err) {
+    return db.query(query, [id], (err) => {
       if (err) throw `Database error! ${err}`;
-
       callback();
     });
   },
@@ -130,6 +124,19 @@ module.exports = {
     return db.query(query, [filename, filePath]);
   },
 
+  updateFile(id, name, filePath) {
+    const query = `
+        UPDATE files SET
+          name = $1,
+          path = $2
+        WHERE id = $3
+        RETURNING id`;
+
+    let values = [name, filePath, id];
+
+    return db.query(query, values);
+  },
+
   savingRecipeFiles(FileID, RecipeID) {
     const query = `
             INSERT INTO recipe_files (
@@ -143,6 +150,6 @@ module.exports = {
   deleteFile(fileID) {
     const query = `DELETE FROM files WHERE id = $1`;
 
-    return (db.query = (query, [fileID]));
+    return db.query, [fileID];
   },
 };
