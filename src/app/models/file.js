@@ -20,7 +20,7 @@ module.exports = {
 
   showChefAvatar(chef_ID) {
     const query = `
-        SELECT files.name, files.path
+        SELECT files.*
         FROM chefs LEFT JOIN files ON (chefs.file_id = files.id)
         WHERE chefs.id = $1
       `;
