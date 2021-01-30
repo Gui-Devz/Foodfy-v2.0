@@ -36,7 +36,10 @@ Web page about food recipes
 
 First of all you'll need to install the NodeJs in your machine, if you are a Windows user I'd recommend to install via Chocolatey (If you're user of other OS search for the best way to install Nodejs in your case)
 
-- Use the following command on your terminal: npm install nodemon -D
+- Use the following command on your terminal:
+  --- Firts: git clone https://github.com/Gui-Devz/Foodfy-v2.0.git
+  --- Second: npm i
+  --- Third: npm start
 
 ## License
 
