@@ -69,11 +69,12 @@ const confirmationOfButtons = {
   verifyingBeforeDeleteChef(e) {
     const divDelete = document.querySelector(".delete");
 
-    if (divDelete.dataset.has_recipes == "false") {
+    if (divDelete.dataset.has_recipes === "0") {
       const confirmation = confirm("Deseja excluir esse chef?!");
 
       if (!confirmation) return e.preventDefault();
-    } else if (divDelete.dataset.has_recipes == "true") {
+    }
+    if (divDelete.dataset.has_recipes != "0") {
       alert("Não é permitido excluir chefs que tenham receitas cadastradas!");
 
       return e.preventDefault();
