@@ -12,13 +12,14 @@
 
     <div class="form">
         <div class="delete"
-        data-has_recipes = {{recipes}}>
+        data-has_recipes = {{chef.qt_recipes}}>
             <form method="POST" action="/admin/chefs?_method=DELETE">
                 <input type="hidden" name="id" value="{{chef.id}}">
+                <input type="hidden" name="file_id" value="{{chef.file_id}}">
                 <button class="button-delete" type="submit" onClick="confirmationOfButtons.verifyingBeforeDeleteChef(event)"><span>Deletar</span></a>
             </form>
         </div>
-        <form method="POST" action="/admin/chefs?_method=PUT">
+        <form method="POST" action="/admin/chefs?_method=PUT" enctype="multipart/form-data">
             <div class="head">
                 <div>
 
