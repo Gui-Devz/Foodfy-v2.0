@@ -1,11 +1,14 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
+const File = require("../models/file");
 const {
   formatPath,
   validationOfRecipeInputs,
   validationOfBlankForms,
   validationOfChefName,
 } = require("../../lib/utils");
+const fs = require("fs");
+const file = require("../models/file");
 
 module.exports = {
   async index(req, res) {
@@ -24,7 +27,8 @@ module.exports = {
       return res.send("Fill all the fields");
 
     //Validation of quantity of images sent
-    if (req.files === 0) return res.send("Please send at least one image");
+    if (req.files.length === 0)
+      return res.send("Please send at least one image");
 
     const createdRecipe = {
       ...req.body,
@@ -85,7 +89,7 @@ module.exports = {
     if (validationOfBlankForms(req.body))
       return res.send("fill all the fields");
 
-    if (req.files === 0) return res.send("Send at least one image");
+    if (req.files.length === 0) return res.send("Send at least one image");
 
     let result = await adminDB.savingFile(
       req.files[0].filename,
@@ -100,25 +104,50 @@ module.exports = {
     return res.redirect(`/admin/chefs/${chefID}`);
   },
 
-  putChef(req, res) {
-    const keys = Object.keys(req.body);
+  async putChef(req, res) {
+    if (validationOfBlankForms(req.body))
+      return res.send("fill all the fields");
 
-    for (const key of keys) {
-      if (key == "") {
-        return res.send("Fill all the fields!");
-      }
+    if (req.files.length === 0) return res.send("Send at least one image");
+
+    let result = "";
+
+    //this block of code guarantees that the old avatar file is deleted
+    //in the server root and that the name and path of the chef's avatar
+    //is updated
+    if (req.files.length != 0) {
+      result = await File.showChefAvatar(req.body.id);
+      const oldFile = result.rows[0];
+
+      fs.unlinkSync(oldFile.path);
+
+      result = await adminDB.updateFile(
+        oldFile.id,
+        req.files[0].filename,
+        req.files[0].path
+      );
     }
 
-    adminDB.updateChef(req.body, function (id) {
-      return res.redirect(`/admin/chefs/${id}`);
-    });
+    result = await adminDB.updateChef(req.body.id, req.body.name);
+
+    const chefID = result.rows[0].id;
+
+    return res.redirect(`/admin/chefs/${chefID}`);
   },
 
-  deleteChef(req, res) {
-    const { id } = req.body;
+  async deleteChef(req, res) {
+    const { id, file_id } = req.body;
 
-    adminDB.deleteChef(id, function () {
-      return res.redirect("/admin/chefs");
-    });
+    let result = await File.showChefAvatar(id);
+    const file_path = result.rows[0].path;
+
+    result = adminDB.deleteChef(
+      id,
+      async () => await adminDB.deleteFile(file_id)
+    );
+    console.log(result);
+    fs.unlinkSync(file_path);
+
+    return res.redirect("/admin/chefs");
   },
 };
