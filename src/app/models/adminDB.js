@@ -97,13 +97,10 @@ module.exports = {
     return db.query(query, values);
   },
 
-  deleteChef(id, callback) {
+  deleteChef(id) {
     const query = `DELETE FROM chefs WHERE id = $1`;
 
-    return db.query(query, [id], (err) => {
-      if (err) throw `Database error! ${err}`;
-      callback();
-    });
+    return db.query(query, [id]);
   },
 
   savingFile(filename, filePath) {
@@ -144,6 +141,6 @@ module.exports = {
   deleteFile(fileID) {
     const query = `DELETE FROM files WHERE id = $1`;
 
-    return db.query, [fileID];
+    return db.query(query, [fileID]);
   },
 };
