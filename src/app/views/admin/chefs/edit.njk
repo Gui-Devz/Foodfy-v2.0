@@ -16,6 +16,7 @@
             <form method="POST" action="/admin/chefs?_method=DELETE">
                 <input type="hidden" name="id" value="{{chef.id}}">
                 <input type="hidden" name="file_id" value="{{chef.file_id}}">
+                <input type="hidden" name="qt_recipes" value="{{chef.qt_recipes}}">
                 <button class="button-delete" type="submit" onClick="confirmationOfButtons.verifyingBeforeDeleteChef(event)"><span>Deletar</span></a>
             </form>
         </div>
