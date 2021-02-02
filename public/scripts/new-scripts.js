@@ -82,6 +82,15 @@ const confirmationOfButtons = {
   },
 
   verifyingBeforeSavingChef(e) {
+    let avatarImage = document.querySelector(".avatar-image");
+    avatarImage = Array.from(avatarImage).length;
+    const pTag = document.querySelector("#avatar-img");
+
+    if (avatarImage.length === 0 || pTag.innerHTML === "") {
+      alert("Send at least one photo for chef!");
+      return e.preventDefault();
+    }
+
     const confirmation = confirm("Deseja salvar esse chef?!");
 
     if (!confirmation) return e.preventDefault();
@@ -93,6 +102,15 @@ const confirmationOfButtons = {
   },
 
   verifyingBeforeSavingRecipe(e) {
+    let recipeImages = document.querySelector("#recipe-images");
+    recipeImages = Array.from(recipeImages).length;
+    const imagesTags = document.querySelectorAll(".preview-images img");
+
+    if (recipeImages.length === 0 || imagesTags.length === 0) {
+      alert("Send at least one photo for recipe!");
+      return e.preventDefault();
+    }
+
     const confirmation = confirm("Deseja salvar essa receita?!");
 
     if (!confirmation) return e.preventDefault();
@@ -202,9 +220,11 @@ const uploadingImages = {
   },
 
   hasLimit(event) {
-    const { files, uploadLimit, input } = uploadingImages;
+    const { uploadLimit, input } = uploadingImages;
 
-    const totalFiles = files.length + input.files.length;
+    const imagesTags = document.querySelectorAll(".preview-images img");
+
+    const totalFiles = input.files.length + imagesTags.length;
 
     if (totalFiles > uploadLimit) {
       alert(`Adicione no máximo ${uploadLimit} imagens!`);
@@ -281,10 +301,10 @@ const activatingInputFiles = {
 const uploadChefAvatar = {
   handleFile(event) {
     const inputValue = event.target.value;
-    const inputUrl = document.querySelector("#avatar-img");
+    const pTag = document.querySelector("#avatar-img");
     const filteredName = Array.from(inputValue).slice(12).join("");
 
-    inputUrl.innerHTML = filteredName;
+    pTag.innerHTML = filteredName;
   },
 };
 
