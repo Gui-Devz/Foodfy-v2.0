@@ -971,6 +971,7 @@ p.avatar {
 
   column-gap: 20px;
   row-gap: 0px;
+  align-items: center;
 }
 
 .card-info h2 {
