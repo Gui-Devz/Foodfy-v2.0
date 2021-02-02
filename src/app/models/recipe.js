@@ -3,7 +3,7 @@ const db = require("../../config/db");
 module.exports = {
   showRecipe(id) {
     const query = `
-        SELECT recipes.*, chefs.name AS chef
+        SELECT recipes.*, recipes.chef_id AS chef_id, chefs.name AS chef
         FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.id = $1
       `;
@@ -38,9 +38,11 @@ module.exports = {
     }
 
     query = `
-        SELECT DISTINCT ON (recipes.id)recipes.*, files.name AS file_name, files.path AS file_path
+        SELECT DISTINCT ON (recipes.id)recipes.*, files.name AS file_name,
+              files.path AS file_path, chefs.name AS chef
             FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
             INNER JOIN files ON (recipe_files.file_id = files.id)
+            INNER JOIN chefs ON (recipes.chef_id = chefs.id)
         ${filterQuery}
       `;
     return db.query(query);
