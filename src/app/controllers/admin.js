@@ -13,9 +13,8 @@ const file = require("../models/file");
 module.exports = {
   async index(req, res) {
     let result = await Recipe.showRecipesWithOnlyOneImage(true);
-    const recipesNotFormated = result.rows;
 
-    let recipes = formatPath(recipesNotFormated, req);
+    let recipes = formatPath(result.rows, req);
     return res.render("admin/index", { recipes });
   },
 
@@ -136,18 +135,22 @@ module.exports = {
   },
 
   async deleteChef(req, res) {
-    const { id, file_id } = req.body;
+    const { id, file_id, qt_recipes } = req.body;
 
-    let result = await File.showChefAvatar(id);
-    const file_path = result.rows[0].path;
+    console.log(qt_recipes);
 
-    result = adminDB.deleteChef(
-      id,
-      async () => await adminDB.deleteFile(file_id)
-    );
-    console.log(result);
-    fs.unlinkSync(file_path);
+    if (qt_recipes === 0) {
+      let result = await File.showChefAvatar(id);
+      const file_path = result.rows[0].path;
 
-    return res.redirect("/admin/chefs");
+      await adminDB.deleteChef(id);
+      await adminDB.deleteFile(file_id);
+
+      fs.unlinkSync(file_path);
+
+      return res.redirect("/admin/chefs");
+    } else {
+      return res.send("You cannot delete a chef who has recipes!");
+    }
   },
 };
