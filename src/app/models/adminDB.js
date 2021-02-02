@@ -27,18 +27,12 @@ module.exports = {
     return db.query(query, values);
   },
 
-  //Function that gives all the chef's id and names of the database
-
-  chefsIdAndNames(callback) {
+  chefsIdAndNames() {
     const query = `
         SELECT id, name FROM chefs
     `;
 
-    db.query(query, function (err, results) {
-      if (err) throw `Database error! ${err}`;
-
-      callback(results.rows);
-    });
+    return db.query(query);
   },
   deleteRecipe(id, callback) {
     const query = `DELETE FROM recipes WHERE id = $1`;
