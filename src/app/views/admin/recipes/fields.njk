@@ -5,6 +5,7 @@
           <div>
             <div class="images-upload">
               <input
+                id="recipe-images"
                 type="file"
                 name="images"
                 multiple
@@ -16,10 +17,10 @@
             </div>
           </div>
           <div class="preview-images">
-            {% if files %}
-              {% for file in files %}
+            {% if recipeFiles %}
+              {% for file in recipeFiles %}
                 <div>
-                  <img src= "{{file.path}}" alt="file.name">
+                  <img src= "{{file.file_path}}" alt="file.file_name">
                   <i class="material-icons" id="{{file.id}}" onclick="uploadingImages.removeImage(event)">close</i>
                 </div>
               {% endfor %}
@@ -39,7 +40,7 @@
             <select name="chef_id" id="chefs" required>
                 <option value="">Selecione um chef</option>
                 {% for chef in chefs %}
-                    <option value="{{chef.id}}" {% if chef.id == recipe.chef_id %}selected{% endif %}>
+                    <option value="{{recipe.chef_id}}" {% if chef.id == recipe.chef_id %}selected{% endif %}>
                         {{chef.name}}
                     </option>
                 {% endfor %}
