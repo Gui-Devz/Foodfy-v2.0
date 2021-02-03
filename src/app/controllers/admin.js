@@ -8,7 +8,6 @@ const {
   validationOfChefName,
 } = require("../../lib/utils");
 const fs = require("fs");
-const file = require("../models/file");
 
 module.exports = {
   async index(req, res) {
@@ -59,13 +58,14 @@ module.exports = {
       return res.send("fill all the fields");
 
     //making sure the req.body.files_id is read as an array
-    let files_id = "";
+    let existingFiles = "";
     if (req.body.files_id) {
-      files_id = [...req.body.files_id];
-      if (typeof req.body.files_id != "object") files_id = [req.body.files_id];
+      existingFiles = [...req.body.files_id];
+      if (typeof req.body.files_id != "object")
+        existingFiles = [req.body.files_id];
     }
 
-    if (files_id.length === 0 && req.files.length === 0)
+    if (existingFiles.length === 0 && req.files.length === 0)
       return res.send("Send at least one image");
 
     const { ingredients, preparation, removed_files } = req.body;
@@ -81,7 +81,7 @@ module.exports = {
     const recipeID = result.rows[0].id;
 
     //making sure that the maximum images sent is 5!
-    const totalImagesSent = files_id.length + req.files.length;
+    const totalImagesSent = existingFiles.length + req.files.length;
     if (totalImagesSent > 5) return res.send("Send maximum of 5 images only!");
 
     //making an array out of a string in req.body.removed_files
@@ -99,11 +99,10 @@ module.exports = {
 
       const filesPath = result.map((file) => file.rows[0].file_path);
 
-      console.log(filesPath);
-
       filesPath.forEach((filePath) => fs.unlinkSync(filePath));
 
       const promisesRemovedPhotos = imagesRemoved.map((fileID) => {
+        console.log(fileID);
         return adminDB.deleteFilesFromRecipeFiles(fileID);
       });
 
@@ -127,13 +126,33 @@ module.exports = {
     return res.redirect(`/admin/recipes/${recipeID}`);
   },
 
-  deleteRecipe(req, res) {
+  async deleteRecipe(req, res) {
     const { id } = req.body;
-    console.log(id);
 
-    adminDB.deleteRecipe(id, function () {
-      res.redirect("/admin/recipes");
-    });
+    let result = await File.showRecipeFiles(id);
+    const filesPath = result.rows.map((file) => file.file_path);
+    const filesID = result.rows.map((file) => file.file_id);
+
+    console.log(filesID);
+
+    //deleting images from server
+    filesPath.forEach((filePath) => fs.unlinkSync(filePath));
+
+    /*
+      We need to delete all the Foreign keys, so we're gonna delete all rows
+      in 'recipe_files' table with the recipe_id.
+      Then we're gonna need to delete all the files from 'files' table and the
+      recipe from 'recipes' tables
+    */
+    await adminDB.deleteRecipeFromRecipeFiles(id);
+    await adminDB.deleteRecipe(id);
+    const promisesDeletingFiles = filesID.map((fileID) =>
+      adminDB.deleteFile(fileID)
+    );
+
+    await Promise.all(promisesDeletingFiles);
+
+    return res.redirect("/admin/recipes");
   },
 
   async postChef(req, res) {
