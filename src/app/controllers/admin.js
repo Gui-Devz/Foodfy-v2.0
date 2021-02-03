@@ -58,7 +58,14 @@ module.exports = {
     if (validationOfBlankForms(req.body))
       return res.send("fill all the fields");
 
-    if (req.body.files_id.length === 0 && req.files.length === 0)
+    //making sure the req.body.files_id is read as an array
+    let files_id = "";
+    if (req.body.files_id) {
+      files_id = [...req.body.files_id];
+      if (typeof req.body.files_id != "object") files_id = [req.body.files_id];
+    }
+
+    if (files_id.length === 0 && req.files.length === 0)
       return res.send("Send at least one image");
 
     const { ingredients, preparation, removed_files } = req.body;
@@ -74,23 +81,30 @@ module.exports = {
     const recipeID = result.rows[0].id;
 
     //making sure that the maximum images sent is 5!
-    const totalImagesSent = req.body.files_id.length + req.files.length;
+    const totalImagesSent = files_id.length + req.files.length;
     if (totalImagesSent > 5) return res.send("Send maximum of 5 images only!");
 
     //making an array out of a string in req.body.removed_files
     // and popping its last index because it's a comma.
-    let imagesRemoved = removed_images.split(",");
+    let imagesRemoved = removed_files.split(",");
     imagesRemoved.pop();
 
     //deleting files from DB and server
     if (imagesRemoved.length > 0) {
-      result = await File.showRecipeFiles(recipeID);
-      const filesPath = result.rows.map((file) => file.file_path);
+      const promisesFilesPath = imagesRemoved.map((fileID) => {
+        return File.showFile(fileID);
+      });
+
+      result = await Promise.all(promisesFilesPath);
+
+      const filesPath = result.map((file) => file.rows[0].file_path);
+
+      console.log(filesPath);
 
       filesPath.forEach((filePath) => fs.unlinkSync(filePath));
 
       const promisesRemovedPhotos = imagesRemoved.map((fileID) => {
-        adminDB.deleteFilesFromRecipeFiles(fileID);
+        return adminDB.deleteFilesFromRecipeFiles(fileID);
       });
 
       await Promise.all(promisesRemovedPhotos);
@@ -103,8 +117,8 @@ module.exports = {
       });
 
       result = await Promise.all(promisesOfSavingFiles);
-      const promisesRecipeFiles = result.rows.map((file) => {
-        adminDB.savingRecipeFiles(file.id, recipeID);
+      const promisesRecipeFiles = result.map((file) => {
+        return adminDB.savingRecipeFiles(file.rows[0].id, recipeID);
       });
 
       await Promise.all(promisesRecipeFiles);
