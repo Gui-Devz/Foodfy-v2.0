@@ -11,7 +11,7 @@
                 multiple
                 accept="images/*"
                 onchange="uploadingImages.handleFilesInput(event)"
-                required
+
               >
               <div><i class="material-icons">add</i></div>
             </div>
@@ -20,11 +20,12 @@
             {% if recipeFiles %}
               {% for file in recipeFiles %}
                 <div>
+                  <input type="hidden" name="files_id" value= "{{file.file_id}}">
                   <img src= "{{file.file_path}}" alt="file.file_name">
                   <i class="material-icons" id="{{file.id}}" onclick="uploadingImages.removeImage(event)">close</i>
                 </div>
               {% endfor %}
-              <input class="removed-files" type="hidden" name="removed_files">
+                  <input class="removed-files" type="hidden" name="removed_files">
             {% endif %}
 
           </div>
