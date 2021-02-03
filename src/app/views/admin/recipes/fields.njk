@@ -22,10 +22,10 @@
                 <div>
                   <input type="hidden" name="files_id" value= "{{file.file_id}}">
                   <img src= "{{file.file_path}}" alt="file.file_name">
-                  <i class="material-icons" id="{{file.id}}" onclick="uploadingImages.removeImage(event)">close</i>
+                  <i class="material-icons" id="{{file.file_id}}" onclick="uploadingImages.removeImage(event)">close</i>
                 </div>
               {% endfor %}
-                  <input class="removed-files" type="hidden" name="removed_files">
+                  <input class="removed-files" type="hidden" name="removed_files" value="">
             {% endif %}
 
           </div>
