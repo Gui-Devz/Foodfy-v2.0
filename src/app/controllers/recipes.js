@@ -5,11 +5,15 @@ const { formatPath } = require("../../lib/utils");
 
 module.exports = {
   async index(req, res) {
-    let result = await Recipe.showRecipesWithOnlyOneImage(true);
+    try {
+      let result = await Recipe.showRecipesWithOnlyOneImage(true);
 
-    const recipes = formatPath(result.rows, req);
+      const recipes = formatPath(result.rows, req);
 
-    return res.render("user/index", { recipes });
+      return res.render("user/index", { recipes });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   about(req, res) {
@@ -17,68 +21,88 @@ module.exports = {
   },
 
   async list(req, res) {
-    const { filter } = req.query;
-    let result = "";
+    try {
+      const { filter } = req.query;
+      let result = "";
 
-    if (!filter) {
-      result = await Recipe.showRecipesWithOnlyOneImage();
+      if (!filter) {
+        result = await Recipe.showRecipesWithOnlyOneImage();
 
-      const recipes = formatPath(result.rows, req);
+        const recipes = formatPath(result.rows, req);
 
-      return res.render("user/recipes/recipes-list", { recipes });
-    } else {
-      result = await Recipe.filter(filter);
+        return res.render("user/recipes/recipes-list", { recipes });
+      } else {
+        result = await Recipe.filter(filter);
 
-      const recipes = formatPath(result.rows, req);
+        const recipes = formatPath(result.rows, req);
 
-      return res.render("user/recipes/recipes-list", { recipes, filter });
+        return res.render("user/recipes/recipes-list", { recipes, filter });
+      }
+    } catch (err) {
+      throw new Error(err);
     }
   },
 
   async show(req, res) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    let result = await Recipe.showRecipe(id);
-    const recipe = result.rows[0];
+      let result = await Recipe.showRecipe(id);
+      const recipe = result.rows[0];
 
-    result = await File.showRecipeFiles(id);
-    const files = formatPath(result.rows, req);
+      result = await File.showRecipeFiles(id);
+      const files = formatPath(result.rows, req);
 
-    return res.render("user/recipes/show", { recipe, files });
+      return res.render("user/recipes/show", { recipe, files });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async showAdmin(req, res) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    let result = await Recipe.showRecipe(id);
-    const recipe = result.rows[0];
+      let result = await Recipe.showRecipe(id);
+      const recipe = result.rows[0];
 
-    result = await File.showRecipeFiles(id);
-    //Formatting the path of the photos to send to the front-end
-    let recipeFiles = formatPath(result.rows, req);
+      result = await File.showRecipeFiles(id);
+      //Formatting the path of the photos to send to the front-end
+      let recipeFiles = formatPath(result.rows, req);
 
-    return res.render("admin/recipes/show", { recipe, recipeFiles });
+      return res.render("admin/recipes/show", { recipe, recipeFiles });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async edit(req, res) {
-    const { id } = req.params;
-    let result = await Recipe.showRecipe(id);
-    const recipe = result.rows[0];
+    try {
+      const { id } = req.params;
+      let result = await Recipe.showRecipe(id);
+      const recipe = result.rows[0];
 
-    result = await File.showRecipeFiles(id);
-    //Formatting the path of the photos to send to the front-end
-    let recipeFiles = formatPath(result.rows, req);
+      result = await File.showRecipeFiles(id);
+      //Formatting the path of the photos to send to the front-end
+      let recipeFiles = formatPath(result.rows, req);
 
-    result = await adminDB.chefsIdAndNames();
-    const chefs = result.rows;
+      result = await adminDB.chefsIdAndNames();
+      const chefs = result.rows;
 
-    return res.render("admin/recipes/edit", { recipe, recipeFiles, chefs });
+      return res.render("admin/recipes/edit", { recipe, recipeFiles, chefs });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async create(req, res) {
-    const result = await adminDB.chefsIdAndNames();
-    const chefs = result.rows;
+    try {
+      const result = await adminDB.chefsIdAndNames();
+      const chefs = result.rows;
 
-    return res.render("admin/recipes/create", { chefs });
+      return res.render("admin/recipes/create", { chefs });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 };
