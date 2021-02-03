@@ -9,9 +9,8 @@ module.exports = {
                 title,
                 ingredients,
                 preparation,
-                information,
-                created_at
-            ) VALUES ($1, $2, $3, $4, $5, $6)
+                information
+            ) VALUES ($1, $2, $3, $4, $5)
             RETURNING id
         `;
 
@@ -21,7 +20,6 @@ module.exports = {
       arrayDB(dataPost.ingredients),
       arrayDB(dataPost.preparation),
       dataPost.information,
-      formatBrowser(Date.now()).iso,
     ];
 
     return db.query(query, values);
@@ -34,10 +32,16 @@ module.exports = {
 
     return db.query(query);
   },
+  deleteRecipe(recipeID) {
+    const query = `DELETE FROM recipes WHERE id = $1`;
+
+    return db.query(query, [recipeID]);
+  },
+
   deleteRecipeFromRecipeFiles(recipeID) {
     const query = `DELETE FROM recipe_files WHERE recipe_files.recipe_id = $1`;
 
-    db.query(query, [recipeID]);
+    return db.query(query, [recipeID]);
   },
 
   updateRecipe(dataPut) {
