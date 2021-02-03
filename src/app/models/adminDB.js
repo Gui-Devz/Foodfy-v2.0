@@ -16,7 +16,7 @@ module.exports = {
         `;
 
     const values = [
-      dataPost.chef_id || 2,
+      dataPost.chef_id,
       dataPost.title,
       arrayDB(dataPost.ingredients),
       arrayDB(dataPost.preparation),
@@ -34,31 +34,25 @@ module.exports = {
 
     return db.query(query);
   },
-  deleteRecipe(id, callback) {
-    const query = `DELETE FROM recipes WHERE id = $1`;
+  deleteRecipeFromRecipeFiles(recipeID) {
+    const query = `DELETE FROM recipe_files WHERE recipe_files.recipe_id = $1`;
 
-    db.query(query, [id], function (err) {
-      if (err) throw `Database error! ${err}`;
-
-      callback();
-    });
+    db.query(query, [recipeID]);
   },
 
-  updateRecipe(dataPut, callback) {
+  updateRecipe(dataPut) {
     const query = `
         UPDATE recipes SET
         chef_id = $1,
-        image = $2,
-        title = $3,
-        ingredients = $4,
-        preparation = $5,
-        information = $6
-      WHERE id=$7
+        title = $2,
+        ingredients = $3,
+        preparation = $4,
+        information = $5
+      WHERE id=$6
       RETURNING id`;
 
     let values = [
       dataPut.chef_id,
-      dataPut.image,
       dataPut.title,
       arrayDB(dataPut.ingredients),
       arrayDB(dataPut.preparation),
@@ -66,11 +60,7 @@ module.exports = {
       dataPut.id,
     ];
 
-    db.query(query, values, function (err, result) {
-      if (err) throw `Database error! ${err}`;
-
-      callback(result.rows[0].id);
-    });
+    return db.query(query, values);
   },
 
   createChef(name, fileID) {
@@ -136,6 +126,13 @@ module.exports = {
             ) VALUES ($1, $2)`;
 
     return db.query(query, [RecipeID, FileID]);
+  },
+
+  deleteFilesFromRecipeFiles(fileID) {
+    const query = `
+      DELETE FROM recipe_files WHERE recipe_files.file_id = $1
+    `;
+    return db.query(query, [fileID]);
   },
 
   deleteFile(fileID) {
