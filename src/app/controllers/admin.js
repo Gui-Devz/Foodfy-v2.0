@@ -54,25 +54,63 @@ module.exports = {
     return res.redirect(`/admin/recipes/${recipeID}`);
   },
 
-  putRecipe(req, res) {
-    const keys = Object.keys(req.body);
-    const { ingredients, preparation } = req.body;
+  async putRecipe(req, res) {
+    if (validationOfBlankForms(req.body))
+      return res.send("fill all the fields");
 
-    for (const key of keys) {
-      if (key == "") {
-        return res.send("Fill all the fields!");
-      }
-    }
+    if (req.body.files_id.length === 0 && req.files.length === 0)
+      return res.send("Send at least one image");
 
+    const { ingredients, preparation, removed_files } = req.body;
+
+    //formatting the ingredients and preparation
     const createdRecipe = {
       ...req.body,
       ingredients: validationOfRecipeInputs(ingredients),
       preparation: validationOfRecipeInputs(preparation),
     };
 
-    adminDB.updateRecipe(createdRecipe, function (recipeID) {
-      return res.redirect(`/admin/recipes/${recipeID}`);
-    });
+    let result = await adminDB.updateRecipe(createdRecipe);
+    const recipeID = result.rows[0].id;
+
+    //making sure that the maximum images sent is 5!
+    const totalImagesSent = req.body.files_id.length + req.files.length;
+    if (totalImagesSent > 5) return res.send("Send maximum of 5 images only!");
+
+    //making an array out of a string in req.body.removed_files
+    // and popping its last index because it's a comma.
+    let imagesRemoved = removed_images.split(",");
+    imagesRemoved.pop();
+
+    //deleting files from DB and server
+    if (imagesRemoved.length > 0) {
+      result = await File.showRecipeFiles(recipeID);
+      const filesPath = result.rows.map((file) => file.file_path);
+
+      filesPath.forEach((filePath) => fs.unlinkSync(filePath));
+
+      const promisesRemovedPhotos = imagesRemoved.map((fileID) => {
+        adminDB.deleteFilesFromRecipeFiles(fileID);
+      });
+
+      await Promise.all(promisesRemovedPhotos);
+    }
+
+    //saving the new images
+    if (req.files.length != 0) {
+      const promisesOfSavingFiles = req.files.map((file) => {
+        return adminDB.savingFile(file.filename, file.path);
+      });
+
+      result = await Promise.all(promisesOfSavingFiles);
+      const promisesRecipeFiles = result.rows.map((file) => {
+        adminDB.savingRecipeFiles(file.id, recipeID);
+      });
+
+      await Promise.all(promisesRecipeFiles);
+    }
+
+    return res.redirect(`/admin/recipes/${recipeID}`);
   },
 
   deleteRecipe(req, res) {
@@ -107,14 +145,13 @@ module.exports = {
     if (validationOfBlankForms(req.body))
       return res.send("fill all the fields");
 
-    if (req.files.length === 0) return res.send("Send at least one image");
+    if (req.body.file_id === 0 && req.files.length === 0)
+      return res.send("Send at least one image");
 
     let result = "";
 
-    //this block of code guarantees that the old avatar file is deleted
-    //in the server root and that the name and path of the chef's avatar
-    //is updated
     if (req.files.length != 0) {
+      //getting the old file path to delete from server.
       result = await File.showChefAvatar(req.body.id);
       const oldFile = result.rows[0];
 
