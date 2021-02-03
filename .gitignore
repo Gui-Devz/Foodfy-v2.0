@@ -1,4 +1,4 @@
-bootcamp-launchbase-desafios-03-master/*
+assets/*
 
 node_modules/*
 
@@ -8,4 +8,4 @@ public/img/*
 
 .editorconfig
 
-assets/*
+.gitignore
