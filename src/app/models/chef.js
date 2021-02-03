@@ -16,7 +16,7 @@ module.exports = {
   showChef(id) {
     const query = `
         SELECT DISTINCT ON (chefs.id)chefs.*, (SELECT count(*) FROM recipes WHERE chefs.id=recipes.chef_id) AS qt_recipes,
-          files.path AS file_path, files.name AS file_name
+          files.id AS file_id, files.path AS file_path, files.name AS file_name
         FROM chefs LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
         INNER JOIN files ON (chefs.file_id = files.id)
         WHERE chefs.id = $1
