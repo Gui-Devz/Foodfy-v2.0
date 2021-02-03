@@ -4,19 +4,25 @@ const { formatPath } = require("../../lib/utils");
 
 module.exports = {
   async listAdmin(req, res) {
-    const result = await showChefs();
-    const chefsWithAvatarFormated = formatPath(result.rows, req);
+    try {
+      const result = await showChefs();
+      const chefsWithAvatarFormated = formatPath(result.rows, req);
 
-    //console.log(chefsWithAvatarFormated);
-
-    return res.render("admin/chefs/list", { chefs: chefsWithAvatarFormated });
+      return res.render("admin/chefs/list", { chefs: chefsWithAvatarFormated });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async list(req, res) {
-    const result = await showChefs();
-    const chefsWithAvatarFormated = formatPath(result.rows, req);
+    try {
+      const result = await showChefs();
+      const chefsWithAvatarFormated = formatPath(result.rows, req);
 
-    return res.render("user/chefs/list", { chefs: chefsWithAvatarFormated });
+      return res.render("user/chefs/list", { chefs: chefsWithAvatarFormated });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   create(req, res) {
@@ -24,30 +30,38 @@ module.exports = {
   },
 
   async show(req, res) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    let result = await showChef(id);
-    const chefWithAvatarPathFormated = formatPath(result.rows, req);
+      let result = await showChef(id);
+      const chefWithAvatarPathFormated = formatPath(result.rows, req);
 
-    result = await showChefsRecipes(id);
-    const chefsRecipesPathFormated = formatPath(result.rows, req);
+      result = await showChefsRecipes(id);
+      const chefsRecipesPathFormated = formatPath(result.rows, req);
 
-    //console.log(chefsRecipesPathFormated);
+      //console.log(chefsRecipesPathFormated);
 
-    return res.render("admin/chefs/show", {
-      chef: chefWithAvatarPathFormated[0],
-      recipes: chefsRecipesPathFormated,
-    });
+      return res.render("admin/chefs/show", {
+        chef: chefWithAvatarPathFormated[0],
+        recipes: chefsRecipesPathFormated,
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async edit(req, res) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    let result = await showChef(id);
-    const chefWithFilePathFormated = formatPath(result.rows, req);
+      let result = await showChef(id);
+      const chefWithFilePathFormated = formatPath(result.rows, req);
 
-    return res.render("admin/chefs/edit", {
-      chef: chefWithFilePathFormated[0],
-    });
+      return res.render("admin/chefs/edit", {
+        chef: chefWithFilePathFormated[0],
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 };
