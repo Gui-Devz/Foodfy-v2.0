@@ -3,7 +3,7 @@ const db = require("../../config/db");
 module.exports = {
   showRecipeFiles(recipe_ID) {
     const query = `
-        SELECT files.name AS file_name, files.path AS file_path
+        SELECT files.id AS file_id, files.name AS file_name, files.path AS file_path
         FROM recipe_files LEFT JOIN files ON (recipe_files.file_id = files.id)
         WHERE recipe_files.recipe_id = $1
       `;
