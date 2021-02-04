@@ -358,9 +358,18 @@ const shortingTextsOnCards = {
     }
 
     const newName = text.slice(0, indexCut);
-    console.log(text);
-    console.log(text.length);
     return count == 2 ? newName : text.trim();
+  },
+};
+
+const changingRecipeImages = {
+  toChange(e) {
+    const mainImage = document.querySelector("#main-image");
+    const previousSelected = document.querySelector(".files-wrapper .selected");
+
+    mainImage.src = e.target.src;
+    previousSelected.classList.remove("selected");
+    e.target.classList.add("selected");
   },
 };
 
