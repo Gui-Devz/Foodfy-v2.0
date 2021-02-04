@@ -70,7 +70,7 @@ module.exports = {
       //Formatting the path of the photos to send to the front-end
       let recipeFiles = formatPath(result.rows, req);
 
-      return res.render("admin/recipes/show", { recipe, recipeFiles });
+      return res.render("admin/recipes/show", { recipe, files: recipeFiles });
     } catch (err) {
       throw new Error(err);
     }
