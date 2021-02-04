@@ -15,11 +15,25 @@
 
     </div>
     <img
-        src= "{{recipeFiles[0].file_path}}"
-        alt="Imagem de {{recipeFiles[0].file_name}}"
+        id="main-image"
+        src= "{{files[0].file_path}}"
+        alt="Imagem de {{files[0].file_name}}"
     />
-    <h1>{{recipe.title}}</h1>
-    <h3>por {{recipe.chef}}</h3>
+    <div class="files-wrapper">
+      {% for file in files %}
+      <span >
+        <img {% if file.file_id == files[0].file_id%}class="selected"{% endif %}
+              onClick="changingRecipeImages.toChange(event)"
+              src="{{file.file_path}}"
+              alt="{{file.file_name}}">
+      </span>
+
+      {% endfor %}
+    </div>
+    <div class="title-chef">
+      <h1>{{recipe.title}}</h1>
+      <h3>por {{recipe.chef}}</h3>
+    </div>
     <div class="step">
         <section class="info-content">
             <h2>Ingredientes</h2>
