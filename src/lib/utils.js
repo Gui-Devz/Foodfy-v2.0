@@ -108,4 +108,18 @@ module.exports = {
     });
     return recipesWithFiles;
   },
+
+  filteringRecipesWithOnlyOneFile(recipes) {
+    const filteredRecipes = recipes.reduce((recipesFiltered, recipe) => {
+      const found = recipesFiltered.some(
+        (currRecipe) => currRecipe.id === recipe.id
+      );
+
+      if (!found) recipesFiltered.push(recipe);
+
+      return recipesFiltered;
+    }, []);
+
+    return filteredRecipes;
+  },
 };
