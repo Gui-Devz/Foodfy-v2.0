@@ -6,18 +6,22 @@ const {
   validationOfRecipeInputs,
   validationOfBlankForms,
   validationOfChefName,
+  filteringRecipesWithOnlyOneFile,
 } = require("../../lib/utils");
 const fs = require("fs");
 
 module.exports = {
   async index(req, res) {
     try {
-      let result = await Recipe.showRecipesWithOnlyOneImage(true);
+      let results = await Recipe.showRecipesWithImages();
 
-      let recipes = formatPath(result.rows, req);
+      let recipes = formatPath(results.rows, req);
+
+      //Showing only one recipe instead of one recipe per file.
+      recipes = filteringRecipesWithOnlyOneFile(recipes);
       return res.render("admin/index", { recipes });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -39,25 +43,25 @@ module.exports = {
         preparation: validationOfRecipeInputs(preparation),
       };
 
-      let result = await adminDB.savingRecipe(createdRecipe);
-      const recipeID = result.rows[0].id;
+      let results = await adminDB.savingRecipe(createdRecipe);
+      const recipeID = results.rows[0].id;
 
       const imagesPromises = req.files.map((file) => {
         return adminDB.savingFile(file.filename, file.path);
       });
 
-      result = await Promise.all(imagesPromises);
-      const filesID = result.map((file) => file.rows[0].id);
+      results = await Promise.all(imagesPromises);
+      const filesID = results.map((file) => file.rows[0].id);
 
       const populateRecipeFiles = filesID.map((fileID) =>
         adminDB.savingRecipeFiles(fileID, recipeID)
       );
 
-      result = await Promise.all(populateRecipeFiles);
+      await Promise.all(populateRecipeFiles);
 
       return res.redirect(`/admin/recipes/${recipeID}`);
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -86,8 +90,8 @@ module.exports = {
         preparation: validationOfRecipeInputs(preparation),
       };
 
-      let result = await adminDB.updateRecipe(createdRecipe);
-      const recipeID = result.rows[0].id;
+      let results = await adminDB.updateRecipe(createdRecipe);
+      const recipeID = results.rows[0].id;
 
       //making sure that the maximum images sent is 5!
       const totalImagesSent = existingFiles.length + req.files.length;
@@ -105,14 +109,13 @@ module.exports = {
           return File.showFile(fileID);
         });
 
-        result = await Promise.all(promisesFilesPath);
+        results = await Promise.all(promisesFilesPath);
 
-        const filesPath = result.map((file) => file.rows[0].file_path);
+        const filesPath = results.map((file) => file.rows[0].file_path);
 
         filesPath.forEach((filePath) => fs.unlinkSync(filePath));
 
         const promisesRemovedPhotos = imagesRemoved.map((fileID) => {
-          console.log(fileID);
           return adminDB.deleteFilesFromRecipeFiles(fileID);
         });
 
@@ -125,8 +128,8 @@ module.exports = {
           return adminDB.savingFile(file.filename, file.path);
         });
 
-        result = await Promise.all(promisesOfSavingFiles);
-        const promisesRecipeFiles = result.map((file) => {
+        results = await Promise.all(promisesOfSavingFiles);
+        const promisesRecipeFiles = results.map((file) => {
           return adminDB.savingRecipeFiles(file.rows[0].id, recipeID);
         });
 
@@ -135,7 +138,7 @@ module.exports = {
 
       return res.redirect(`/admin/recipes/${recipeID}`);
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -143,9 +146,9 @@ module.exports = {
     try {
       const { id } = req.body;
 
-      let result = await File.showRecipeFiles(id);
-      const filesPath = result.rows.map((file) => file.file_path);
-      const filesID = result.rows.map((file) => file.file_id);
+      let results = await File.showRecipeFiles(id);
+      const filesPath = results.rows.map((file) => file.file_path);
+      const filesID = results.rows.map((file) => file.file_id);
 
       console.log(filesID);
 
@@ -168,7 +171,7 @@ module.exports = {
 
       return res.redirect("/admin/recipes");
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -179,19 +182,19 @@ module.exports = {
 
       if (req.files.length === 0) return res.send("Send at least one image");
 
-      let result = await adminDB.savingFile(
+      let results = await adminDB.savingFile(
         req.files[0].filename,
         req.files[0].path
       );
-      const fileID = result.rows[0].id;
+      const fileID = results.rows[0].id;
 
       const chefName = validationOfChefName(req.body.name);
-      result = await adminDB.createChef(chefName, fileID);
-      const chefID = result.rows[0].id;
+      results = await adminDB.createChef(chefName, fileID);
+      const chefID = results.rows[0].id;
 
       return res.redirect(`/admin/chefs/${chefID}`);
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -203,29 +206,29 @@ module.exports = {
       if (req.body.file_id === 0 && req.files.length === 0)
         return res.send("Send at least one image");
 
-      let result = "";
+      let results = "";
 
       if (req.files.length != 0) {
         //getting the old file path to delete from server.
-        result = await File.showChefAvatar(req.body.id);
-        const oldFile = result.rows[0];
+        results = await File.showChefAvatar(req.body.id);
+        const oldFile = results.rows[0];
 
         fs.unlinkSync(oldFile.path);
 
-        result = await adminDB.updateFile(
+        results = await adminDB.updateFile(
           oldFile.id,
           req.files[0].filename,
           req.files[0].path
         );
       }
 
-      result = await adminDB.updateChef(req.body.id, req.body.name);
+      results = await adminDB.updateChef(req.body.id, req.body.name);
 
-      const chefID = result.rows[0].id;
+      const chefID = results.rows[0].id;
 
       return res.redirect(`/admin/chefs/${chefID}`);
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -236,8 +239,8 @@ module.exports = {
       console.log(qt_recipes);
 
       if (qt_recipes === 0) {
-        let result = await File.showChefAvatar(id);
-        const file_path = result.rows[0].path;
+        let results = await File.showChefAvatar(id);
+        const file_path = results.rows[0].path;
 
         await adminDB.deleteChef(id);
         await adminDB.deleteFile(file_id);
@@ -249,7 +252,7 @@ module.exports = {
         return res.send("You cannot delete a chef who has recipes!");
       }
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 };
