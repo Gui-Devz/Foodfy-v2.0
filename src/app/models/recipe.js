@@ -11,40 +11,27 @@ module.exports = {
     return db.query(query, [id]);
   },
 
-  showRecipesWithOnlyOneImage(limit) {
+  showRecipesWithImages(filter) {
     let query = "";
-    let limitQuery = "";
-
-    if (limit)
-      limitQuery = `ORDER BY recipes.id DESC
-                      LIMIT 6`;
-
-    query = `SELECT DISTINCT ON (recipes.id)recipes.*, files.name AS file_name,
-              files.path AS file_path, chefs.name AS chef
-            FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
-            INNER JOIN files ON (recipe_files.file_id = files.id)
-            INNER JOIN chefs ON (recipes.chef_id = chefs.id)
-            ${limitQuery}`;
-
-    return db.query(query);
-  },
-
-  filter(filter) {
-    let query = "",
-      filterQuery = "";
+    let filterQuery = "";
+    let orderQuery = `ORDER BY recipes.created_at DESC`;
 
     if (filter) {
-      filterQuery = `WHERE recipes.title ILIKE '%${filter}%'`;
+      filterQuery = `WHERE recipes.title ILIKE '%${filter}%'
+                      OR recipes.information ILIKE '%${filter}%'`;
+
+      orderQuery = `ORDER BY recipes.updated_at DESC`;
     }
 
-    query = `
-        SELECT DISTINCT ON (recipes.id)recipes.*, files.name AS file_name,
+    query = `SELECT recipes.*, files.name AS file_name,
               files.path AS file_path, chefs.name AS chef
             FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
             INNER JOIN files ON (recipe_files.file_id = files.id)
             INNER JOIN chefs ON (recipes.chef_id = chefs.id)
-        ${filterQuery}
-      `;
+            ${filterQuery}
+            ${orderQuery}
+            `;
+
     return db.query(query);
   },
 };
