@@ -1,6 +1,9 @@
 const adminDB = require("../models/adminDB");
 const { showChef, showChefsRecipes, showChefs } = require("../models/chef");
-const { formatPath } = require("../../lib/utils");
+const {
+  formatPath,
+  filteringRecipesWithOnlyOneFile,
+} = require("../../lib/utils");
 
 module.exports = {
   async listAdmin(req, res) {
@@ -10,7 +13,7 @@ module.exports = {
 
       return res.render("admin/chefs/list", { chefs: chefsWithAvatarFormated });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -21,7 +24,7 @@ module.exports = {
 
       return res.render("user/chefs/list", { chefs: chefsWithAvatarFormated });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -37,16 +40,16 @@ module.exports = {
       const chefWithAvatarPathFormated = formatPath(result.rows, req);
 
       result = await showChefsRecipes(id);
-      const chefsRecipesPathFormated = formatPath(result.rows, req);
+      let recipes = formatPath(result.rows, req);
 
-      //console.log(chefsRecipesPathFormated);
+      recipes = filteringRecipesWithOnlyOneFile(recipes);
 
       return res.render("admin/chefs/show", {
         chef: chefWithAvatarPathFormated[0],
-        recipes: chefsRecipesPathFormated,
+        recipes,
       });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -55,13 +58,13 @@ module.exports = {
       const { id } = req.params;
 
       let result = await showChef(id);
-      const chefWithFilePathFormated = formatPath(result.rows, req);
+      const chefWithAvatarPathFormated = formatPath(result.rows, req);
 
       return res.render("admin/chefs/edit", {
-        chef: chefWithFilePathFormated[0],
+        chef: chefWithAvatarPathFormated[0],
       });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 };
