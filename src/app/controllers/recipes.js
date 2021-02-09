@@ -1,18 +1,26 @@
 const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
 const File = require("../models/file");
-const { formatPath } = require("../../lib/utils");
+const {
+  formatPath,
+  filteringRecipesWithOnlyOneFile,
+} = require("../../lib/utils");
 
 module.exports = {
   async index(req, res) {
     try {
-      let result = await Recipe.showRecipesWithOnlyOneImage(true);
+      let result = await Recipe.showRecipesWithImages();
 
-      const recipes = formatPath(result.rows, req);
+      let recipes = formatPath(result.rows, req);
+
+      //Showing only one recipe instead of one recipe per file.
+      recipes = filteringRecipesWithOnlyOneFile(recipes);
+
+      recipes = recipes.slice(0, 6);
 
       return res.render("user/index", { recipes });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -25,21 +33,16 @@ module.exports = {
       const { filter } = req.query;
       let result = "";
 
-      if (!filter) {
-        result = await Recipe.showRecipesWithOnlyOneImage();
+      result = await Recipe.showRecipesWithImages(filter);
 
-        const recipes = formatPath(result.rows, req);
+      let recipes = formatPath(result.rows, req);
 
-        return res.render("user/recipes/recipes-list", { recipes });
-      } else {
-        result = await Recipe.filter(filter);
+      //Showing only one recipe instead of one recipe per file.
+      recipes = filteringRecipesWithOnlyOneFile(recipes);
 
-        const recipes = formatPath(result.rows, req);
-
-        return res.render("user/recipes/recipes-list", { recipes, filter });
-      }
+      return res.render("user/recipes/recipes-list", { recipes, filter });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -55,7 +58,7 @@ module.exports = {
 
       return res.render("user/recipes/show", { recipe, files });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -72,7 +75,7 @@ module.exports = {
 
       return res.render("admin/recipes/show", { recipe, files: recipeFiles });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 
@@ -91,10 +94,9 @@ module.exports = {
 
       return res.render("admin/recipes/edit", { recipe, recipeFiles, chefs });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
-
   async create(req, res) {
     try {
       const result = await adminDB.chefsIdAndNames();
@@ -102,7 +104,7 @@ module.exports = {
 
       return res.render("admin/recipes/create", { chefs });
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
     }
   },
 };
