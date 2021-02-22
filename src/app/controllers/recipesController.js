@@ -3,7 +3,7 @@ const Recipe = require("../models/recipe");
 const File = require("../models/file");
 const {
   formatPath,
-  filteringRecipesWithOnlyOneFile,
+  renderingRecipesWithOnlyOneFile,
 } = require("../../lib/utils");
 
 module.exports = {
@@ -17,9 +17,9 @@ module.exports = {
       let recipes = formatPath(result.rows, req);
 
       //Showing only one recipe instead of one recipe per file.
-      recipes = filteringRecipesWithOnlyOneFile(recipes);
+      recipes = renderingRecipesWithOnlyOneFile(recipes);
 
-      return res.render("user/recipes/recipes-list", { recipes, filter });
+      return res.render("main/recipes/recipes-list", { recipes, filter });
     } catch (err) {
       console.error(err);
     }
@@ -35,7 +35,7 @@ module.exports = {
       result = await File.showRecipeFiles(id);
       const files = formatPath(result.rows, req);
 
-      return res.render("user/recipes/show", { recipe, files });
+      return res.render("main/recipes/show", { recipe, files });
     } catch (err) {
       console.error(err);
     }

@@ -6,7 +6,7 @@ const {
   validationOfRecipeInputs,
   validationOfBlankForms,
   validationOfChefName,
-  filteringRecipesWithOnlyOneFile,
+  renderingRecipesWithOnlyOneFile,
 } = require("../../lib/utils");
 const fs = require("fs");
 
@@ -18,8 +18,8 @@ module.exports = {
       let recipes = formatPath(results.rows, req);
 
       //Showing only one recipe instead of one recipe per file.
-      recipes = filteringRecipesWithOnlyOneFile(recipes);
-      return res.render("admin/index", { recipes });
+      recipes = renderingRecipesWithOnlyOneFile(recipes);
+      return res.render("admin/home/index", { recipes });
     } catch (err) {
       console.error(err);
     }

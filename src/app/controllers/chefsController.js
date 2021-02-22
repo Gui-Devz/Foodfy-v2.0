@@ -2,7 +2,7 @@ const adminDB = require("../models/adminDB");
 const { showChef, showChefsRecipes, showChefs } = require("../models/chef");
 const {
   formatPath,
-  filteringRecipesWithOnlyOneFile,
+  renderingRecipesWithOnlyOneFile,
 } = require("../../lib/utils");
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
       const result = await showChefs();
       const chefsWithAvatarFormated = formatPath(result.rows, req);
 
-      return res.render("user/chefs/list", { chefs: chefsWithAvatarFormated });
+      return res.render("main/chefs/list", { chefs: chefsWithAvatarFormated });
     } catch (err) {
       console.error(err);
     }
@@ -42,7 +42,7 @@ module.exports = {
       result = await showChefsRecipes(id);
       let recipes = formatPath(result.rows, req);
 
-      recipes = filteringRecipesWithOnlyOneFile(recipes);
+      recipes = renderingRecipesWithOnlyOneFile(recipes);
 
       return res.render("admin/chefs/show", {
         chef: chefWithAvatarPathFormated[0],
