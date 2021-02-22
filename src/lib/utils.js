@@ -109,7 +109,7 @@ module.exports = {
     return recipesWithFiles;
   },
 
-  filteringRecipesWithOnlyOneFile(recipes) {
+  renderingRecipesWithOnlyOneFile(recipes) {
     const filteredRecipes = recipes.reduce((recipesFiltered, recipe) => {
       const found = recipesFiltered.some(
         (currRecipe) => currRecipe.id === recipe.id
