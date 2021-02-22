@@ -8,6 +8,18 @@ const routes = express.Router();
 
 routes.get("/", adminController.index);
 
+//RECIPES ROUTES
+routes.get("/recipes", adminController.index);
+routes.get("/recipes/create", recipesController.create);
+routes.get("/recipes/:id", recipesController.showAdmin);
+routes.get("/recipes/:id/edit", recipesController.edit);
+
+//CHEFS ROUTES
+routes.get("/chefs", chefsController.listAdmin);
+routes.get("/chefs/create", chefsController.create);
+routes.get("/chefs/:id", chefsController.show);
+routes.get("/chefs/:id/edit", chefsController.edit);
+
 //ADMIN RECIPES FORM
 routes.post("/recipes", multer.array("images", 5), recipesController.post);
 routes.put("/recipes", multer.array("images", 5), recipesController.put);
