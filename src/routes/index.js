@@ -22,7 +22,7 @@ routes.get("/accounts", (req, res) => {
 });
 
 routes.get("/about", (req, res) => {
-  return res.render("user/recipes/about");
+  return res.render("main/home/about");
 });
 
 routes.get("/chefs", chefsController.list);
