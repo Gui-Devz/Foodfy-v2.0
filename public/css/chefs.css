@@ -78,7 +78,7 @@
   height: 80px;
 
   display: grid;
-  grid-template: 1fr 1fr / 64px 1fr;
+  grid-template: 1fr / 64px 1fr;
 
   column-gap: 20px;
   row-gap: 0px;
@@ -92,13 +92,6 @@
   height: 64px;
 
   border-radius: 50%;
-}
-
-.card-content > span {
-  width: 172px;
-  height: 80px;
-
-  border-radius: 10px;
   box-shadow: 1px 0px 8px 2px #ccc;
 
   background-repeat: no-repeat;
