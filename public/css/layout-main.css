@@ -31,7 +31,7 @@ body .all {
   min-height: 100%;
   box-sizing: border-box;
 
-  padding: 20px;
+  padding: 0 20px;
 
   margin: 0 auto -18px auto;
 }
@@ -64,10 +64,6 @@ footer div p {
 
 .menu {
   width: 100%;
-
-  margin-bottom: 30px;
-}
-.menu {
   display: grid;
   grid-template: 1fr / 1fr 400px;
 
@@ -150,27 +146,4 @@ footer div p {
 
 .menu form input::placeholder {
   color: #999999;
-}
-
-.menu form button {
-  width: 91px;
-  height: 37px;
-
-  box-sizing: border-box;
-
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 19px;
-
-  background: #6558c3;
-  border: none;
-  border-radius: 4px;
-  border-radius: 4px;
-
-  cursor: pointer;
-}
-
-.menu form button:hover {
-  background-color: #6056aa;
 }
