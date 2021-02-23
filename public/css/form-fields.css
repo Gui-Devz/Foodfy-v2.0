@@ -170,6 +170,8 @@
   line-height: 19px;
 }
 
+/* === FORM OF CHEFS === */
+
 .fields .item input,
 .item #chefs {
   width: 100%;
@@ -184,4 +186,16 @@
   font-size: 16px;
   line-height: 19px;
   color: #444444;
+}
+
+.fields .chef-avatar {
+  max-width: 940px;
+  min-height: 50px;
+
+  display: flex;
+
+  box-sizing: border-box;
+
+  align-items: center;
+  gap: 30px;
 }
