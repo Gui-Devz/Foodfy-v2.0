@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
     <link rel="shortcut icon" href="/img-app/admin.svg" type="image/x-icon">
-    <link rel="stylesheet" href="/style.css">
+    {%include "../parts/stylesheets.njk"%}
 
 
 {% block head %}
@@ -17,28 +17,14 @@
 </head>
 <body>
     <div class="all admin">
-        <header>
-            <div class="links">
-                 <nav class="menu admin">
-                    <div>
-                        <ul>
-                            <li class="logo"><a href="/admin/recipes"><img src="//localhost:3000/img-app/logo-admin.png" alt="logo do site"></a></li>
-                            <li><a href="/admin/recipes">Receitas</a></li>
-                            <li><a href="/admin/chefs">Chefs</a></li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </header>
-            {% block content %}{% endblock %}
+      {%include "../parts/header-admin.njk"%}
+      {% block content %}{% endblock %}
 
     <div class="push"></div>
 
     </div>
 
-    <footer>
-        <div><p>Todos os direitos reservados, receitas Foodfy</p></div>
-    </footer>
+    {%include "../parts/footer-admin.njk"%}
     {% block scripts %}{% endblock %}
 
     <script src="/new-scripts.js"></script>
