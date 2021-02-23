@@ -1,0 +1,50 @@
+.all.admin {
+  width: 100%;
+  min-width: 940px;
+  min-height: 100%;
+  padding: 0;
+}
+
+.admin {
+  padding: 55px 20px;
+}
+
+.all.admin header {
+  background-color: black;
+  max-width: 100%;
+  max-height: 80px;
+}
+
+.menu.admin {
+  padding: 20px;
+  max-height: 80px;
+  box-sizing: border-box;
+}
+
+header .links {
+  min-width: 940px;
+  max-height: 80px;
+
+  box-sizing: border-box;
+}
+
+.menu.admin {
+  display: flex;
+  align-items: center;
+}
+
+.menu.admin ul li a {
+  color: #999999;
+  font-weight: bold;
+}
+
+.menu.admin ul li .activated {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.all nav img {
+  box-sizing: border-box;
+  padding: 25px;
+  padding-left: 0;
+}
