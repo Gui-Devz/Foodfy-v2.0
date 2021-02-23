@@ -13,7 +13,7 @@
   grid-template-columns: 1fr 1fr;
   box-sizing: border-box;
 
-  column-gap: 10px;
+  column-gap: 75px;
   row-gap: 25px;
   align-items: center;
 
@@ -30,7 +30,7 @@
   width: 172px;
   height: 80px;
 
-  border-radius: 10px;
+  border-radius: 8.57px;
   box-shadow: 1px 0px 3px 2px #ccc;
 
   background-repeat: no-repeat;
