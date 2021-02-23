@@ -50,7 +50,6 @@
 .recipe {
   margin: 0 auto 0 auto;
   width: 940px;
-  min-width: 980px;
 
   padding: 20px;
   box-sizing: border-box;
@@ -59,7 +58,7 @@
 }
 
 .recipe .head {
-  width: 940px;
+  width: 100%;
   margin: 0 0 30px;
   display: flex;
 
@@ -71,7 +70,7 @@
   overflow: hidden;
 }
 
-.recipe .head .button {
+/* .recipe .head .button {
   width: 136px;
   height: 37px;
 
@@ -93,7 +92,7 @@
   font-size: 16px;
   font-weight: bold;
   line-height: 19px;
-}
+} */
 
 .recipe .head .button:hover {
   background-color: #6056aa;
