@@ -1,4 +1,5 @@
 const db = require("../../config/db");
+const { hash } = require("bcryptjs");
 const { arrayDB, formatBrowser } = require("../../lib/utils");
 
 module.exports = {
@@ -143,5 +144,28 @@ module.exports = {
     const query = `DELETE FROM files WHERE id = $1`;
 
     return db.query(query, [fileID]);
+  },
+
+  async createUser(dataPost) {
+    const query = `
+        INSERT INTO users (
+          name,
+          email,
+          password,
+          is_admin
+        ) VALUES ($1, $2, $3, $4)
+        RETURNING id
+      `;
+
+    const passwordHash = await hash(dataPost.password);
+
+    const values = [
+      dataPost.name,
+      dataPost.email,
+      passwordHash,
+      dataPost.isAdmin,
+    ];
+
+    return db.query(query, values);
   },
 };
