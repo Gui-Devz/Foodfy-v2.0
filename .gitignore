@@ -4,6 +4,8 @@ node_modules/*
 
 public/img/*
 
+workspace.code-workspace
+
 .prettierrc
 
 .editorconfig
