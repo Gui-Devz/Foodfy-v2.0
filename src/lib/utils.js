@@ -71,8 +71,8 @@ module.exports = {
       if (fields[key] == "" && key != "removed_photos") {
         return true;
       }
-      return false;
     }
+    return false;
   },
   formatPath(files, req) {
     let photos = files.map((file) => ({
