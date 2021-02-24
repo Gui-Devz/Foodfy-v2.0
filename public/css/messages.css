@@ -1,0 +1,34 @@
+.messages {
+  position: absolute;
+  width: 23vw;
+  height: 14.62vh;
+  padding: 15px;
+
+  box-sizing: border-box;
+
+  right: 1.8rem;
+  top: 1.2rem;
+
+  border: 1px solid #dddddd;
+  border-radius: 0.3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.messages p {
+  font-size: 1rem;
+  line-height: 1.2rem;
+  font-weight: bold;
+
+  color: #ffffff;
+}
+
+.messages.success {
+  background-color: #01b12a;
+}
+
+.messages.error {
+  background-color: #dc4747;
+}
