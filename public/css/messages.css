@@ -1,8 +1,15 @@
+@keyframes hidemessage {
+  to {
+    top: -100px;
+    opacity: 0;
+  }
+}
+
 .messages {
   position: absolute;
   width: 23vw;
   height: 14.62vh;
-  padding: 15px;
+  padding: 1rem;
 
   box-sizing: border-box;
 
@@ -15,6 +22,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  overflow: hidden;
+  opacity: 1;
+
+  animation: hidemessage 400ms 5s ease-out forwards;
 }
 
 .messages p {
