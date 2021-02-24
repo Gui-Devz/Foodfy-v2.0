@@ -87,3 +87,21 @@ WITH (OIDS=FALSE);
 ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+
+-- Populate tables for testing.
+INSERT INTO users
+(
+  name,
+  email,
+  password,
+  is_admin
+) VALUES ('Guilherme', 'gui123@gmai.com', '123', 'false');
+
+INSERT INTO users
+(
+  name,
+  email,
+  password,
+  is_admin
+) VALUES ('Guilherme', 'gui1234@gmai.com', '1234', 'true');
