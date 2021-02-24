@@ -136,6 +136,10 @@ body {
   line-height: 19px;
 }
 
+.buttons button:hover {
+  background-color: #6056aa;
+}
+
 /* === FOOTER === */
 body .push,
 footer {
