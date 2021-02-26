@@ -2,86 +2,50 @@
 
 {% block head %}
 
-<title>{{recipe.title}} - Foodfy</title>
+<title>Admin - Editando perfil</title>
 
 {% endblock head %}
 
 {% block content %}
 
-<div class="recipe">
-    <div class="head">
-        <span><h1>Receita: {{recipe.title}}</h1></span>
-        <a href="/admin/recipes/{{recipe.id}}/edit" class="button-edit"><span>Editar receita</span></a>
+<div class="admin">
 
-    </div>
-    <img
-        id="main-image"
-        src= "{{files[0].file_path}}"
-        alt="Imagem de {{files[0].file_name}}"
-    />
-    <div class="files-wrapper">
-      {% for file in files %}
-      <span >
-        <img {% if file.file_id == files[0].file_id%}class="selected"{% endif %}
-              onClick="changingRecipeImages.toChange(event)"
-              src="{{file.file_path}}"
-              alt="{{file.file_name}}">
-      </span>
-
-      {% endfor %}
-    </div>
-    <div class="title-chef">
-      <h1>{{recipe.title}}</h1>
-      <h3>por {{recipe.chef}}</h3>
-    </div>
-    <div class="step">
-        <section class="info-content">
-            <h2>Ingredientes</h2>
-            <p onClick="controlContentRecipe.showOrHide(event)">Esconder</p>
-        </section>
-        <div class="preparation">
-            <ul>
-
-                {% for ingredient in recipe.ingredients %}
-
-                    <li>{{ingredient}}</li>
-
-                {% endfor %}
-
-            </ul>
-        </div>
-    </div>
-
-    <div class="step">
-        <section class="info-content">
-            <h2>Modo de preparo</h2>
-            <p onClick="controlContentRecipe.showOrHide(event)">Esconder</p>
-        </section>
-
-        <div class="preparation">
-            <ul>
-            {% for preparation in recipe.preparation %}
-
-                <li>{{preparation}}</li>
-
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <div class="step">
-        <section class="info-content">
-            <h2>Informações adicionais</h2>
-            <p class="hide" onClick="controlContentRecipe.showOrHide(event)">Esconder</p>
-        </section>
-        <div class="preparation">
-
-            <p>{{recipe.information}}</p>
-
-        </div>
+    <div class="form user">
+        <form method="POST" action="/admin/users?_method=PUT">
+            <div class="head">
+                <div>
+                  <span><h1>Bem vindo {{user.name}}</h1></span>
+                </div>
+                <div class="button-wrapper">
+                    <button class="button" type="submit" onClick="confirmationOfButtons.verifyingBeforeUpdateUser(event)">
+                      <span>Salvar</span>
+                    </button>
+                </div>
+            </div>
+            <div class="fields">
+              <div class="info-user">
+                  <div class="item">
+                    <div>Nome</div>
+                    <div>
+                      <input type="text" name="name" placeholder="Digite o seu nome" value="{{user.name}}" required>
+                    </div>
+                  </div>
+                  <div class="item">
+                      <div>Email</div>
+                      <div>
+                        <input type="text" name="email" placeholder="Digite o seu email" value="{{user.email}}" required>
+                      </div>
+                  </div>
+              </div>
+              <div class="item">
+                  <div>Senha</div>
+                  <div><input type="password" name="passwword" placeholder="Digite a sua senha" required></div>
+              </div>
+            </div>
+        </form>
     </div>
 </div>
 
-{% endblock content %}
 
+{% endblock content %}
 
