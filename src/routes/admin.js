@@ -4,8 +4,9 @@ const adminController = require("../app/controllers/adminController");
 const recipesController = require("../app/controllers/recipesController");
 const chefsController = require("../app/controllers/chefsController");
 const usersController = require("../app/controllers/usersController");
+const profileController = require("../app/controllers/profileController");
 
-const Session = require("../app/controllers/sessionController");
+const sessionController = require("../app/controllers/sessionController");
 const { login } = require("../app/middlewares/validators/session");
 const { isLogged, isAdmin } = require("../app/middlewares/validators/user");
 
@@ -14,12 +15,12 @@ const routes = express.Router();
 routes.get("/", isLogged, adminController.index);
 
 //SESSION ROUTES
-routes.get("/login", Session.loginForm);
-routes.post("/login", login, Session.login);
-routes.get("/logout", Session.logout);
+routes.get("/login", sessionController.loginForm);
+routes.post("/login", login, sessionController.login);
+routes.get("/logout", sessionController.logout);
 
 //USERS ROUTES
-routes.get("/profile", isLogged, usersController.index);
+routes.get("/profile", isLogged, profileController.index);
 
 //RECIPES ROUTES
 routes.get("/recipes/create", isLogged, recipesController.create);
