@@ -115,6 +115,25 @@ const confirmationOfButtons = {
 
     if (!confirmation) return e.preventDefault();
   },
+
+  verifyingBeforeLogout(e) {
+    const confirmation = confirm("Tem certeza de que deseja sair?!");
+
+    if (!confirmation) return e.preventDefault();
+  },
+
+  verifyingBeforeUpdateUser(e) {
+    const password = document.querySelector(".item input[type='password']");
+
+    if (password.value === "") {
+      alert("Coloque a sua senha para atualizar os dados!");
+      return e.preventDefault();
+    }
+
+    const confirmation = confirm("Deseja salvar esse chef?!");
+
+    if (!confirmation) return e.preventDefault();
+  },
 };
 
 const controlContentRecipe = {
@@ -133,18 +152,6 @@ const controlContentRecipe = {
     }
   },
 };
-
-/* const controlContentChef = {
-  ShowOrHideInput() {
-    const currentUrl = window.location.href;
-
-    if (currentUrl.includes("chefs") && currentUrl.includes("create")) {
-      let input = document.querySelector(".item #avatar");
-
-      input.style.display = "none";
-    }
-  },
-}; */
 
 const showingSearchBar = {
   showing() {
@@ -390,10 +397,9 @@ shortingTextsOnCards.shortChefsName();
 shortingTextsOnCards.shortRecipeChefName();
 addingLinksToCards.linking();
 showingSearchBar.showing();
-//controlContentChef.ShowOrHideInput();
 
 menuLinksActivation.activated("recipes", "Receitas");
 menuLinksActivation.activated("about", "Sobre");
 menuLinksActivation.activated("chefs", "Chefs");
-menuLinksActivation.activated("profile", "Usuários");
+menuLinksActivation.activated("profile", "Minha conta");
 menuLinksActivation.activated("admin", "Receitas");
