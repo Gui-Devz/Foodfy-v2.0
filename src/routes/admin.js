@@ -3,10 +3,14 @@ const multer = require("../app/middlewares/multer");
 const adminController = require("../app/controllers/adminController");
 const recipesController = require("../app/controllers/recipesController");
 const chefsController = require("../app/controllers/chefsController");
+const usersController = require("../app/controllers/usersController");
 
 const routes = express.Router();
 
 routes.get("/", adminController.index);
+
+//USERS ROUTES
+routes.get("/profile", usersController.index);
 
 //RECIPES ROUTES
 routes.get("/recipes", adminController.index);
