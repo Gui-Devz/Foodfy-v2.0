@@ -1,0 +1,26 @@
+.admin .form.user .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin .form.user .head .button {
+  outline: none;
+}
+
+/* === FORM OF SHOWING CURRENT USER === */
+.admin .form.user {
+  width: 940px;
+}
+
+.admin .form.user .fields .item {
+  width: 28rem;
+}
+
+.admin .form.user .fields .info-user {
+  display: flex;
+  gap: 40px;
+
+  box-sizing: border-box;
+  padding-bottom: 2.2rem;
+}
