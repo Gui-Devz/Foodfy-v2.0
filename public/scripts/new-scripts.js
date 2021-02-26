@@ -166,7 +166,18 @@ const showingSearchBar = {
 const menuLinksActivation = {
   activated(filter, content) {
     const url = window.location.href;
-    if (url.includes(`${filter}`)) {
+
+    if (url.length === 27 && url.includes(filter)) {
+      const menuLinks = document.querySelectorAll(".menu div ul li");
+
+      for (const link of menuLinks) {
+        if (link.firstChild.innerHTML == `${content}`) {
+          link.firstChild.classList.toggle("activated");
+        }
+      }
+      return;
+    }
+    if (url.includes(filter) && filter !== "admin") {
       const menuLinks = document.querySelectorAll(".menu div ul li");
 
       for (const link of menuLinks) {
@@ -384,3 +395,5 @@ showingSearchBar.showing();
 menuLinksActivation.activated("recipes", "Receitas");
 menuLinksActivation.activated("about", "Sobre");
 menuLinksActivation.activated("chefs", "Chefs");
+menuLinksActivation.activated("profile", "Usuários");
+menuLinksActivation.activated("admin", "Receitas");
