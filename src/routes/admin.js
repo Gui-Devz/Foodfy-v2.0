@@ -5,22 +5,30 @@ const recipesController = require("../app/controllers/recipesController");
 const chefsController = require("../app/controllers/chefsController");
 const usersController = require("../app/controllers/usersController");
 
+const Session = require("../app/controllers/sessionController");
+const { login } = require("../app/middlewares/validators/session");
+const { isLogged, isAdmin } = require("../app/middlewares/validators/user");
+
 const routes = express.Router();
 
-routes.get("/", adminController.index);
+routes.get("/", isLogged, adminController.index);
+
+//SESSION ROUTES
+routes.get("/login", Session.loginForm);
+routes.post("/login", login, Session.login);
+routes.get("/logout", Session.logout);
 
 //USERS ROUTES
-routes.get("/profile", usersController.index);
+routes.get("/profile", isLogged, usersController.index);
 
 //RECIPES ROUTES
-routes.get("/recipes", adminController.index);
-routes.get("/recipes/create", recipesController.create);
+routes.get("/recipes/create", isLogged, recipesController.create);
 routes.get("/recipes/:id", recipesController.showAdmin);
 routes.get("/recipes/:id/edit", recipesController.edit);
 
 //CHEFS ROUTES
 routes.get("/chefs", chefsController.listAdmin);
-routes.get("/chefs/create", chefsController.create);
+routes.get("/chefs/create", isAdmin, chefsController.create);
 routes.get("/chefs/:id", chefsController.show);
 routes.get("/chefs/:id/edit", chefsController.edit);
 
