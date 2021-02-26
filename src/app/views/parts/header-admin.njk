@@ -5,11 +5,16 @@
           <li class="logo"><a href="/admin"><img src="//localhost:3000/img-app/logo-admin.png" alt="logo do site"></a></li>
           <li><a href="/admin">Receitas</a></li>
           <li><a href="/admin/chefs">Chefs</a></li>
-          <li><a href="/admin/profile">Usuários</a></li>
+          {% if user.is_admin %}
+            <li><a href="/admin/users">Usuários</a></li>
+            <li><a href="/admin/profile">Minha conta</a></li>
+          {%else%}
+            <li><a href="/admin/profile">Minha conta</a></li>
+          {% endif %}
         </ul>
     </div>
     <div class="logout">
-      <p><a href="/admin/logout">Sair</a></p>
+      <p><a href="/admin/logout" onclick="confirmationOfButtons.verifyingBeforeLogout(event)">Sair</a></p>
     </div>
   </nav>
 </header>
