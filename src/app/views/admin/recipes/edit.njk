@@ -14,7 +14,9 @@
         <div class="delete">
             <form method="POST" action="/admin/recipes?_method=DELETE">
                 <input type="hidden" name="id" value="{{recipe.id}}">
-                <button class="button-delete" type="submit" onClick="confirmationOfButtons.verifyingBeforeDeleteRecipe(event)"><span>Deletar</span></a>
+                <button class="button-delete" type="submit" onClick="confirmationOfButtons.verifyingBeforeDeleteRecipe(event)">
+                  <span>Deletar</span>
+                </button>
             </form>
         </div>
         <form method="POST" action="/admin/recipes?_method=PUT" enctype="multipart/form-data">
