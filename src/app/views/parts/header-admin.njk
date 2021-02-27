@@ -5,7 +5,7 @@
           <li class="logo"><a href="/admin"><img src="//localhost:3000/img-app/logo-admin.png" alt="logo do site"></a></li>
           <li><a href="/admin">Receitas</a></li>
           <li><a href="/admin/chefs">Chefs</a></li>
-          {% if user.is_admin %}
+          {% if userLogged.is_admin %}
             <li><a href="/admin/users">Usuários</a></li>
             <li><a href="/admin/profile">Minha conta</a></li>
           {%else%}
