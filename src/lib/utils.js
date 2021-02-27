@@ -68,7 +68,7 @@ module.exports = {
     const keys = Object.keys(fields);
 
     for (const key of keys) {
-      if (fields[key] == "" && key != "removed_photos") {
+      if (fields[key] == "" && key != "removed_files") {
         return true;
       }
     }
