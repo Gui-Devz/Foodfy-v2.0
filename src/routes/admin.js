@@ -21,26 +21,42 @@ routes.get("/logout", sessionController.logout);
 
 //USERS ROUTES
 routes.get("/profile", isLogged, profileController.index);
+routes.get("/users", isLogged, usersController.list);
 
 //RECIPES ROUTES
 routes.get("/recipes/create", isLogged, recipesController.create);
-routes.get("/recipes/:id", recipesController.showAdmin);
-routes.get("/recipes/:id/edit", recipesController.edit);
+routes.get("/recipes/:id", isLogged, recipesController.showAdmin);
+routes.get("/recipes/:id/edit", isLogged, recipesController.edit);
 
 //CHEFS ROUTES
-routes.get("/chefs", chefsController.listAdmin);
+routes.get("/chefs", isLogged, chefsController.listAdmin);
 routes.get("/chefs/create", isAdmin, chefsController.create);
-routes.get("/chefs/:id", chefsController.show);
-routes.get("/chefs/:id/edit", chefsController.edit);
+routes.get("/chefs/:id", isLogged, chefsController.show);
+routes.get("/chefs/:id/edit", isAdmin, chefsController.edit);
 
 //ADMIN RECIPES FORM
-routes.post("/recipes", multer.array("images", 5), recipesController.post);
-routes.put("/recipes", multer.array("images", 5), recipesController.put);
-routes.delete("/recipes", recipesController.delete);
+routes.post(
+  "/recipes",
+  isLogged,
+  multer.array("images", 5),
+  recipesController.post
+);
+routes.put(
+  "/recipes",
+  isLogged,
+  multer.array("images", 5),
+  recipesController.put
+);
+routes.delete("/recipes", isLogged, recipesController.delete);
 
 //ADMIN CHEFS FORM
-routes.post("/chefs", multer.array("avatar", 1), chefsController.post);
-routes.put("/chefs", multer.array("avatar", 1), chefsController.put);
-routes.delete("/chefs", chefsController.delete);
+routes.post(
+  "/chefs",
+  isLogged,
+  multer.array("avatar", 1),
+  chefsController.post
+);
+routes.put("/chefs", isLogged, multer.array("avatar", 1), chefsController.put);
+routes.delete("/chefs", isLogged, chefsController.delete);
 
 module.exports = routes;
