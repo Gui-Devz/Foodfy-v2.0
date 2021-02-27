@@ -90,13 +90,6 @@ CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
 
 -- Populate tables for testing.
-INSERT INTO users
-(
-  name,
-  email,
-  password,
-  is_admin
-) VALUES ('Guilherme', 'gui123@gmai.com', '123', 'false');
 
 INSERT INTO users
 (
@@ -104,4 +97,6 @@ INSERT INTO users
   email,
   password,
   is_admin
-) VALUES ('Guilherme', 'gui1234@gmai.com', '1234', 'true');
+) VALUES ('Guilherme', 'gui1234@gmail.com', '1234', 'true');
+
+
