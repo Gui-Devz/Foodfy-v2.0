@@ -4,6 +4,8 @@ const File = require("../models/file");
 const {
   formatPath,
   renderingRecipesWithOnlyOneFile,
+  validationOfBlankForms,
+  validationOfRecipeInputs,
 } = require("../../lib/utils");
 
 module.exports = {
@@ -35,7 +37,10 @@ module.exports = {
       result = await File.showRecipeFiles(id);
       const files = formatPath(result.rows, req);
 
-      return res.render("main/recipes/show", { recipe, files });
+      return res.render("main/recipes/show", {
+        recipe,
+        files,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -52,7 +57,11 @@ module.exports = {
       //Formatting the path of the photos to send to the front-end
       let recipeFiles = formatPath(result.rows, req);
 
-      return res.render("admin/recipes/show", { recipe, files: recipeFiles });
+      return res.render("admin/recipes/show", {
+        recipe,
+        files: recipeFiles,
+        userLogged: req.user,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -71,7 +80,12 @@ module.exports = {
       result = await adminDB.chefsIdAndNames();
       const chefs = result.rows;
 
-      return res.render("admin/recipes/edit", { recipe, recipeFiles, chefs });
+      return res.render("admin/recipes/edit", {
+        recipe,
+        recipeFiles,
+        chefs,
+        userLogged: req.user,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -81,7 +95,10 @@ module.exports = {
       const result = await adminDB.chefsIdAndNames();
       const chefs = result.rows;
 
-      return res.render("admin/recipes/create", { chefs });
+      return res.render("admin/recipes/create", {
+        chefs,
+        userLogged: req.user,
+      });
     } catch (err) {
       console.error(err);
     }

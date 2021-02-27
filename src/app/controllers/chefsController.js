@@ -3,6 +3,7 @@ const { showChef, showChefsRecipes, showChefs } = require("../models/chef");
 const {
   formatPath,
   renderingRecipesWithOnlyOneFile,
+  validationOfBlankForms,
 } = require("../../lib/utils");
 
 module.exports = {
@@ -11,7 +12,10 @@ module.exports = {
       const result = await showChefs();
       const chefsWithAvatarFormated = formatPath(result.rows, req);
 
-      return res.render("admin/chefs/list", { chefs: chefsWithAvatarFormated });
+      return res.render("admin/chefs/list", {
+        chefs: chefsWithAvatarFormated,
+        userLogged: req.user,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -22,14 +26,17 @@ module.exports = {
       const result = await showChefs();
       const chefsWithAvatarFormated = formatPath(result.rows, req);
 
-      return res.render("main/chefs/list", { chefs: chefsWithAvatarFormated });
+      return res.render("main/chefs/list", {
+        chefs: chefsWithAvatarFormated,
+        userLogged: req.user,
+      });
     } catch (err) {
       console.error(err);
     }
   },
 
   create(req, res) {
-    return res.render("admin/chefs/create");
+    return res.render("admin/chefs/create", { userLogged: req.user });
   },
 
   async show(req, res) {
@@ -47,6 +54,7 @@ module.exports = {
       return res.render("admin/chefs/show", {
         chef: chefWithAvatarPathFormated[0],
         recipes,
+        userLogged: req.user,
       });
     } catch (err) {
       console.error(err);
@@ -62,6 +70,7 @@ module.exports = {
 
       return res.render("admin/chefs/edit", {
         chef: chefWithAvatarPathFormated[0],
+        userLogged: req.user,
       });
     } catch (err) {
       console.error(err);
@@ -93,6 +102,7 @@ module.exports = {
 
   async put(req, res) {
     try {
+      console.log(req.body);
       if (validationOfBlankForms(req.body))
         return res.send("fill all the fields");
 
@@ -109,7 +119,7 @@ module.exports = {
         fs.unlinkSync(oldFile.path);
 
         results = await adminDB.updateFile(
-          oldFile.id,
+          oldFile.id || 1,
           req.files[0].filename,
           req.files[0].path
         );
