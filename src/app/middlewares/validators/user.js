@@ -6,6 +6,10 @@ async function isLogged(req, res, next) {
     return res.render("session/login", { error: errorCreate });
   }
 
+  const user = await User.findUser({ where: { id: req.session.userID } });
+
+  req.user = user;
+
   next();
 }
 
@@ -18,12 +22,12 @@ async function isAdmin(req, res, next) {
 
   const user = await User.findUser({ where: { id: userID } });
 
-  if (!user.isAdmin) {
+  if (!user.is_admin) {
     const errorCreate = "Apenas o Admin tem acesso a essa funcionalidade!";
     return res.render("admin/home/index", { error: errorCreate });
   }
 
-  console.log(user);
+  req.user = user;
 
   next();
 }
