@@ -402,4 +402,5 @@ menuLinksActivation.activated("recipes", "Receitas");
 menuLinksActivation.activated("about", "Sobre");
 menuLinksActivation.activated("chefs", "Chefs");
 menuLinksActivation.activated("profile", "Minha conta");
+menuLinksActivation.activated("users", "Usuários");
 menuLinksActivation.activated("admin", "Receitas");
