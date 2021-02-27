@@ -19,7 +19,12 @@ module.exports = {
 
       //Showing only one recipe instead of one recipe per file.
       recipes = renderingRecipesWithOnlyOneFile(recipes);
-      return res.render("admin/home/index", { recipes });
+
+      console.log(recipes);
+      return res.render("admin/home/index", {
+        recipes,
+        userLogged: req.user,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -74,8 +79,8 @@ module.exports = {
       let existingFiles = "";
       if (req.body.files_id) {
         existingFiles = [...req.body.files_id];
-        if (typeof req.body.files_id != "object")
-          existingFiles = [req.body.files_id];
+        // if (typeof req.body.files_id != "object")
+        //   existingFiles = [req.body.files_id];
       }
 
       if (existingFiles.length === 0 && req.files.length === 0)
