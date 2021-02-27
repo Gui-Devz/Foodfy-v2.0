@@ -49,15 +49,17 @@ module.exports = {
     const query = `
         UPDATE recipes SET
         chef_id = $1,
-        title = $2,
-        ingredients = $3,
-        preparation = $4,
-        information = $5
-      WHERE id=$6
+        user_id = $2,
+        title = $3,
+        ingredients = $4,
+        preparation = $5,
+        information = $6
+      WHERE id=$7
       RETURNING id`;
 
     let values = [
       dataPut.chef_id,
+      dataPut.user_id || 1,
       dataPut.title,
       arrayDB(dataPut.ingredients),
       arrayDB(dataPut.preparation),
