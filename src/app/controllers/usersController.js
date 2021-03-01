@@ -1,14 +1,29 @@
 const adminDB = require("../models/adminDB");
-
+const User = require("../models/user");
+const { showChef, showChefs, showChefsRecipes } = require("../models/chef");
 const {
-  validationOfBlankForms,
+  validationOfBlankFields,
   validationOfChefName,
+  formatPath,
 } = require("../../lib/utils");
 
 module.exports = {
+  async list(req, res) {
+    try {
+      const result = await showChefs();
+      const chefsWithAvatarFormated = formatPath(result.rows, req);
+
+      return res.render("admin/users/list", {
+        chefs: chefsWithAvatarFormated,
+        userLogged: req.user,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  },
   async post(req, res) {
     try {
-      if (validationOfBlankForms(req.body))
+      if (validationOfBlankFields(req.body))
         return res.send("fill all the fields");
 
       if (req.files.length === 0) return res.send("Send at least one image");
@@ -32,7 +47,7 @@ module.exports = {
   async put(req, res) {
     try {
       console.log(req.body);
-      if (validationOfBlankForms(req.body))
+      if (validationOfBlankFields(req.body))
         return res.send("fill all the fields");
 
       if (req.body.file_id === 0 && req.files.length === 0)
