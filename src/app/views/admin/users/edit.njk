@@ -2,7 +2,7 @@
 
 {% block head %}
 
-<title>Admin - Editando {{user.name}}</title>
+<title>Admin - Editando perfil</title>
 
 {% endblock head %}
 
@@ -14,10 +14,18 @@
         <form method="POST" action="/admin/users?_method=PUT">
             <div class="head">
                 <div>
-                  <span><h1>Bem vindo {{user.name}}</h1></span>
+                  <span><h1>Atualizar Usuário</h1></span>
                 </div>
                 <div class="button-wrapper">
-                    <button class="button" type="submit" onClick="confirmationOfButtons.verifyingBeforeUpdateUser(event)">
+                    <div class="delete">
+                        <form method="POST" action="/admin/users?_method=DELETE">
+                            <input type="hidden" name="id" value="{{recipe.id}}">
+                            <button class="button-delete" type="submit" onClick="confirmationOfButtons.verifyingBeforeDeleteUser(event)">
+                              <span>Deletar</span>
+                            </button>
+                        </form>
+                    </div>
+                    <button class="button" type="text" onClick="confirmationOfButtons.verifyingBeforeUpdateUser(event)">
                       <span>Salvar</span>
                     </button>
                 </div>
@@ -37,9 +45,9 @@
                       </div>
                   </div>
               </div>
-              <div class="item">
-                  <div>Senha</div>
-                  <div><input type="password" name="passwword" placeholder="Digite a sua senha" required></div>
+              <div class="adm">
+                <input type="checkbox" id="is_admin" name="is_admin" {% if userIsAdmin %} checked {% endif %}>
+                <label for="is_admin">Administrador</label>
               </div>
             </div>
         </form>
