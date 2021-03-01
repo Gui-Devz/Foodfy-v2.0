@@ -1,5 +1,8 @@
 module.exports = {
   loginForm(req, res) {
+    if (req.session.userID) {
+      return res.redirect("/admin");
+    }
     return res.render("session/login");
   },
 
