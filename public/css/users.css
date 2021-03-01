@@ -4,6 +4,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding-bottom: 4rem;
 }
 
 .admin .form.user .head .button {
@@ -100,4 +102,25 @@
   cursor: pointer;
 
   color: #f55a5a;
+}
+
+/* === END OF LIST USERS === */
+
+/* === EDIT USER === */
+
+.form.user .button-wrapper {
+  position: relative;
+}
+
+.form.user .fields .adm #is_admin {
+  cursor: pointer;
+}
+
+.form.user .fields .adm label {
+  font-size: 1rem;
+  line-height: 1.15rem;
+  font-weight: bold;
+  color: #111111;
+
+  cursor: pointer;
 }
