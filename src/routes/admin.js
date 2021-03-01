@@ -21,7 +21,8 @@ routes.get("/logout", sessionController.logout);
 
 //USERS ROUTES
 routes.get("/profile", isLogged, profileController.index);
-routes.get("/users", isLogged, adminController.listUsers);
+routes.get("/users", isAdmin, usersController.list);
+routes.get("/users/:id/edit", isAdmin, adminController.editUser);
 
 //RECIPES ROUTES
 routes.get("/recipes/create", isLogged, recipesController.create);
@@ -58,5 +59,8 @@ routes.post(
 );
 routes.put("/chefs", isLogged, multer.array("avatar", 1), chefsController.put);
 routes.delete("/chefs", isLogged, chefsController.delete);
+
+//ADMIN USERS FORM
+routes.put("/users", usersController.list);
 
 module.exports = routes;
