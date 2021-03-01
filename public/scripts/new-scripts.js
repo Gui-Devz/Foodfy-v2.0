@@ -136,6 +136,12 @@ const confirmationOfButtons = {
 
     if (!confirmation) return e.preventDefault();
   },
+
+  verifyingBeforeDeleteUser(e) {
+    const confirmation = confirm("Deseja excluir esse usuário?!");
+
+    if (!confirmation) return e.preventDefault();
+  },
 };
 
 const controlContentRecipe = {
