@@ -1,0 +1,111 @@
+{% extends "../layout-admin.njk" %}
+
+{% block head %}
+  <title>Admin - Usuários</title>
+{% endblock head %}
+
+
+{% block content %}
+  <div class="admin">
+    <div class="head-users">
+      <h1>Usuários</h1>
+      <p class="button">Novo</p>
+    </div>
+    <div class="list-users">
+      {# {% for user in users %} #}
+        <div class="card-user">
+          <p class="name">Diego Fernades</p>
+          <p class="email">diego@rocketseat.com.br</p>
+          <div class="buttons">
+            <div><a href="/admin/users/1/edit">editar</a></div>
+            <div>
+              <form method="POST" action="/admin/users?_method=DELETE">
+                <input type="hidden" value="{{user.id}}">
+                <button type="submit">remover</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {# {% endfor %} #}
+      <div class="card-user">
+          <p class="name">Diego Fernades</p>
+          <p class="email">diego@rocketseat.com.br</p>
+          <div class="buttons">
+            <div><a href="#">editar</a></div>
+            <div>
+              <form method="POST" action="/admin/users?_method=DELETE">
+                <input type="hidden" value="{{user.id}}">
+                <button type="submit">remover</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <div class="card-user">
+          <p class="name">Diego Fernades</p>
+          <p class="email">diego@rocketseat.com.br</p>
+          <div class="buttons">
+            <div><a href="/admin/users/1/edit">editar</a></div>
+            <div>
+              <form method="POST" action="/admin/users?_method=DELETE">
+                <input type="hidden" value="{{user.id}}">
+                <button type="submit">remover</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <div class="card-user">
+          <p class="name">Diego Fernades</p>
+          <p class="email">diego@rocketseat.com.br</p>
+          <div class="buttons">
+            <div><a href="/admin/users/1/edit">editar</a></div>
+            <div>
+              <form method="POST" action="/admin/users?_method=DELETE">
+                <input type="hidden" value="{{user.id}}">
+                <button type="submit">remover</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <div class="card-user">
+          <p class="name">Diego Fernades</p>
+          <p class="email">diego@rocketseat.com.br</p>
+          <div class="buttons">
+            <div><a href="/admin/users/1/edit">editar</a></div>
+            <div>
+              <form method="POST" action="/admin/users?_method=DELETE">
+                <input type="hidden" value="{{user.id}}">
+                <button type="submit">remover</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <div class="card-user">
+          <p class="name">Diego Fernades</p>
+          <p class="email">diego@rocketseat.com.br</p>
+          <div class="buttons">
+            <div><a href="/admin/users/1/edit">editar</a></div>
+            <div>
+              <form method="POST" action="/admin/users?_method=DELETE">
+                <input type="hidden" value="{{user.id}}">
+                <button type="submit">remover</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <div class="card-user">
+          <p class="name">Diego Fernades</p>
+          <p class="email">diego@rocketseat.com.br</p>
+          <div class="buttons">
+            <div><a href="/admin/users/1/edit">editar</a></div>
+            <div>
+              <form method="POST" action="/admin/users?_method=DELETE">
+                <input type="hidden" value="{{user.id}}">
+                <button type="submit">remover</button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+{% endblock content %}
