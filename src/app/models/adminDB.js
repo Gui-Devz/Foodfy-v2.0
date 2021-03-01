@@ -1,22 +1,24 @@
 const db = require("../../config/db");
 const { hash } = require("bcryptjs");
-const { arrayDB, formatBrowser } = require("../../lib/utils");
+const { arrayDB } = require("../../lib/utils");
 
 module.exports = {
-  savingRecipe(dataPost) {
+  savingRecipe(dataPost, userID) {
     const query = `
             INSERT INTO recipes (
                 chef_id,
+                user_id,
                 title,
                 ingredients,
                 preparation,
                 information
-            ) VALUES ($1, $2, $3, $4, $5)
+            ) VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING id
         `;
 
     const values = [
       dataPost.chef_id,
+      userID,
       dataPost.title,
       arrayDB(dataPost.ingredients),
       arrayDB(dataPost.preparation),
@@ -25,26 +27,6 @@ module.exports = {
 
     return db.query(query, values);
   },
-
-  chefsIdAndNames() {
-    const query = `
-        SELECT id, name FROM chefs
-    `;
-
-    return db.query(query);
-  },
-  deleteRecipe(recipeID) {
-    const query = `DELETE FROM recipes WHERE id = $1`;
-
-    return db.query(query, [recipeID]);
-  },
-
-  deleteRecipeFromRecipeFiles(recipeID) {
-    const query = `DELETE FROM recipe_files WHERE recipe_files.recipe_id = $1`;
-
-    return db.query(query, [recipeID]);
-  },
-
   updateRecipe(dataPut) {
     const query = `
         UPDATE recipes SET
@@ -68,6 +50,26 @@ module.exports = {
     ];
 
     return db.query(query, values);
+  },
+
+  chefsIdAndNames() {
+    const query = `
+        SELECT id, name FROM chefs
+    `;
+
+    return db.query(query);
+  },
+
+  deleteRecipe(recipeID) {
+    const query = `DELETE FROM recipes WHERE id = $1`;
+
+    return db.query(query, [recipeID]);
+  },
+
+  deleteRecipeFromRecipeFiles(recipeID) {
+    const query = `DELETE FROM recipe_files WHERE recipe_files.recipe_id = $1`;
+
+    return db.query(query, [recipeID]);
   },
 
   createChef(name, fileID) {
