@@ -46,27 +46,6 @@ module.exports = {
     }
   },
 
-  async showAdmin(req, res) {
-    try {
-      const { id } = req.params;
-
-      let result = await Recipe.showRecipe(id);
-      const recipe = result.rows[0];
-
-      result = await File.showRecipeFiles(id);
-      //Formatting the path of the photos to send to the front-end
-      let recipeFiles = formatPath(result.rows, req);
-
-      return res.render("admin/recipes/show", {
-        recipe,
-        files: recipeFiles,
-        userLogged: req.user,
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
   async edit(req, res) {
     try {
       const { id } = req.params;
@@ -104,12 +83,17 @@ module.exports = {
     }
   },
 
+  // FORM functions
+
   async post(req, res) {
     try {
       const { ingredients, preparation } = req.body;
 
       if (validationOfBlankForms(req.body))
         return res.send("Fill all the fields");
+
+      console.log(req.body);
+      console.log(req.user);
 
       //Validation of quantity of images sent
       if (req.files.length === 0)
@@ -121,7 +105,7 @@ module.exports = {
         preparation: validationOfRecipeInputs(preparation),
       };
 
-      let results = await adminDB.savingRecipe(createdRecipe);
+      let results = await adminDB.savingRecipe(createdRecipe, req.user.id);
       const recipeID = results.rows[0].id;
 
       const imagesPromises = req.files.map((file) => {
