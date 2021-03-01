@@ -125,12 +125,14 @@ const confirmationOfButtons = {
   verifyingBeforeUpdateUser(e) {
     const password = document.querySelector(".item input[type='password']");
 
-    if (password.value === "") {
-      alert("Coloque a sua senha para atualizar os dados!");
-      return e.preventDefault();
+    if (password) {
+      if (password.value === "" && password) {
+        alert("Coloque a sua senha para atualizar os dados!");
+        return e.preventDefault();
+      }
     }
 
-    const confirmation = confirm("Deseja salvar esse chef?!");
+    const confirmation = confirm("Deseja atualizar os dados?!");
 
     if (!confirmation) return e.preventDefault();
   },
