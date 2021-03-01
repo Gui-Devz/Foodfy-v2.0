@@ -64,7 +64,7 @@ module.exports = {
     return newName;
   },
 
-  validationOfBlankForms(fields) {
+  validationOfBlankFields(fields) {
     const keys = Object.keys(fields);
 
     // console.log(fields);
