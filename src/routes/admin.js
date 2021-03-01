@@ -8,7 +8,7 @@ const profileController = require("../app/controllers/profileController");
 
 const sessionController = require("../app/controllers/sessionController");
 const { login } = require("../app/middlewares/validators/session");
-const { isLogged, isAdmin } = require("../app/middlewares/validators/user");
+const { isLogged, isAdmin } = require("../app/middlewares/validators/users");
 
 const routes = express.Router();
 
@@ -21,18 +21,18 @@ routes.get("/logout", sessionController.logout);
 
 //USERS ROUTES
 routes.get("/profile", isLogged, profileController.index);
-routes.get("/users", isLogged, usersController.list);
+routes.get("/users", isLogged, adminController.listUsers);
 
 //RECIPES ROUTES
 routes.get("/recipes/create", isLogged, recipesController.create);
-routes.get("/recipes/:id", isLogged, recipesController.showAdmin);
+routes.get("/recipes/:id", isLogged, adminController.showRecipe);
 routes.get("/recipes/:id/edit", isLogged, recipesController.edit);
 
 //CHEFS ROUTES
-routes.get("/chefs", isLogged, chefsController.listAdmin);
-routes.get("/chefs/create", isAdmin, chefsController.create);
-routes.get("/chefs/:id", isLogged, chefsController.show);
-routes.get("/chefs/:id/edit", isAdmin, chefsController.edit);
+routes.get("/chefs", isLogged, adminController.listChef);
+routes.get("/chefs/create", isAdmin, adminController.createChef);
+routes.get("/chefs/:id", isLogged, adminController.showChef);
+routes.get("/chefs/:id/edit", isAdmin, adminController.editChef);
 
 //ADMIN RECIPES FORM
 routes.post(
