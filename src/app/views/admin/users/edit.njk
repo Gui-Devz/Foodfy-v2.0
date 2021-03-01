@@ -2,33 +2,46 @@
 
 {% block head %}
 
-<title>Admin - Editando</title>
+<title>Admin - Editando {{user.name}}</title>
 
 {% endblock head %}
 
 {% block content %}
 
-<div class="recipe">
+<div class="admin">
 
-    <div class="form">
-        <div class="delete">
-            <form method="POST" action="/admin/recipes?_method=DELETE">
-                <input type="hidden" name="id" value="{{recipe.id}}">
-                <button class="button-delete" type="submit" onClick="confirmationOfButtons.verifyingBeforeDeleteRecipe(event)"><span>Deletar</span></a>
-            </form>
-        </div>
-        <form method="POST" action="/admin/recipes?_method=PUT" enctype="multipart/form-data">
+    <div class="form user">
+        <form method="POST" action="/admin/users?_method=PUT">
             <div class="head">
                 <div>
-
-                <span><h1>Editando Receita</h1></span>
+                  <span><h1>Bem vindo {{user.name}}</h1></span>
                 </div>
                 <div class="button-wrapper">
-                    <button class="button" type="submit" onClick="confirmationOfButtons.verifyingBeforeSavingRecipe(event)"><span>Salvar Receita</span></a>
+                    <button class="button" type="submit" onClick="confirmationOfButtons.verifyingBeforeUpdateUser(event)">
+                      <span>Salvar</span>
+                    </button>
                 </div>
             </div>
-            {%include "admin/recipes/fields.njk"%}
-            <input type="hidden" name="id" value="{{recipe.id}}">
+            <div class="fields">
+              <div class="info-user">
+                  <div class="item">
+                    <div>Nome</div>
+                    <div>
+                      <input type="text" name="name" placeholder="Digite o seu nome" value="{{user.name}}" required>
+                    </div>
+                  </div>
+                  <div class="item">
+                      <div>Email</div>
+                      <div>
+                        <input type="text" name="email" placeholder="Digite o seu email" value="{{user.email}}" required>
+                      </div>
+                  </div>
+              </div>
+              <div class="item">
+                  <div>Senha</div>
+                  <div><input type="password" name="passwword" placeholder="Digite a sua senha" required></div>
+              </div>
+            </div>
         </form>
     </div>
 </div>
