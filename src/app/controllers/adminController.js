@@ -118,18 +118,7 @@ module.exports = {
   },
 
   // USERS functions
-
-  async listUsers(req, res) {
-    try {
-      const result = await showChefs();
-      const chefsWithAvatarFormated = formatPath(result.rows, req);
-
-      return res.render("main/chefs/list", {
-        chefs: chefsWithAvatarFormated,
-        userLogged: req.user,
-      });
-    } catch (err) {
-      console.error(err);
-    }
+  async editUser(req, res) {
+    const { id } = req.params;
   },
 };
