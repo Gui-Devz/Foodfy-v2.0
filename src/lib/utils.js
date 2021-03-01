@@ -67,8 +67,10 @@ module.exports = {
   validationOfBlankForms(fields) {
     const keys = Object.keys(fields);
 
+    // console.log(fields);
+
     for (const key of keys) {
-      if (fields[key] == "" && key != "removed_files") {
+      if (fields[key] == "" && key != "removed_files" && key != "information") {
         return true;
       }
     }
