@@ -122,6 +122,12 @@ const confirmationOfButtons = {
     if (!confirmation) return e.preventDefault();
   },
 
+  verifyingBeforeSavingUser(e) {
+    const confirmation = confirm("Deseja cadastrar esse usuário?!");
+
+    if (!confirmation) return e.preventDefault();
+  },
+
   verifyingBeforeUpdateUser(e) {
     const password = document.querySelector(".item input[type='password']");
 
