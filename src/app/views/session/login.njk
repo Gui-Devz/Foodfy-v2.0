@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="action"><p>Iniciar Sessão</p></div>
-<form action="/admin/login" method="post">
+<form action="/users/login" method="POST">
   <div class="fields">
       <div class="item">
         <div>Email</div>
@@ -21,7 +21,7 @@
 
   <div class="buttons">
     <div>
-      <p>Perdeu a senha?</p>
+      <a href="/users/forgot-password"><p>Perdeu a senha?</p></a>
     </div>
     <div>
       <button type="submit">Acessar</button>
