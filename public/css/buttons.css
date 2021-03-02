@@ -68,7 +68,8 @@ p.avatar:active {
 
 /* === BTN DELETE === */
 
-.form .button-delete {
+.form .button-delete,
+.button-cancel {
   width: 136px;
   height: 37px;
 
