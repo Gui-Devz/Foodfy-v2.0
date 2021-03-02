@@ -1,20 +1,64 @@
-const adminDB = require("../models/adminDB");
-const { showChefs } = require("../models/chef");
+const Admin = require("../models/admin");
+const File = require("../models/file");
+const Chef = require("../models/chef");
 const {
   formatPath,
-  validationOfBlankForms,
+  validationOfBlankFields,
   validationOfChefName,
+  renderingRecipesWithOnlyOneFile,
 } = require("../../lib/utils");
 
 module.exports = {
   async list(req, res) {
     try {
-      const result = await showChefs();
-      const chefsWithAvatarFormated = formatPath(result.rows, req);
+      const result = await Chef.showAll();
+      const chefsWithAvatarPathFormated = formatPath(result.rows, req);
 
       return res.render("main/chefs/list", {
-        chefs: chefsWithAvatarFormated,
+        chefs: chefsWithAvatarPathFormated,
         userLogged: req.user,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  create(req, res) {
+    return res.render("admin/chefs/create", { userIsAdmin: req.user.is_admin });
+  },
+
+  async show(req, res) {
+    try {
+      const { id } = req.params;
+
+      let result = await Chef.show(id);
+      const chefWithAvatarPathFormated = formatPath(result.rows, req);
+
+      result = await Chef.showChefsRecipes(id);
+      let recipes = formatPath(result.rows, req);
+
+      recipes = renderingRecipesWithOnlyOneFile(recipes);
+
+      return res.render("admin/chefs/show", {
+        chef: chefWithAvatarPathFormated[0],
+        recipes,
+        userIsAdmin: req.user.is_admin,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  async edit(req, res) {
+    try {
+      const { id } = req.params;
+
+      let result = await Chef.show(id);
+      const chefWithAvatarPathFormated = formatPath(result.rows, req);
+
+      return res.render("admin/chefs/edit", {
+        chef: chefWithAvatarPathFormated[0],
+        userIsAdmin: req.user.is_admin,
       });
     } catch (err) {
       console.error(err);
@@ -23,19 +67,16 @@ module.exports = {
 
   async post(req, res) {
     try {
-      if (validationOfBlankForms(req.body))
+      if (validationOfBlankFields(req.body))
         return res.send("fill all the fields");
 
       if (req.files.length === 0) return res.send("Send at least one image");
 
-      let results = await adminDB.savingFile(
-        req.files[0].filename,
-        req.files[0].path
-      );
+      let results = await File.saving(req.files[0].filename, req.files[0].path);
       const fileID = results.rows[0].id;
 
       const chefName = validationOfChefName(req.body.name);
-      results = await adminDB.createChef(chefName, fileID);
+      results = await Chef.saving(chefName, fileID);
       const chefID = results.rows[0].id;
 
       return res.redirect(`/admin/chefs/${chefID}`);
@@ -47,7 +88,7 @@ module.exports = {
   async put(req, res) {
     try {
       console.log(req.body);
-      if (validationOfBlankForms(req.body))
+      if (validationOfBlankFields(req.body))
         return res.send("fill all the fields");
 
       if (req.body.file_id === 0 && req.files.length === 0)
@@ -62,14 +103,14 @@ module.exports = {
 
         fs.unlinkSync(oldFile.path);
 
-        results = await adminDB.updateFile(
+        results = await File.update(
           oldFile.id || 1,
           req.files[0].filename,
           req.files[0].path
         );
       }
 
-      results = await adminDB.updateChef(req.body.id, req.body.name);
+      results = await Chef.update(req.body.id, req.body.name);
 
       const chefID = results.rows[0].id;
 
@@ -89,8 +130,8 @@ module.exports = {
         let results = await File.showChefAvatar(id);
         const file_path = results.rows[0].path;
 
-        await adminDB.deleteChef(id);
-        await adminDB.deleteFile(file_id);
+        await Chef.delete(id);
+        await File.delete(file_id);
 
         fs.unlinkSync(file_path);
 

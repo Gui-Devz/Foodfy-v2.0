@@ -1,7 +1,6 @@
-const adminDB = require("../models/adminDB");
 const Recipe = require("../models/recipe");
 const File = require("../models/file");
-const { showChef, showChefs, showChefsRecipes } = require("../models/chef");
+const Chef = require("../models/chef");
 const {
   formatPath,
   renderingRecipesWithOnlyOneFile,
@@ -31,7 +30,7 @@ module.exports = {
 
       return res.render("admin/home/index", {
         recipes,
-        userLogged: req.user,
+        userIsAdmin: req.user.is_admin,
       });
     } catch (err) {
       console.error(err);
@@ -52,7 +51,7 @@ module.exports = {
       return res.render("admin/recipes/show", {
         recipe,
         files: recipeFiles,
-        userLogged: req.user,
+        userIsAdmin: req.user.is_admin,
       });
     } catch (err) {
       console.error(err);
@@ -60,57 +59,14 @@ module.exports = {
   },
 
   //CHEFS functions
-
   async listChef(req, res) {
     try {
-      const result = await showChefs();
+      const result = await Chef.showAll();
       const chefsWithAvatarFormated = formatPath(result.rows, req);
 
       return res.render("admin/chefs/list", {
         chefs: chefsWithAvatarFormated,
-        userLogged: req.user,
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
-  createChef(req, res) {
-    return res.render("admin/chefs/create", { userLogged: req.user });
-  },
-
-  async showChef(req, res) {
-    try {
-      const { id } = req.params;
-
-      let result = await showChef(id);
-      const chefWithAvatarPathFormated = formatPath(result.rows, req);
-
-      result = await showChefsRecipes(id);
-      let recipes = formatPath(result.rows, req);
-
-      recipes = renderingRecipesWithOnlyOneFile(recipes);
-
-      return res.render("admin/chefs/show", {
-        chef: chefWithAvatarPathFormated[0],
-        recipes,
-        userLogged: req.user,
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
-  async editChef(req, res) {
-    try {
-      const { id } = req.params;
-
-      let result = await showChef(id);
-      const chefWithAvatarPathFormated = formatPath(result.rows, req);
-
-      return res.render("admin/chefs/edit", {
-        chef: chefWithAvatarPathFormated[0],
-        userLogged: req.user,
+        userIsAdmin: req.user.is_admin,
       });
     } catch (err) {
       console.error(err);
@@ -118,7 +74,4 @@ module.exports = {
   },
 
   // USERS functions
-  async editUser(req, res) {
-    const { id } = req.params;
-  },
 };

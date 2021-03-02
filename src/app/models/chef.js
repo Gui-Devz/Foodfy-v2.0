@@ -1,7 +1,15 @@
 const db = require("../../config/db");
 
 module.exports = {
-  showChefs() {
+  chefsIdAndNames() {
+    const query = `
+        SELECT id, name FROM chefs
+    `;
+
+    return db.query(query);
+  },
+
+  showAll() {
     const query = `
         SELECT chefs.*, (SELECT count(*) FROM recipes WHERE chefs.id=recipes.chef_id) AS qt_recipes,
           files.path AS file_path, files.name AS file_name
@@ -14,7 +22,7 @@ module.exports = {
     return db.query(query);
   },
 
-  showChef(id) {
+  show(id) {
     const query = `
         SELECT DISTINCT ON (chefs.id)chefs.*, (SELECT count(*) FROM recipes WHERE chefs.id=recipes.chef_id) AS qt_recipes,
           files.id AS file_id, files.path AS file_path, files.name AS file_name
@@ -36,6 +44,36 @@ module.exports = {
         WHERE recipes.chef_id = $1
         ORDER BY recipes.created_at DESC
       `;
+
+    return db.query(query, [id]);
+  },
+
+  saving(name, fileID) {
+    const query = `
+        INSERT INTO chefs (
+        name,
+        file_id
+        ) VALUES ($1, $2)
+        RETURNING id
+      `;
+
+    return db.query(query, [name, fileID]);
+  },
+
+  update(id, name) {
+    const query = `
+        UPDATE chefs SET
+          name = $1
+        WHERE id = $2
+        RETURNING id;`;
+
+    let values = [name, id];
+
+    return db.query(query, values);
+  },
+
+  delete(id) {
+    const query = `DELETE FROM chefs WHERE id = $1`;
 
     return db.query(query, [id]);
   },

@@ -1,6 +1,6 @@
-const adminDB = require("../models/adminDB");
+const adminDB = require("../models/admin");
 const User = require("../models/user");
-const { showChef, showChefs, showChefsRecipes } = require("../models/chef");
+const { show, showAll, showChefsRecipes } = require("../models/chef");
 const {
   validationOfBlankFields,
   validationOfChefName,
@@ -10,16 +10,31 @@ const {
 module.exports = {
   async list(req, res) {
     try {
-      const result = await showChefs();
+      const result = await showAll();
       const chefsWithAvatarFormated = formatPath(result.rows, req);
 
       return res.render("admin/users/list", {
         chefs: chefsWithAvatarFormated,
-        userLogged: req.user,
+        userIsAdmin: req.user.is_admin,
       });
     } catch (err) {
       console.error(err);
     }
+  },
+
+  async edit(req, res) {
+    const { id } = req.params;
+
+    return res.render("admin/users/edit", {
+      userIsAdmin: req.user.is_admin,
+      user: req.user,
+    });
+  },
+
+  async create(req, res) {
+    return res.render("admin/users/create", {
+      userIsAdmin: req.user.is_admin,
+    });
   },
   async post(req, res) {
     try {

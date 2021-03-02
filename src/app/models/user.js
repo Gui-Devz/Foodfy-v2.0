@@ -1,7 +1,7 @@
 const db = require("../../config/db");
 
 module.exports = {
-  async findUser(filters) {
+  async find(filters) {
     try {
       let query = "SELECT * FROM users";
 
@@ -22,5 +22,28 @@ module.exports = {
     } catch (error) {
       console.error(error);
     }
+  },
+
+  async saving(dataPost) {
+    const query = `
+        INSERT INTO users (
+          name,
+          email,
+          password,
+          is_admin
+        ) VALUES ($1, $2, $3, $4)
+        RETURNING id
+      `;
+
+    const passwordHash = await hash(dataPost.password);
+
+    const values = [
+      dataPost.name,
+      dataPost.email,
+      passwordHash,
+      dataPost.isAdmin,
+    ];
+
+    return db.query(query, values);
   },
 };
