@@ -88,25 +88,7 @@ module.exports = {
 
   async post(req, res) {
     try {
-      const { ingredients, preparation } = req.body;
-
-      if (validationOfBlankFields(req.body))
-        return res.send("Fill all the fields");
-
-      console.log(req.body);
-      console.log(req.user);
-
-      //Validation of quantity of images sent
-      if (req.files.length === 0)
-        return res.send("Please send at least one image");
-
-      const createdRecipe = {
-        ...req.body,
-        ingredients: validationOfRecipeInputs(ingredients),
-        preparation: validationOfRecipeInputs(preparation),
-      };
-
-      let results = await Admin.saving(createdRecipe, req.user.id);
+      let results = await Recipe.saving(req.recipe, req.user.id);
       const recipeID = results.rows[0].id;
 
       const imagesPromises = req.files.map((file) => {
@@ -116,6 +98,7 @@ module.exports = {
       results = await Promise.all(imagesPromises);
       const filesID = results.map((file) => file.rows[0].id);
 
+      //INSERT INTO recipe_files
       const populateRecipeFiles = filesID.map((fileID) =>
         Admin.savingRecipeFiles(fileID, recipeID)
       );
@@ -130,45 +113,12 @@ module.exports = {
 
   async put(req, res) {
     try {
-      if (validationOfBlankFields(req.body))
-        return res.send("fill all the fields");
-
-      //making sure the req.body.files_id is read as an array
-      let existingFiles = "";
-      if (req.body.files_id) {
-        existingFiles = [...req.body.files_id];
-        if (typeof req.body.files_id != "object")
-          existingFiles = [req.body.files_id];
-      }
-
-      if (existingFiles.length === 0 && req.files.length === 0)
-        return res.send("Send at least one image");
-
-      const { ingredients, preparation, removed_files } = req.body;
-
-      //formatting the ingredients and preparation
-      const createdRecipe = {
-        ...req.body,
-        ingredients: validationOfRecipeInputs(ingredients),
-        preparation: validationOfRecipeInputs(preparation),
-      };
-
-      let results = await Admin.updateRecipe(createdRecipe);
+      let results = await Recipe.update(req.recipe);
       const recipeID = results.rows[0].id;
 
-      //making sure that the maximum images sent is 5!
-      const totalImagesSent = existingFiles.length + req.files.length;
-      if (totalImagesSent > 5)
-        return res.send("Send maximum of 5 images only!");
-
-      //making an array out of a string in req.body.removed_files
-      // and popping its last index because it's a comma.
-      let imagesRemoved = removed_files.split(",");
-      imagesRemoved.pop();
-
       //deleting files from DB and server
-      if (imagesRemoved.length > 0) {
-        const promisesFilesPath = imagesRemoved.map((fileID) => {
+      if (req.imagesRemoved.length > 0) {
+        const promisesFilesPath = req.imagesRemoved.map((fileID) => {
           return File.show(fileID);
         });
 
@@ -178,8 +128,10 @@ module.exports = {
 
         filesPath.forEach((filePath) => fs.unlinkSync(filePath));
 
-        const promisesRemovedPhotos = imagesRemoved.map((fileID) => {
-          return Admin.deleteFilesFromRecipeFiles(fileID);
+        const promisesRemovedPhotos = req.imagesRemoved.map((fileID) => {
+          return Admin.deleteFromRecipeFiles({
+            where: { "recipes_files.file_id": fileID },
+          });
         });
 
         await Promise.all(promisesRemovedPhotos);
@@ -202,6 +154,7 @@ module.exports = {
       return res.redirect(`/admin/recipes/${recipeID}`);
     } catch (err) {
       console.error(err);
+      return res.render("/admin", { error: "Erro inesperado!" });
     }
   },
 
@@ -224,7 +177,9 @@ module.exports = {
         Then we're gonna need to delete all the files from 'files' table and the
         recipe from 'recipes' tables
       */
-      await Admin.deleteRecipeFromRecipeFiles(id);
+      await Admin.deleteFromRecipeFiles({
+        where: { "recipe_files.recipe_id": id },
+      });
       await Admin.deleteRecipe(id);
       const promisesDeletingFiles = filesID.map((fileID) =>
         Admin.deleteFile(fileID)
