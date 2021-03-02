@@ -1,4 +1,5 @@
 const db = require("../../config/db");
+const { arrayDB } = require("../../lib/utils");
 
 module.exports = {
   showRecipe(id) {
@@ -86,7 +87,7 @@ module.exports = {
 
     let values = [
       dataPut.chef_id,
-      dataPut.user_id || 1,
+      dataPut.user_id,
       dataPut.title,
       arrayDB(dataPut.ingredients),
       arrayDB(dataPut.preparation),
