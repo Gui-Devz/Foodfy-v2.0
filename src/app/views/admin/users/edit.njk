@@ -25,30 +25,14 @@
                             </button>
                         </form>
                     </div>
-                    <button class="button" type="text" onClick="confirmationOfButtons.verifyingBeforeUpdateUser(event)">
+                    <button class="button" type="submit" onClick="confirmationOfButtons.verifyingBeforeUpdateUser(event)">
                       <span>Salvar</span>
                     </button>
                 </div>
             </div>
             <div class="fields">
               <div class="info-user">
-                  <div class="item">
-                    <div>Nome</div>
-                    <div>
-                      <input type="text" name="name" placeholder="Digite o seu nome" value="{{user.name}}" required>
-                    </div>
-                  </div>
-                  <div class="item">
-                      <div>Email</div>
-                      <div>
-                        <input type="text" name="email" placeholder="Digite o seu email" value="{{user.email}}" required>
-                      </div>
-                  </div>
-              </div>
-              <div class="adm">
-                <input type="checkbox" id="is_admin" name="is_admin" {% if userIsAdmin %} checked {% endif %}>
-                <label for="is_admin">Administrador</label>
-              </div>
+                {%include "./fields.njk"%}
             </div>
         </form>
     </div>
