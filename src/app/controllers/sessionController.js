@@ -5,6 +5,12 @@ module.exports = {
     }
     return res.render("session/login");
   },
+  forgotForm(req, res) {
+    return res.render("session/forgot-password");
+  },
+  resetForm(req, res) {
+    return res.render("session/reset-password");
+  },
 
   login(req, res) {
     try {
@@ -27,4 +33,8 @@ module.exports = {
       console.error(error);
     }
   },
+
+  async forgot(req, res) {},
+
+  async reset(req, res) {},
 };
