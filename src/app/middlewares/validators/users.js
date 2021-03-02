@@ -6,7 +6,7 @@ async function isLogged(req, res, next) {
     return res.render("session/login", { error: errorCreate });
   }
 
-  const user = await User.findUser({ where: { id: req.session.userID } });
+  const user = await User.find({ where: { id: req.session.userID } });
 
   req.user = user;
 
@@ -20,7 +20,7 @@ async function isAdmin(req, res, next) {
     return res.render("session/login", { error: errorCreate });
   }
 
-  const user = await User.findUser({ where: { id: userID } });
+  const user = await User.find({ where: { id: userID } });
 
   if (!user.is_admin) {
     const errorCreate = "Apenas o Admin tem acesso a essa funcionalidade!";
