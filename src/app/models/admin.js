@@ -3,26 +3,43 @@ const { hash } = require("bcryptjs");
 const { arrayDB } = require("../../lib/utils");
 
 module.exports = {
-  deleteRecipeFromRecipeFiles(recipeID) {
-    const query = `DELETE FROM recipe_files WHERE recipe_files.recipe_id = $1`;
-
-    return db.query(query, [recipeID]);
-  },
-
-  savingRecipeFiles(FileID, RecipeID) {
+  savingRecipeFiles(fileID, recipeID) {
     const query = `
             INSERT INTO recipe_files (
               recipe_id,
               file_id
             ) VALUES ($1, $2)`;
 
-    return db.query(query, [RecipeID, FileID]);
+    return db.query(query, [recipeID, fileID]);
   },
 
-  deleteFilesFromRecipeFiles(fileID) {
+  showAllRecipesFiles(recipeID) {
     const query = `
-      DELETE FROM recipe_files WHERE recipe_files.file_id = $1
-    `;
-    return db.query(query, [fileID]);
+            SELECT * FROM recipe_files
+            WHERE recipe_id=$1
+            `;
+
+    return db.query(query, [recipeID]);
+  },
+
+  deleteFromRecipeFiles(fileID, recipeID) {
+    try {
+      let query = "DELETE FROM recipe_files";
+
+      Object.keys(filters).map((key) => {
+        //WHERE | OR | AND
+        query = `
+          ${query}
+          ${key}
+        `;
+
+        Object.keys(filters[key]).map((field) => {
+          query = `${query} ${field} = '${filters[key][field]}'`;
+        });
+      });
+      return db.query(query);
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
