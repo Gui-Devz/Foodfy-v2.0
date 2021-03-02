@@ -7,6 +7,11 @@ const usersController = require("../app/controllers/usersController");
 const profileController = require("../app/controllers/profileController");
 
 const { isLogged, isAdmin } = require("../app/middlewares/validators/users");
+const {
+  checkInputFields,
+  checkInputImagesForPost,
+  checkInputImagesForPut,
+} = require("../app//middlewares/validators/recipes");
 
 const routes = express.Router();
 
@@ -21,9 +26,9 @@ routes.get("/users", isAdmin, usersController.list);
 routes.get("/users/create", isAdmin, usersController.create);
 routes.get("/users/:id/edit", isAdmin, usersController.edit);
 
-routes.post("/users", usersController.post);
-routes.put("/users", usersController.put);
-routes.delete("/users", usersController.delete);
+routes.post("/users", isAdmin, usersController.post);
+routes.put("/users", isAdmin, usersController.put);
+routes.delete("/users", isAdmin, usersController.delete);
 
 //RECIPES ROUTES
 routes.get("/recipes/create", isLogged, recipesController.create);
@@ -34,12 +39,16 @@ routes.post(
   "/recipes",
   isLogged,
   multer.array("images", 5),
+  checkInputFields,
+  checkInputImagesForPost,
   recipesController.post
 );
 routes.put(
   "/recipes",
   isLogged,
   multer.array("images", 5),
+  checkInputFields,
+  checkInputImagesForPut,
   recipesController.put
 );
 routes.delete("/recipes", isLogged, recipesController.delete);
