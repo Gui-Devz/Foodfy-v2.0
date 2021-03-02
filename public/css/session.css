@@ -108,6 +108,10 @@ body {
   color: #969696;
 }
 
+.buttons a {
+  text-decoration: none;
+}
+
 .buttons p:hover {
   font-weight: bold;
 }
