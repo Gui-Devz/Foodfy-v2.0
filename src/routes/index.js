@@ -6,12 +6,14 @@ const routes = express.Router();
 
 const recipes = require("./recipes");
 const admin = require("./admin");
+const users = require("./users");
 
 // HOME
 routes.get("/", homeController.index);
 
 routes.use("/recipes", recipes);
 routes.use("/admin", admin);
+routes.use("/users", users);
 
 // Alias
 routes.get("/accounts", (req, res) => {
