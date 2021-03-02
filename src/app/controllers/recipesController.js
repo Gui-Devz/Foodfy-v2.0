@@ -1,10 +1,11 @@
-const adminDB = require("../models/adminDB");
+const Admin = require("../models/admin");
 const Recipe = require("../models/recipe");
 const File = require("../models/file");
+const Chef = require("../models/chef");
 const {
   formatPath,
   renderingRecipesWithOnlyOneFile,
-  validationOfBlankForms,
+  validationOfBlankFields,
   validationOfRecipeInputs,
 } = require("../../lib/utils");
 
@@ -56,14 +57,14 @@ module.exports = {
       //Formatting the path of the photos to send to the front-end
       let recipeFiles = formatPath(result.rows, req);
 
-      result = await adminDB.chefsIdAndNames();
+      result = await Chef.chefsIdAndNames();
       const chefs = result.rows;
 
       return res.render("admin/recipes/edit", {
         recipe,
         recipeFiles,
         chefs,
-        userLogged: req.user,
+        userIsAdmin: req.user.is_admin,
       });
     } catch (err) {
       console.error(err);
@@ -71,12 +72,12 @@ module.exports = {
   },
   async create(req, res) {
     try {
-      const result = await adminDB.chefsIdAndNames();
+      const result = await Chef.chefsIdAndNames();
       const chefs = result.rows;
 
       return res.render("admin/recipes/create", {
         chefs,
-        userLogged: req.user,
+        userIsAdmin: req.user.is_admin,
       });
     } catch (err) {
       console.error(err);
@@ -89,7 +90,7 @@ module.exports = {
     try {
       const { ingredients, preparation } = req.body;
 
-      if (validationOfBlankForms(req.body))
+      if (validationOfBlankFields(req.body))
         return res.send("Fill all the fields");
 
       console.log(req.body);
@@ -105,18 +106,18 @@ module.exports = {
         preparation: validationOfRecipeInputs(preparation),
       };
 
-      let results = await adminDB.savingRecipe(createdRecipe, req.user.id);
+      let results = await Admin.saving(createdRecipe, req.user.id);
       const recipeID = results.rows[0].id;
 
       const imagesPromises = req.files.map((file) => {
-        return adminDB.savingFile(file.filename, file.path);
+        return File.saving(file.filename, file.path);
       });
 
       results = await Promise.all(imagesPromises);
       const filesID = results.map((file) => file.rows[0].id);
 
       const populateRecipeFiles = filesID.map((fileID) =>
-        adminDB.savingRecipeFiles(fileID, recipeID)
+        Admin.savingRecipeFiles(fileID, recipeID)
       );
 
       await Promise.all(populateRecipeFiles);
@@ -129,7 +130,7 @@ module.exports = {
 
   async put(req, res) {
     try {
-      if (validationOfBlankForms(req.body))
+      if (validationOfBlankFields(req.body))
         return res.send("fill all the fields");
 
       //making sure the req.body.files_id is read as an array
@@ -152,7 +153,7 @@ module.exports = {
         preparation: validationOfRecipeInputs(preparation),
       };
 
-      let results = await adminDB.updateRecipe(createdRecipe);
+      let results = await Admin.updateRecipe(createdRecipe);
       const recipeID = results.rows[0].id;
 
       //making sure that the maximum images sent is 5!
@@ -168,7 +169,7 @@ module.exports = {
       //deleting files from DB and server
       if (imagesRemoved.length > 0) {
         const promisesFilesPath = imagesRemoved.map((fileID) => {
-          return File.showFile(fileID);
+          return File.show(fileID);
         });
 
         results = await Promise.all(promisesFilesPath);
@@ -178,7 +179,7 @@ module.exports = {
         filesPath.forEach((filePath) => fs.unlinkSync(filePath));
 
         const promisesRemovedPhotos = imagesRemoved.map((fileID) => {
-          return adminDB.deleteFilesFromRecipeFiles(fileID);
+          return Admin.deleteFilesFromRecipeFiles(fileID);
         });
 
         await Promise.all(promisesRemovedPhotos);
@@ -187,12 +188,12 @@ module.exports = {
       //saving the new images
       if (req.files.length != 0) {
         const promisesOfSavingFiles = req.files.map((file) => {
-          return adminDB.savingFile(file.filename, file.path);
+          return File.saving(file.filename, file.path);
         });
 
         results = await Promise.all(promisesOfSavingFiles);
         const promisesRecipeFiles = results.map((file) => {
-          return adminDB.savingRecipeFiles(file.rows[0].id, recipeID);
+          return Admin.savingRecipeFiles(file.rows[0].id, recipeID);
         });
 
         await Promise.all(promisesRecipeFiles);
@@ -223,10 +224,10 @@ module.exports = {
         Then we're gonna need to delete all the files from 'files' table and the
         recipe from 'recipes' tables
       */
-      await adminDB.deleteRecipeFromRecipeFiles(id);
-      await adminDB.deleteRecipe(id);
+      await Admin.deleteRecipeFromRecipeFiles(id);
+      await Admin.deleteRecipe(id);
       const promisesDeletingFiles = filesID.map((fileID) =>
-        adminDB.deleteFile(fileID)
+        Admin.deleteFile(fileID)
       );
 
       await Promise.all(promisesDeletingFiles);
