@@ -17,7 +17,11 @@ module.exports = {
       const userID = req.user.id;
       req.session.userID = userID;
 
-      return res.redirect("/admin/profile");
+      if (req.user.is_admin) {
+        return res.redirect("/admin/users");
+      } else {
+        return res.redirect("/admin/profile");
+      }
     } catch (error) {
       console.error(error);
     }
