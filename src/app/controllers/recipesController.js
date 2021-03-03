@@ -5,9 +5,9 @@ const Chef = require("../models/chef");
 const {
   formatPath,
   renderingRecipesWithOnlyOneFile,
-  validationOfBlankFields,
-  validationOfRecipeInputs,
 } = require("../../lib/utils");
+
+const fs = require("fs");
 
 module.exports = {
   async list(req, res) {
@@ -113,7 +113,7 @@ module.exports = {
 
   async put(req, res) {
     try {
-      let results = await Recipe.update(req.recipe);
+      let results = await Recipe.update(req.recipe, req.user.id);
       const recipeID = results.rows[0].id;
 
       //deleting files from DB and server
@@ -129,9 +129,7 @@ module.exports = {
         filesPath.forEach((filePath) => fs.unlinkSync(filePath));
 
         const promisesRemovedPhotos = req.imagesRemoved.map((fileID) => {
-          return Admin.deleteFromRecipeFiles({
-            where: { "recipes_files.file_id": fileID },
-          });
+          return File.delete(fileID);
         });
 
         await Promise.all(promisesRemovedPhotos);
@@ -154,7 +152,9 @@ module.exports = {
       return res.redirect(`/admin/recipes/${recipeID}`);
     } catch (err) {
       console.error(err);
-      return res.render("/admin", { error: "Erro inesperado!" });
+      return res.render(`admin/home/index`, {
+        error: "Erro inesperado!",
+      });
     }
   },
 
@@ -166,28 +166,18 @@ module.exports = {
       const filesPath = results.rows.map((file) => file.file_path);
       const filesID = results.rows.map((file) => file.file_id);
 
-      console.log(filesID);
-
       //deleting images from server
       filesPath.forEach((filePath) => fs.unlinkSync(filePath));
 
-      /*
-        We need to delete all the Foreign keys, so we're gonna delete all rows
-        in 'recipe_files' table with the recipe_id.
-        Then we're gonna need to delete all the files from 'files' table and the
-        recipe from 'recipes' tables
-      */
-      await Admin.deleteFromRecipeFiles({
-        where: { "recipe_files.recipe_id": id },
-      });
-      await Admin.deleteRecipe(id);
+      //deleting recipe
+      await Recipe.delete(id);
       const promisesDeletingFiles = filesID.map((fileID) =>
-        Admin.deleteFile(fileID)
+        File.delete(fileID)
       );
 
       await Promise.all(promisesDeletingFiles);
 
-      return res.redirect("/admin/recipes");
+      return res.redirect("/admin");
     } catch (err) {
       console.error(err);
     }
