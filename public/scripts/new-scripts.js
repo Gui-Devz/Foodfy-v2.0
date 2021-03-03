@@ -106,10 +106,10 @@ const confirmationOfButtons = {
     recipeImages = Array.from(recipeImages).length;
     const imagesTags = document.querySelectorAll(".preview-images img");
 
-    if (recipeImages.length === 0 || imagesTags.length === 0) {
-      alert("Send at least one photo for recipe!");
-      return e.preventDefault();
-    }
+    // if (recipeImages.length === 0 || imagesTags.length === 0) {
+    //   alert("Send at least one photo for recipe!");
+    //   return e.preventDefault();
+    // }
 
     const confirmation = confirm("Deseja salvar essa receita?!");
 
