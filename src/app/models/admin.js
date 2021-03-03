@@ -1,6 +1,4 @@
 const db = require("../../config/db");
-const { hash } = require("bcryptjs");
-const { arrayDB } = require("../../lib/utils");
 
 module.exports = {
   savingRecipeFiles(fileID, recipeID) {
@@ -20,26 +18,5 @@ module.exports = {
             `;
 
     return db.query(query, [recipeID]);
-  },
-
-  deleteFromRecipeFiles(fileID, recipeID) {
-    try {
-      let query = "DELETE FROM recipe_files";
-
-      Object.keys(filters).map((key) => {
-        //WHERE | OR | AND
-        query = `
-          ${query}
-          ${key}
-        `;
-
-        Object.keys(filters[key]).map((field) => {
-          query = `${query} ${field} = '${filters[key][field]}'`;
-        });
-      });
-      return db.query(query);
-    } catch (error) {
-      console.error(error);
-    }
   },
 };
