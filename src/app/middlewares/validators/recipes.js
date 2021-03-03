@@ -38,25 +38,25 @@ async function checkInputImagesForPut(req, res, next) {
     const { removed_files } = req.body;
 
     const results = await Admin.showAllRecipesFiles(req.body.id);
-    const recipes = results.rows;
+    const recipesFiles = results.rows;
 
     /*
-      Making an array out of a string in req.body.removed_files
+    Making an array out of a string in req.body.removed_files
     and popping its last index because it's a comma.
     */
-    const imagesRemoved = removed_files.split(",").pop();
-    // imagesRemoved.pop();
+    let imagesRemoved = removed_files.split(",");
+    imagesRemoved.pop();
 
-    if (imagesRemoved.length >= recipes.length && req.files.length === 0) {
-      return res.render("/admin/recipes/edit", {
-        error: "Por favor! envie ao menos uma imagem!",
+    if (imagesRemoved.length >= recipesFiles.length && req.files.length === 0) {
+      return res.render(`admin/recipes/edit`, {
+        error: "Por favor, envie ao menos uma imagem!",
         recipe: req.body,
         chefs: req.chefs,
       });
     }
 
     //making sure that the maximum images sent is 5!
-    const totalImagesSent = recipes.length + req.files.length;
+    const totalImagesSent = recipesFiles.length + req.files.length;
     if (totalImagesSent > 5) {
       return res.render("/admin/recipes/edit", {
         error: "Por favor! envie no máximo 5 imagens!",
@@ -80,7 +80,6 @@ async function checkInputFields(req, res, next) {
 
     const result = await Chef.chefsIdAndNames();
     const chefs = result.rows;
-    console.log(req.body);
 
     if (validationOfBlankFields(req.body)) {
       return res.render("admin/recipes/create", {
