@@ -73,7 +73,7 @@ module.exports = {
 
     return db.query(query, values);
   },
-  update(dataPut) {
+  update(dataPut, userID) {
     const query = `
         UPDATE recipes SET
         chef_id = $1,
@@ -87,7 +87,7 @@ module.exports = {
 
     let values = [
       dataPut.chef_id,
-      dataPut.user_id,
+      userID,
       dataPut.title,
       arrayDB(dataPut.ingredients),
       arrayDB(dataPut.preparation),
