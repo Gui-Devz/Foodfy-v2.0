@@ -31,7 +31,7 @@ body .all {
   min-height: calc(100% - 50px);
   box-sizing: border-box;
 
-  padding: 0 20px 50px;
+  padding: 0 0 50px;
 
   margin: 0 auto;
 }
