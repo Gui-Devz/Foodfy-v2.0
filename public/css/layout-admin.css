@@ -6,13 +6,16 @@
 }
 
 .admin {
-  padding: 55px 0 0 231px;
+  padding: 0 0 0 231px;
 }
 
 .all.admin header {
   background-color: black;
   max-width: 100%;
   max-height: 80px;
+
+  box-sizing: border-box;
+  margin-bottom: 3.1rem;
 }
 
 .menu.admin {
@@ -83,4 +86,8 @@
 
 .menu.admin div a:hover {
   color: #999999;
+}
+
+.admin .recipe {
+  padding-top: 0;
 }
