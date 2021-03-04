@@ -1,7 +1,12 @@
 /* === LIST OF RECIPES CARDS IN THE ADMIN SESSION */
 
-.admin {
-  box-sizing: border-box;
+.admin .head-recipes {
+  width: 940px;
+  height: auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .admin .wrapper-grid {
@@ -10,7 +15,9 @@
 
   display: grid;
   grid-template-columns: 1fr 1fr;
+
   box-sizing: border-box;
+  padding-top: 4.5rem;
 
   column-gap: 75px;
   row-gap: 25px;

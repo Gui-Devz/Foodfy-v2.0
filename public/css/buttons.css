@@ -29,7 +29,8 @@ AND SENDING AVATAR CHEF BTN === */
 .recipe .button,
 .chef .button-edit,
 p.avatar,
-.admin .head-users .button {
+.admin .head-users .button,
+.admin .head-recipes .button {
   width: 136px;
   height: 37px;
 
@@ -56,7 +57,8 @@ p.avatar,
 .head .button:hover,
 .head .button-edit:hover,
 p.avatar:hover,
-.admin .head-users .button:hover {
+.admin .head-users .button:hover,
+.admin .head-recipes .button:hover {
   background-color: #6056aa;
 }
 

@@ -7,6 +7,8 @@
 
 .admin {
   padding: 0 0 0 231px;
+
+  box-sizing: border-box;
 }
 
 .all.admin header {

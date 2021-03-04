@@ -8,8 +8,10 @@
 
 {% block content %}
 <div class="admin">
-    <h1>Gerenciar receitas</h1>
-
+  <div class="head-recipes">
+      <h1>Gerenciar receitas</h1>
+      <p><a class="button" href="/admin/recipes/create">Novo</a></p>
+  </div>
     <div class="wrapper-grid">
         {% for recipe in recipes %}
 
