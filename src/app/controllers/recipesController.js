@@ -13,11 +13,18 @@ module.exports = {
   async list(req, res) {
     try {
       const { filter } = req.query;
-      let result = "";
+      let results = "";
 
-      result = await Recipe.showRecipesWithImages(filter);
+      if (filter) {
+        results = await Recipe.searchFilter({
+          where: { "recipes.title": filter },
+          or: { "recipes.information": filter },
+        });
+      } else {
+        results = await Recipe.find();
+      }
 
-      let recipes = formatPath(result.rows, req);
+      let recipes = formatPath(results, req);
 
       //Showing only one recipe instead of one recipe per file.
       recipes = renderingRecipesWithOnlyOneFile(recipes);
@@ -32,12 +39,13 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      let result = await Recipe.showRecipe(id);
-      const recipe = result.rows[0];
+      let results = await Recipe.find({ where: { "recipes.id": id } });
+      const recipe = results[0];
 
-      result = await File.showRecipeFiles(id);
-      const files = formatPath(result.rows, req);
+      results = await File.showRecipeFiles(id);
+      const files = formatPath(results.rows, req);
 
+      console.log(recipe);
       return res.render("main/recipes/show", {
         recipe,
         files,
@@ -50,15 +58,15 @@ module.exports = {
   async edit(req, res) {
     try {
       const { id } = req.params;
-      let result = await Recipe.showRecipe(id);
-      const recipe = result.rows[0];
+      let results = await Recipe.find({ where: { "recipes.id": id } });
+      const recipe = results[0];
 
-      result = await File.showRecipeFiles(id);
+      results = await File.showRecipeFiles(id);
       //Formatting the path of the photos to send to the front-end
-      let recipeFiles = formatPath(result.rows, req);
+      let recipeFiles = formatPath(results.rows, req);
 
-      result = await Chef.chefsIdAndNames();
-      const chefs = result.rows;
+      results = await Chef.chefsIdAndNames();
+      const chefs = results.rows;
 
       return res.render("admin/recipes/edit", {
         recipe,

@@ -2,105 +2,134 @@ const db = require("../../config/db");
 const { arrayDB } = require("../../lib/utils");
 
 module.exports = {
-  showRecipe(id) {
-    const query = `
-        SELECT recipes.*, recipes.chef_id AS chef_id, chefs.name AS chef
-        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
-        WHERE recipes.id = $1
-      `;
+  async find(filters) {
+    try {
+      let query = `
+          SELECT recipes.*, files.name AS file_name,
+              files.path AS file_path, chefs.name AS chef
+          FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
+          INNER JOIN files ON (recipe_files.file_id = files.id)
+          INNER JOIN chefs ON (recipes.chef_id = chefs.id)`;
 
-    return db.query(query, [id]);
-  },
+      if (filters) {
+        Object.keys(filters).map((key) => {
+          //WHERE | OR | AND
+          query = `
+            ${query}
+            ${key}
+          `;
 
-  showRecipesWithImages(filter) {
-    let query = "";
-    let filterQuery = "";
-    let orderQuery = `ORDER BY recipes.created_at DESC`;
+          Object.keys(filters[key]).map((field) => {
+            query = `${query} ${field} = '${filters[key][field]}'`;
+          });
+        });
+      }
 
-    if (filter) {
-      filterQuery = `WHERE recipes.title ILIKE '%${filter}%'
-                      OR recipes.information ILIKE '%${filter}%'`;
+      const result = await db.query(query);
 
-      orderQuery = `ORDER BY recipes.updated_at DESC`;
+      return result.rows;
+    } catch (error) {
+      console.error(error);
     }
-
-    query = `SELECT recipes.*, files.name AS file_name,
-              files.path AS file_path, chefs.name AS chef
-            FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
-            INNER JOIN files ON (recipe_files.file_id = files.id)
-            INNER JOIN chefs ON (recipes.chef_id = chefs.id)
-            ${filterQuery}
-            ${orderQuery}
-            `;
-
-    return db.query(query);
   },
 
-  showUserRecipes(userID) {
-    const query = `
-     SELECT recipes.*, files.name AS file_name,
+  async searchFilter(filters) {
+    try {
+      let query = `
+          SELECT recipes.*, files.name AS file_name,
               files.path AS file_path, chefs.name AS chef
-            FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
-            INNER JOIN files ON (recipe_files.file_id = files.id)
-            INNER JOIN chefs ON (recipes.chef_id = chefs.id)
-            WHERE recipes.user_id = $1
-    `;
+          FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
+          INNER JOIN files ON (recipe_files.file_id = files.id)
+          INNER JOIN chefs ON (recipes.chef_id = chefs.id)`;
 
-    return db.query(query, [userID]);
+      Object.keys(filters).map((key) => {
+        //WHERE | OR | AND
+        query = `
+            ${query}
+            ${key}
+          `;
+
+        Object.keys(filters[key]).map((field) => {
+          query = `${query} ${field} ILIKE '${filters[key][field]}'`;
+        });
+      });
+
+      query = `
+          ${query}
+          ORDER BY recipes.created_at DESC
+        `;
+
+      const result = await db.query(query);
+
+      return result.rows;
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   saving(dataPost, userID) {
-    const query = `
-            INSERT INTO recipes (
-                chef_id,
-                user_id,
-                title,
-                ingredients,
-                preparation,
-                information
-            ) VALUES ($1, $2, $3, $4, $5, $6)
-            RETURNING id
-        `;
+    try {
+      const query = `
+              INSERT INTO recipes (
+                  chef_id,
+                  user_id,
+                  title,
+                  ingredients,
+                  preparation,
+                  information
+              ) VALUES ($1, $2, $3, $4, $5, $6)
+              RETURNING id
+          `;
 
-    const values = [
-      dataPost.chef_id,
-      userID,
-      dataPost.title,
-      arrayDB(dataPost.ingredients),
-      arrayDB(dataPost.preparation),
-      dataPost.information,
-    ];
+      const values = [
+        dataPost.chef_id,
+        userID,
+        dataPost.title,
+        arrayDB(dataPost.ingredients),
+        arrayDB(dataPost.preparation),
+        dataPost.information,
+      ];
 
-    return db.query(query, values);
+      return db.query(query, values);
+    } catch (error) {
+      console.error(error);
+    }
   },
   update(dataPut, userID) {
-    const query = `
-        UPDATE recipes SET
-        chef_id = $1,
-        user_id = $2,
-        title = $3,
-        ingredients = $4,
-        preparation = $5,
-        information = $6
-      WHERE id=$7
-      RETURNING id`;
+    try {
+      const query = `
+          UPDATE recipes SET
+          chef_id = $1,
+          user_id = $2,
+          title = $3,
+          ingredients = $4,
+          preparation = $5,
+          information = $6
+        WHERE id=$7
+        RETURNING id`;
 
-    let values = [
-      dataPut.chef_id,
-      userID,
-      dataPut.title,
-      arrayDB(dataPut.ingredients),
-      arrayDB(dataPut.preparation),
-      dataPut.information,
-      dataPut.id,
-    ];
+      let values = [
+        dataPut.chef_id,
+        userID,
+        dataPut.title,
+        arrayDB(dataPut.ingredients),
+        arrayDB(dataPut.preparation),
+        dataPut.information,
+        dataPut.id,
+      ];
 
-    return db.query(query, values);
+      return db.query(query, values);
+    } catch (error) {
+      console.error(error);
+    }
   },
-
   delete(recipeID) {
-    const query = `DELETE FROM recipes WHERE id = $1`;
+    try {
+      const query = `DELETE FROM recipes WHERE id = $1`;
 
-    return db.query(query, [recipeID]);
+      return db.query(query, [recipeID]);
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
