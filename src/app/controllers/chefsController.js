@@ -11,8 +11,8 @@ const {
 module.exports = {
   async list(req, res) {
     try {
-      const result = await Chef.showAll();
-      const chefsWithAvatarPathFormated = formatPath(result.rows, req);
+      const results = await Chef.show();
+      const chefsWithAvatarPathFormated = formatPath(results, req);
 
       return res.render("main/chefs/list", {
         chefs: chefsWithAvatarPathFormated,
@@ -31,11 +31,11 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      let result = await Chef.show(id);
-      const chefWithAvatarPathFormated = formatPath(result.rows, req);
+      let results = await Chef.show({ where: { "chefs.id": id } });
+      const chefWithAvatarPathFormated = formatPath(results, req);
 
-      result = await Chef.showChefsRecipes(id);
-      let recipes = formatPath(result.rows, req);
+      results = await Chef.showChefsRecipes(id);
+      let recipes = formatPath(results.rows, req);
 
       recipes = renderingRecipesWithOnlyOneFile(recipes);
 
@@ -53,8 +53,8 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      let result = await Chef.show(id);
-      const chefWithAvatarPathFormated = formatPath(result.rows, req);
+      let result = await Chef.show({ where: { "chefs.id": id } });
+      const chefWithAvatarPathFormated = formatPath(result, req);
 
       return res.render("admin/chefs/edit", {
         chef: chefWithAvatarPathFormated[0],
@@ -124,7 +124,7 @@ module.exports = {
     try {
       const { id, file_id, qt_recipes } = req.body;
 
-      console.log(qt_recipes);
+      // console.log(qt_recipes);
 
       if (qt_recipes === 0) {
         let results = await File.showChefAvatar(id);

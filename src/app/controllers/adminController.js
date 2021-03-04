@@ -63,8 +63,8 @@ module.exports = {
   //CHEFS functions
   async listChef(req, res) {
     try {
-      const result = await Chef.showAll();
-      const chefsWithAvatarFormated = formatPath(result.rows, req);
+      const results = await Chef.show();
+      const chefsWithAvatarFormated = formatPath(results, req);
 
       return res.render("admin/chefs/list", {
         chefs: chefsWithAvatarFormated,
