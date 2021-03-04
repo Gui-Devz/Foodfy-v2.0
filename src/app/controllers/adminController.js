@@ -13,14 +13,16 @@ module.exports = {
       let recipes = "";
 
       if (req.user.is_admin) {
-        results = await Recipe.showRecipesWithImages();
+        results = await Recipe.find();
 
-        recipes = formatPath(results.rows, req);
+        recipes = formatPath(results, req);
 
         //Showing only one recipe instead of one recipe per file.
         recipes = renderingRecipesWithOnlyOneFile(recipes);
       } else {
-        results = await Recipe.showUserRecipes(req.session.userID);
+        results = await Recipe.find({
+          where: { "recipes.user_id": req.session.userID },
+        });
 
         recipes = formatPath(results.rows, req);
 
@@ -41,8 +43,8 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      let result = await Recipe.showRecipe(id);
-      const recipe = result.rows[0];
+      let result = await Recipe.find({ where: { "recipes.id": id } });
+      const recipe = result[0];
 
       result = await File.showRecipeFiles(id);
       //Formatting the path of the photos to send to the front-end
