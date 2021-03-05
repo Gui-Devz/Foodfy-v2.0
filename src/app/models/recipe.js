@@ -12,6 +12,7 @@ module.exports = {
           INNER JOIN chefs ON (recipes.chef_id = chefs.id)`;
 
       if (filters) {
+        // console.log(Object.values(filters));
         Object.keys(filters).map((key) => {
           //WHERE | OR | AND
           query = `
@@ -20,11 +21,13 @@ module.exports = {
           `;
 
           Object.keys(filters[key]).map((field) => {
+            // console.log(field);
             query = `${query} ${field} = '${filters[key][field]}'`;
           });
         });
       }
 
+      // console.log(query);
       const result = await db.query(query);
 
       return result.rows;
