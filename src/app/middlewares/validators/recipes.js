@@ -1,10 +1,12 @@
 const {
   validationOfBlankFields,
   validationOfRecipeInputs,
+  renderingRecipesWithOnlyOneFile,
 } = require("../../../lib/utils");
 
 const Chef = require("../../models/chef");
 const Admin = require("../../models/admin");
+const Recipe = require("../../models/recipe");
 
 async function checkInputImagesForPost(req, res, next) {
   try {
@@ -29,7 +31,15 @@ async function checkInputImagesForPost(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("admin/home/index", { error: "Erro inesperado!" });
+    let results = await Recipe.find({ where: { user_id: req.session.userID } });
+    //Showing only one recipe instead of one recipe per file.
+    let recipes = renderingRecipesWithOnlyOneFile(results);
+
+    recipes = formatPath(recipes, req);
+    return res.render(`admin/home/index`, {
+      error: "Erro inesperado!",
+      recipes: recipes,
+    });
   }
 }
 
@@ -70,7 +80,15 @@ async function checkInputImagesForPut(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("admin/home/index", { error: "Erro inesperado!" });
+    let results = await Recipe.find({ where: { user_id: req.session.userID } });
+    //Showing only one recipe instead of one recipe per file.
+    let recipes = renderingRecipesWithOnlyOneFile(results);
+
+    recipes = formatPath(recipes, req);
+    return res.render(`admin/home/index`, {
+      error: "Erro inesperado!",
+      recipes: recipes,
+    });
   }
 }
 
@@ -100,7 +118,15 @@ async function checkInputFields(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("admin/home/index", { error: "Erro inesperado!" });
+    let results = await Recipe.find({ where: { user_id: req.session.userID } });
+    //Showing only one recipe instead of one recipe per file.
+    let recipes = renderingRecipesWithOnlyOneFile(results);
+
+    recipes = formatPath(recipes, req);
+    return res.render(`admin/home/index`, {
+      error: "Erro inesperado!",
+      recipes: recipes,
+    });
   }
 }
 

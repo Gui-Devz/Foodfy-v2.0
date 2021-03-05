@@ -1,7 +1,11 @@
-const { validationOfBlankFields } = require("../../../lib/utils");
+const {
+  validationOfBlankFields,
+  renderingRecipesWithOnlyOneFile,
+} = require("../../../lib/utils");
 const Chef = require("../../models/chef");
+const Recipe = require("../../models/recipe");
 
-function checkInputFieldsChef(req, res, next) {
+async function checkInputFieldsChef(req, res, next) {
   try {
     // console.log(req.body);
     if (validationOfBlankFields(req.body)) {
@@ -14,11 +18,19 @@ function checkInputFieldsChef(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("admin/home/index", { error: "Erro inesperado!" });
+    let results = await Recipe.find({ where: { user_id: req.session.userID } });
+    //Showing only one recipe instead of one recipe per file.
+    let recipes = renderingRecipesWithOnlyOneFile(results);
+
+    recipes = formatPath(recipes, req);
+    return res.render(`admin/home/index`, {
+      error: "Erro inesperado!",
+      recipes: recipes,
+    });
   }
 }
 
-function checkImageBeforePostChef(req, res, next) {
+async function checkImageBeforePostChef(req, res, next) {
   try {
     // console.log(req.body.file_id);
     if (req.files.length === 0 && req.body.file_id === 0) {
@@ -31,7 +43,15 @@ function checkImageBeforePostChef(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("admin/home/index", { error: "Erro inesperado!" });
+    let results = await Recipe.find({ where: { user_id: req.session.userID } });
+    //Showing only one recipe instead of one recipe per file.
+    let recipes = renderingRecipesWithOnlyOneFile(results);
+
+    recipes = formatPath(recipes, req);
+    return res.render(`admin/home/index`, {
+      error: "Erro inesperado!",
+      recipes: recipes,
+    });
   }
 }
 
@@ -52,7 +72,15 @@ async function checkIfChefHasRecipeBeforeDelete(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("admin/home/index", { error: "Erro inesperado!" });
+    let results = await Recipe.find({ where: { user_id: req.session.userID } });
+    //Showing only one recipe instead of one recipe per file.
+    let recipes = renderingRecipesWithOnlyOneFile(results);
+
+    recipes = formatPath(recipes, req);
+    return res.render(`admin/home/index`, {
+      error: "Erro inesperado!",
+      recipes: recipes,
+    });
   }
 }
 
