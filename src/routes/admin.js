@@ -12,6 +12,11 @@ const {
   checkInputImagesForPost,
   checkInputImagesForPut,
 } = require("../app//middlewares/validators/recipes");
+const {
+  checkInputFieldsChef,
+  checkImageBeforePostChef,
+  checkIfChefHasRecipeBeforeDelete,
+} = require("../app//middlewares/validators/chefs");
 
 const routes = express.Router();
 
@@ -61,11 +66,24 @@ routes.get("/chefs/:id/edit", isAdmin, chefsController.edit);
 
 routes.post(
   "/chefs",
-  isLogged,
+  isAdmin,
   multer.array("avatar", 1),
+  checkInputFieldsChef,
+  checkImageBeforePostChef,
   chefsController.post
 );
-routes.put("/chefs", isLogged, multer.array("avatar", 1), chefsController.put);
-routes.delete("/chefs", isLogged, chefsController.delete);
+routes.put(
+  "/chefs",
+  isAdmin,
+  multer.array("avatar", 1),
+  checkInputFieldsChef,
+  chefsController.put
+);
+routes.delete(
+  "/chefs",
+  isAdmin,
+  checkIfChefHasRecipeBeforeDelete,
+  chefsController.delete
+);
 
 module.exports = routes;
