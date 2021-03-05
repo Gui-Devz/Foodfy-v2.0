@@ -41,47 +41,78 @@ module.exports = {
     }
   },
 
-  showChefsRecipes(id) {
-    const query = `
-        SELECT DISTINCT recipes.*, chefs.name AS chef,
-          files.path AS file_path, files.name AS file_name
-        FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
-        INNER JOIN files ON (recipe_files.file_id = files.id)
-        INNER JOIN chefs ON (recipes.chef_id = chefs.id)
-        WHERE recipes.chef_id = $1
-        ORDER BY recipes.created_at DESC
+  quantityOfRecipes(chefID) {
+    try {
+      const query = `
+        SELECT DISTINCT ON (chefs.id)chefs.*,
+          (SELECT count(*) FROM recipes WHERE chefs.id=recipes.chef_id) AS qt_recipes
+        FROM chefs LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
+        WHERE chefs.id = $1
       `;
 
-    return db.query(query, [id]);
+      return db.query(query, [chefID]);
+    } catch (error) {
+      console.error(error);
+    }
+  },
+
+  showChefsRecipes(id) {
+    try {
+      const query = `
+          SELECT DISTINCT recipes.*, chefs.name AS chef,
+            files.path AS file_path, files.name AS file_name
+          FROM recipe_files LEFT JOIN recipes ON (recipe_files.recipe_id = recipes.id)
+          INNER JOIN files ON (recipe_files.file_id = files.id)
+          INNER JOIN chefs ON (recipes.chef_id = chefs.id)
+          WHERE recipes.chef_id = $1
+          ORDER BY recipes.created_at DESC
+        `;
+
+      return db.query(query, [id]);
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   saving(name, fileID) {
-    const query = `
-        INSERT INTO chefs (
-        name,
-        file_id
-        ) VALUES ($1, $2)
-        RETURNING id
-      `;
+    try {
+      const query = `
+          INSERT INTO chefs (
+          name,
+          file_id
+          ) VALUES ($1, $2)
+          RETURNING id
+        `;
 
-    return db.query(query, [name, fileID]);
+      return db.query(query, [name, fileID]);
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   update(id, name) {
-    const query = `
-        UPDATE chefs SET
-          name = $1
-        WHERE id = $2
-        RETURNING id;`;
+    try {
+      const query = `
+          UPDATE chefs SET
+            name = $1
+          WHERE id = $2
+          RETURNING id;`;
 
-    let values = [name, id];
+      let values = [name, id];
 
-    return db.query(query, values);
+      return db.query(query, values);
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   delete(id) {
-    const query = `DELETE FROM chefs WHERE id = $1`;
+    try {
+      const query = `DELETE FROM chefs WHERE id = $1`;
 
-    return db.query(query, [id]);
+      return db.query(query, [id]);
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
