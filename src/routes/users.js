@@ -6,7 +6,7 @@ const {
   checkFormLogin,
   checkFormReset,
 } = require("../app/middlewares/validators/session");
-const { login } = require("../app/middlewares/validators/users");
+const { login, isLogged } = require("../app/middlewares/validators/users");
 
 const routes = express.Router();
 
@@ -14,7 +14,7 @@ const routes = express.Router();
 routes.get("/login", login, sessionController.loginForm);
 routes.get("/forgot-password", login, sessionController.forgotForm);
 routes.get("/reset-password", login, sessionController.resetForm);
-routes.get("/logout", login, sessionController.logout);
+routes.get("/logout", isLogged, sessionController.logout);
 
 routes.post("/login", checkFormLogin, sessionController.login);
 routes.post("/forgot-password", checkFormForgot, sessionController.forgot);
