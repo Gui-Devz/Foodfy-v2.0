@@ -70,7 +70,12 @@ module.exports = {
     // console.log(fields);
 
     for (const key of keys) {
-      if (fields[key] == "" && key != "removed_files" && key != "information") {
+      if (
+        fields[key] == "" &&
+        key != "removed_files" &&
+        key != "information" &&
+        key != "file_id"
+      ) {
         return true;
       }
     }
