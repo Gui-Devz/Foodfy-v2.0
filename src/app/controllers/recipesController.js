@@ -45,7 +45,7 @@ module.exports = {
       results = await File.showRecipeFiles(id);
       const files = formatPath(results.rows, req);
 
-      console.log(recipe);
+      //console.log(recipe);
       return res.render("main/recipes/show", {
         recipe,
         files,
