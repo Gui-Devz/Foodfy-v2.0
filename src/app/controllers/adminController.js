@@ -24,7 +24,7 @@ module.exports = {
           where: { "recipes.user_id": req.session.userID },
         });
 
-        recipes = formatPath(results.rows, req);
+        recipes = formatPath(results, req);
 
         //Showing only one recipe instead of one recipe per file.
         recipes = renderingRecipesWithOnlyOneFile(recipes);
