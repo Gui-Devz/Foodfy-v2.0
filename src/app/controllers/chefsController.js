@@ -1,9 +1,7 @@
-const Admin = require("../models/admin");
 const File = require("../models/file");
 const Chef = require("../models/chef");
 const {
   formatPath,
-  validationOfBlankFields,
   validationOfChefName,
   renderingRecipesWithOnlyOneFile,
 } = require("../../lib/utils");
