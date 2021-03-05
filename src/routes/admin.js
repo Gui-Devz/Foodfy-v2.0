@@ -6,7 +6,11 @@ const chefsController = require("../app/controllers/chefsController");
 const usersController = require("../app/controllers/usersController");
 const profileController = require("../app/controllers/profileController");
 
-const { isLogged, isAdmin } = require("../app/middlewares/validators/users");
+const {
+  isLogged,
+  isAdmin,
+  recipeOwner,
+} = require("../app/middlewares/validators/users");
 const {
   checkInputFields,
   checkInputImagesForPost,
@@ -38,7 +42,7 @@ routes.delete("/users", isAdmin, usersController.delete);
 //RECIPES ROUTES
 routes.get("/recipes/create", isLogged, recipesController.create);
 routes.get("/recipes/:id", isLogged, adminController.showRecipe);
-routes.get("/recipes/:id/edit", isLogged, recipesController.edit);
+routes.get("/recipes/:id/edit", isLogged, recipeOwner, recipesController.edit);
 
 routes.post(
   "/recipes",
