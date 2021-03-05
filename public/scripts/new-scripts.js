@@ -74,11 +74,11 @@ const confirmationOfButtons = {
 
       if (!confirmation) return e.preventDefault();
     }
-    if (divDelete.dataset.has_recipes != "0") {
-      alert("Não é permitido excluir chefs que tenham receitas cadastradas!");
+    // if (divDelete.dataset.has_recipes != "0") {
+    //   alert("Não é permitido excluir chefs que tenham receitas cadastradas!");
 
-      return e.preventDefault();
-    }
+    //   return e.preventDefault();
+    // }
   },
 
   verifyingBeforeSavingChef(e) {
@@ -86,10 +86,10 @@ const confirmationOfButtons = {
     avatarImage = Array.from(avatarImage).length;
     const pTag = document.querySelector("#avatar-img");
 
-    if (avatarImage.length === 0 || pTag.innerHTML === "") {
-      alert("Send at least one photo for chef!");
-      return e.preventDefault();
-    }
+    // if (avatarImage.length === 0 || pTag.innerHTML === "") {
+    //   alert("Send at least one photo for chef!");
+    //   return e.preventDefault();
+    // }
 
     const confirmation = confirm("Deseja salvar esse chef?!");
 
