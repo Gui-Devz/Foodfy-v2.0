@@ -8,6 +8,8 @@ const {
   renderingRecipesWithOnlyOneFile,
 } = require("../../lib/utils");
 
+const fs = require("fs");
+
 module.exports = {
   async list(req, res) {
     try {
@@ -67,13 +69,9 @@ module.exports = {
 
   async post(req, res) {
     try {
-      if (validationOfBlankFields(req.body))
-        return res.send("fill all the fields");
-
-      if (req.files.length === 0) return res.send("Send at least one image");
-
       let results = await File.saving(req.files[0].filename, req.files[0].path);
       const fileID = results.rows[0].id;
+      console.log(fileID);
 
       const chefName = validationOfChefName(req.body.name);
       results = await Chef.saving(chefName, fileID);
@@ -82,29 +80,25 @@ module.exports = {
       return res.redirect(`/admin/chefs/${chefID}`);
     } catch (err) {
       console.error(err);
+      return res.render(`admin/home/index`, {
+        error: "Erro inesperado!",
+      });
     }
   },
 
   async put(req, res) {
     try {
-      console.log(req.body);
-      if (validationOfBlankFields(req.body))
-        return res.send("fill all the fields");
-
-      if (req.body.file_id === 0 && req.files.length === 0)
-        return res.send("Send at least one image");
-
       let results = "";
 
       if (req.files.length != 0) {
         //getting the old file path to delete from server.
-        results = await File.showChefAvatar(req.body.id);
+        results = await File.showChefAvatarFile(req.body.id);
         const oldFile = results.rows[0];
 
         fs.unlinkSync(oldFile.path);
 
         results = await File.update(
-          oldFile.id || 1,
+          oldFile.id,
           req.files[0].filename,
           req.files[0].path
         );
@@ -117,6 +111,9 @@ module.exports = {
       return res.redirect(`/admin/chefs/${chefID}`);
     } catch (err) {
       console.error(err);
+      return res.render(`admin/home/index`, {
+        error: "Erro inesperado!",
+      });
     }
   },
 
@@ -126,21 +123,20 @@ module.exports = {
 
       // console.log(qt_recipes);
 
-      if (qt_recipes === 0) {
-        let results = await File.showChefAvatar(id);
-        const file_path = results.rows[0].path;
+      let results = await File.showChefAvatarFile(id);
+      const file_path = results.rows[0].path;
 
-        await Chef.delete(id);
-        await File.delete(file_id);
+      await Chef.delete(id);
+      await File.delete(file_id);
 
-        fs.unlinkSync(file_path);
+      fs.unlinkSync(file_path);
 
-        return res.redirect("/admin/chefs");
-      } else {
-        return res.send("You cannot delete a chef who has recipes!");
-      }
+      return res.redirect("/admin/chefs");
     } catch (err) {
       console.error(err);
+      return res.render(`admin/home/index`, {
+        error: "Erro inesperado!",
+      });
     }
   },
 };
