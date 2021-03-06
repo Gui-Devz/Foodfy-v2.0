@@ -33,14 +33,16 @@ async function checkFormLogin(req, res, next) {
     //   });
     // }
 
-    if (user.password != "123") {
+    // console.log(user);
+
+    if (user[0].password != "123") {
       return res.render("session/login", {
         error: "Senha incorreta!",
         user: req.body,
       });
     }
 
-    req.user = user;
+    req.user = user[0];
 
     next();
   } catch (error) {
