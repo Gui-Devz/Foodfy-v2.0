@@ -2,6 +2,7 @@ const {
   validationOfBlankFields,
   validationOfRecipeInputs,
   renderingRecipesWithOnlyOneFile,
+  formatPath,
 } = require("../../../lib/utils");
 
 const Chef = require("../../models/chef");
@@ -130,8 +131,36 @@ async function checkInputFields(req, res, next) {
   }
 }
 
+async function checkIfRecipesExists(req, res, next) {
+  const results = await Recipe.find();
+
+  //Showing only one recipe instead of one recipe per file.
+  let recipes = renderingRecipesWithOnlyOneFile(results);
+
+  recipes = formatPath(recipes, req);
+
+  const recipesID = recipes.map((recipe) => recipe.id);
+  // console.log(recipesID);
+  // console.log(req.params.id);
+  const found = recipesID.some((recipeID) => {
+    if (recipeID == req.params.id) {
+      return recipeID;
+    }
+  });
+
+  if (!found) {
+    return res.render("admin/home/index", {
+      error: "Essa receita não existe no banco de dados!",
+      recipes: recipes,
+    });
+  }
+
+  next();
+}
+
 module.exports = {
   checkInputFields,
   checkInputImagesForPost,
   checkInputImagesForPut,
+  checkIfRecipesExists,
 };
