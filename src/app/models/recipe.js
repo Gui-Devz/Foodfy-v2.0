@@ -2,6 +2,13 @@ const db = require("../../config/db");
 const { arrayDB } = require("../../lib/utils");
 
 module.exports = {
+  allRecipes() {
+    try {
+      return db.query("SELECT * FROM recipes");
+    } catch (error) {
+      console.error(error);
+    }
+  },
   async find(filters) {
     try {
       let query = `
