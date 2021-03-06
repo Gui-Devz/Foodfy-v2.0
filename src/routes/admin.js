@@ -9,12 +9,13 @@ const profileController = require("../app/controllers/profileController");
 const {
   isLogged,
   isAdmin,
-  recipeOwner,
+  CheckRecipeOwner,
 } = require("../app/middlewares/validators/users");
 const {
   checkInputFields,
   checkInputImagesForPost,
   checkInputImagesForPut,
+  checkIfRecipesExists,
 } = require("../app//middlewares/validators/recipes");
 const {
   checkInputFieldsChef,
@@ -41,8 +42,19 @@ routes.delete("/users", isAdmin, usersController.delete);
 
 //RECIPES ROUTES
 routes.get("/recipes/create", isLogged, recipesController.create);
-routes.get("/recipes/:id", isLogged, adminController.showRecipe);
-routes.get("/recipes/:id/edit", isLogged, recipeOwner, recipesController.edit);
+routes.get(
+  "/recipes/:id",
+  isLogged,
+  checkIfRecipesExists,
+  adminController.showRecipe
+);
+routes.get(
+  "/recipes/:id/edit",
+  isLogged,
+  checkIfRecipesExists,
+  CheckRecipeOwner,
+  recipesController.edit
+);
 
 routes.post(
   "/recipes",
