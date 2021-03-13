@@ -9,7 +9,7 @@ const profileController = require("../app/controllers/profileController");
 const {
   isLogged,
   isAdmin,
-  CheckRecipeOwner,
+  checkRecipeOwner,
 } = require("../app/middlewares/validators/users");
 const {
   checkInputFields,
@@ -52,7 +52,7 @@ routes.get(
   "/recipes/:id/edit",
   isLogged,
   checkIfRecipesExists,
-  CheckRecipeOwner,
+  checkRecipeOwner,
   recipesController.edit
 );
 
