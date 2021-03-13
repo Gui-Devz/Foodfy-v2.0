@@ -1,13 +1,14 @@
 module.exports = {
   loginForm(req, res) {
-    if (req.session.userID) {
-      return res.redirect("/admin");
+    if (!req.session.userID) {
+      return res.render("session/login");
     }
-    return res.render("session/login");
   },
+
   forgotForm(req, res) {
     return res.render("session/forgot-password");
   },
+
   resetForm(req, res) {
     return res.render("session/reset-password");
   },
