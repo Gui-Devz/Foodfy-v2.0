@@ -1,3 +1,4 @@
+const { hash } = require("bcryptjs");
 const db = require("../../config/db");
 
 module.exports = {
@@ -27,7 +28,7 @@ module.exports = {
     }
   },
 
-  async saving(dataPost) {
+  async saving(user) {
     const query = `
         INSERT INTO users (
           name,
@@ -38,15 +39,15 @@ module.exports = {
         RETURNING id
       `;
 
-    const passwordHash = await hash(dataPost.password);
+    const passwordHash = await hash(user.password, 8);
+    //console.log(passwordHash);
 
-    const values = [
-      dataPost.name,
-      dataPost.email,
-      passwordHash,
-      dataPost.isAdmin,
-    ];
+    user.password = passwordHash;
 
-    return db.query(query, values);
+    const values = Object.values(user);
+
+    console.log(values);
+
+    // return db.query(query, values);
   },
 };
