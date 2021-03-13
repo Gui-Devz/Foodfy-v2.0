@@ -1,10 +1,7 @@
+const crypto = require("crypto");
 const User = require("../models/user");
 
-const {
-  validationOfBlankFields,
-  validationOfChefName,
-  formatPath,
-} = require("../../lib/utils");
+const { removingWhiteSpacesInBeginningAndEnding } = require("../../lib/utils");
 
 module.exports = {
   async list(req, res) {
@@ -40,6 +37,20 @@ module.exports = {
   },
   async post(req, res) {
     try {
+      const { name, email, is_admin } = req.body;
+
+      const password = crypto.randomBytes(5).toString("hex");
+
+      let user = {
+        name: removingWhiteSpacesInBeginningAndEnding(name),
+        email: removingWhiteSpacesInBeginningAndEnding(email),
+        password: password,
+        is_admin: is_admin ? true : false,
+      };
+
+      await User.saving(user);
+
+      //console.log(user);
     } catch (err) {
       console.error(err);
     }
