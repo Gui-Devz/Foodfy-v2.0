@@ -11,6 +11,16 @@ async function login(req, res, next) {
     if (req.session.userID) {
       const user = await User.find({ where: { id: req.session.userID } });
 
+      if (user[0].is_admin) {
+        const allUsers = await User.find();
+        return res.render("admin/users/list", {
+          success: "Você está logado!",
+          users: allUsers,
+          userIsAdmin: user[0].is_admin,
+        });
+      }
+
+      req.user = user;
       return res.render("admin/users/profile", {
         success: "Você está logado!",
         user: user[0],
@@ -80,7 +90,6 @@ async function isAdmin(req, res, next) {
         recipes: recipes,
       });
     }
-
     req.user = user[0];
 
     next();
@@ -97,8 +106,7 @@ async function isAdmin(req, res, next) {
     });
   }
 }
-
-async function CheckRecipeOwner(req, res, next) {
+async function checkRecipeOwner(req, res, next) {
   try {
     if (!req.user.is_admin) {
       let results = await Recipe.find({
@@ -144,5 +152,5 @@ module.exports = {
   isLogged,
   isAdmin,
   login,
-  CheckRecipeOwner,
+  checkRecipeOwner,
 };
