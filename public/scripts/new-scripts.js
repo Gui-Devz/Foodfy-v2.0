@@ -24,13 +24,54 @@ const addingFilterSearchH1 = {
   },
 };
 
-const filteringFunction = {
+const filteringFunctions = {
   commonFiltering(keyWords, functionCalled) {
     const url = window.location.href;
 
     for (const keyWord of keyWords) {
       if (url.includes(keyWord)) {
         functionCalled();
+      }
+    }
+  },
+
+  removingWhiteSpacesInBeginningOfInputs() {
+    const textInputs = document.querySelectorAll("form .item input[type=text]");
+    // const emailInputs = document.querySelectorAll(
+    //   "form .item input[type=email]"
+    // );
+    const passwordInputs = document.querySelectorAll(
+      "form .item input[type=password]"
+    );
+
+    const inputs = {
+      textInputs: textInputs.length > 0 ? textInputs : undefined,
+      // emailInputs: emailInputs.length > 0 ? emailInputs : undefined,
+      passwordInputs: passwordInputs.length > 0 ? passwordInputs : undefined,
+    };
+
+    //console.log(Object.values(inputs));
+
+    const arrOfAllInputs = [];
+
+    Object.values(inputs).forEach((nodeList) => {
+      if (nodeList !== undefined) {
+        for (let i = 0; i < nodeList.length; i++) {
+          arrOfAllInputs.push(nodeList[i]);
+        }
+      }
+    });
+
+    //console.log(arrOfAllInputs);
+    if (arrOfAllInputs) {
+      for (let i = 0; i < arrOfAllInputs.length; i++) {
+        const element = arrOfAllInputs[i];
+        //console.log(element);
+        element.addEventListener("keydown", () => {
+          setTimeout(() => {
+            element.value = element.value.replace(/^\s+/g, "");
+          }, 1);
+        });
       }
     }
   },
@@ -405,7 +446,9 @@ const changingRecipeImages = {
   },
 };
 
-filteringFunction.commonFiltering(["filter"], addingFilterSearchH1.h1);
+filteringFunctions.commonFiltering(["filter"], addingFilterSearchH1.h1);
+
+filteringFunctions.removingWhiteSpacesInBeginningOfInputs();
 
 shortingTextsOnCards.shortChefsName();
 shortingTextsOnCards.shortRecipeChefName();
