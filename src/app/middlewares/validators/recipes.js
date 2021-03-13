@@ -17,6 +17,7 @@ async function checkInputImagesForPost(req, res, next) {
         error: "Por favor! envie ao menos uma imagem!",
         recipe: req.body,
         chefs: req.chefs,
+        userIsAdmin: req.user.is_admin,
       });
     }
 
@@ -26,6 +27,7 @@ async function checkInputImagesForPost(req, res, next) {
         error: "Por favor! envie no máximo 5 imagens!",
         recipe: req.body,
         chefs: req.chefs,
+        userIsAdmin: req.user.is_admin,
       });
     }
 
@@ -40,6 +42,7 @@ async function checkInputImagesForPost(req, res, next) {
     return res.render(`admin/home/index`, {
       error: "Erro inesperado!",
       recipes: recipes,
+      userIsAdmin: req.user.is_admin,
     });
   }
 }
@@ -63,6 +66,7 @@ async function checkInputImagesForPut(req, res, next) {
         error: "Por favor, envie ao menos uma imagem!",
         recipe: req.body,
         chefs: req.chefs,
+        userIsAdmin: req.user.is_admin,
       });
     }
 
@@ -73,6 +77,7 @@ async function checkInputImagesForPut(req, res, next) {
         error: "Por favor! envie no máximo 5 imagens!",
         recipe: req.body,
         chefs: req.chefs,
+        userIsAdmin: req.user.is_admin,
       });
     }
 
@@ -89,6 +94,7 @@ async function checkInputImagesForPut(req, res, next) {
     return res.render(`admin/home/index`, {
       error: "Erro inesperado!",
       recipes: recipes,
+      userIsAdmin: req.user.is_admin,
     });
   }
 }
@@ -105,6 +111,7 @@ async function checkInputFields(req, res, next) {
         error: "Por favor, preencha todos os campos!",
         recipe: req.body,
         chefs,
+        userIsAdmin: req.user.is_admin,
       });
     }
     const createdRecipe = {
@@ -152,6 +159,7 @@ async function checkIfRecipesExists(req, res, next) {
     return res.render("admin/home/index", {
       error: "Essa receita não existe no banco de dados!",
       recipes: recipes,
+      userIsAdmin: req.user.is_admin,
     });
   }
 
