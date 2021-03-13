@@ -41,7 +41,7 @@ module.exports = {
 
       const password = crypto.randomBytes(5).toString("hex");
 
-      let user = {
+      const user = {
         name: removingWhiteSpacesInBeginningAndEnding(name),
         email: removingWhiteSpacesInBeginningAndEnding(email),
         password: password,
@@ -49,6 +49,14 @@ module.exports = {
       };
 
       await User.saving(user);
+
+      const users = await User.find();
+
+      return res.render("admin/users/list", {
+        users: users,
+        userIsAdmin: req.user.is_admin,
+        success: "Usuário Cadastrado com sucesso!",
+      });
 
       //console.log(user);
     } catch (err) {
