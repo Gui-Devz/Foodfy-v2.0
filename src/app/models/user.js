@@ -46,8 +46,8 @@ module.exports = {
 
     const values = Object.values(user);
 
-    console.log(values);
+    //console.log(values);
 
-    // return db.query(query, values);
+    return db.query(query, values);
   },
 };
