@@ -36,7 +36,7 @@ async function login(req, res, next) {
     let recipes = renderingRecipesWithOnlyOneFile(results);
 
     recipes = formatPath(recipes, req);
-    return res.render(`admin/home/index`, {
+    return res.render(`main/home/index`, {
       error: "Erro inesperado!",
       recipes: recipes,
     });
