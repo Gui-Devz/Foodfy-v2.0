@@ -3,6 +3,7 @@ const Recipe = require("../../models/recipe");
 
 const {
   formatPath,
+  validationOfBlankFields,
   renderingRecipesWithOnlyOneFile,
 } = require("../../../lib/utils");
 
@@ -61,7 +62,7 @@ async function isLogged(req, res, next) {
     let recipes = renderingRecipesWithOnlyOneFile(results);
 
     recipes = formatPath(recipes, req);
-    return res.render(`admin/home/index`, {
+    return res.render(`main/home/index`, {
       error: "Erro inesperado!",
       recipes: recipes,
     });
@@ -100,7 +101,7 @@ async function isAdmin(req, res, next) {
     let recipes = renderingRecipesWithOnlyOneFile(results);
 
     recipes = formatPath(recipes, req);
-    return res.render(`admin/home/index`, {
+    return res.render(`main/home/index`, {
       error: "Erro inesperado!",
       recipes: recipes,
     });
@@ -148,9 +149,32 @@ async function checkRecipeOwner(req, res, next) {
   }
 }
 
+async function checkingInputsBeforePosting(req, res, next) {
+  try {
+    if (validationOfBlankFields(req.body)) {
+      return res.render("admin/users/create", {
+        error: "Por favor, preencha todos os campos!",
+        user: req.body,
+        userIsAdmin: req.user.is_admin,
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.error(error);
+    const allUsers = await User.find();
+    return res.render("admin/users/list", {
+      success: "Erro inesperado!",
+      users: allUsers,
+      userIsAdmin: user[0].is_admin,
+    });
+  }
+}
+
 module.exports = {
   isLogged,
   isAdmin,
   login,
   checkRecipeOwner,
+  checkingInputsBeforePosting,
 };
