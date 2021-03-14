@@ -1,3 +1,5 @@
+const User = require("../models/user");
+
 module.exports = {
   loginForm(req, res) {
     if (!req.session.userID) {
@@ -10,7 +12,8 @@ module.exports = {
   },
 
   resetForm(req, res) {
-    return res.render("session/reset-password");
+    const { token } = req.query;
+    return res.render("session/reset-password", { token: token });
   },
 
   login(req, res) {
@@ -41,5 +44,18 @@ module.exports = {
 
   async forgot(req, res) {},
 
-  async reset(req, res) {},
+  async reset(req, res) {
+    const { password } = req.body;
+
+    const id = await User.updating(req.user.id, {
+      password: password,
+      reset_token: "",
+      reset_token_expires: "",
+    });
+    console.log(id);
+
+    return res.render("session/login", {
+      success: "Senha alterada com sucesso!",
+    });
+  },
 };
