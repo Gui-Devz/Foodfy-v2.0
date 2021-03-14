@@ -74,7 +74,8 @@ module.exports = {
         fields[key] == "" &&
         key != "removed_files" &&
         key != "information" &&
-        key != "file_id"
+        key != "file_id" &&
+        key != "is_admin"
       ) {
         return true;
       }
