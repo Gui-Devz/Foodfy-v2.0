@@ -34,8 +34,10 @@ module.exports = {
           name,
           email,
           password,
-          is_admin
-        ) VALUES ($1, $2, $3, $4)
+          is_admin,
+          reset_token,
+          reset_token_expires
+        ) VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING id
       `;
 
@@ -49,5 +51,41 @@ module.exports = {
     //console.log(values);
 
     return db.query(query, values);
+  },
+
+  async updating(userID, filters) {
+    let query = `UPDATE users SET`;
+
+    Object.keys(filters).map((key, index) => {
+      //fields
+      query = `
+            ${query}
+            ${key} = $${index + 1}
+          `;
+    });
+
+    query = `
+      ${query}
+      WHERE users.id = $${Object.keys(filters).length + 1}
+      RETURNING id
+    `;
+
+    if (filters.password) {
+      //console.log(filters.password);
+      const newPassword = await hash(filters.password, 8);
+
+      filters.password = newPassword;
+    }
+
+    let values = Object.values(filters);
+    values.push(userID);
+
+    console.log(query);
+    console.log(values);
+
+    const result = await db.query(query, values);
+
+    //console.log(result.rows);
+    return result.rows[0];
   },
 };
