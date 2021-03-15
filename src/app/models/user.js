@@ -60,15 +60,17 @@ module.exports = {
       //fields
       query = `
             ${query}
-            ${key} = $${index + 1}
-          `;
+              ${key} = $${index + 1},`;
     });
+
+    //removing the last "," comma in the query.
+    query = query.slice(0, -1);
 
     query = `
       ${query}
-      WHERE users.id = $${Object.keys(filters).length + 1}
-      RETURNING id
-    `;
+        WHERE users.id = $${Object.keys(filters).length + 1}
+        RETURNING id
+      `;
 
     if (filters.password) {
       //console.log(filters.password);
