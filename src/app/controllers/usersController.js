@@ -142,6 +142,14 @@ module.exports = {
 
   async delete(req, res) {
     try {
+      const users = await User.find();
+      await User.delete(req.userID);
+
+      return res.render("admin/users/list", {
+        success: "Usuário deletado com sucesso!",
+        users: users,
+        userIsAdmin: req.user.is_admin,
+      });
     } catch (err) {
       console.error(err);
       const users = await User.find();
