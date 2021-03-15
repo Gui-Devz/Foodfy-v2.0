@@ -14,6 +14,7 @@
 
 .admin .form.user {
   width: 940px;
+  position: relative;
 }
 
 .admin .form.user .fields .item {
@@ -119,8 +120,17 @@
   gap: 1rem;
 }
 
+.form.user .fields .line-wrapper {
+  display: flex;
+  gap: 3.4rem;
+}
+
 .form.user .fields .adm #is_admin {
   cursor: pointer;
+}
+
+.form.user .fields .adm {
+  padding-top: 2rem;
 }
 
 .form.user .fields .adm label {
