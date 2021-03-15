@@ -21,20 +21,28 @@ module.exports = {
   },
 
   async edit(req, res) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    const user = await User.find({ where: { id } });
+      const user = await User.find({ where: { id } });
 
-    return res.render("admin/users/edit", {
-      userIsAdmin: req.user.is_admin,
-      user: user[0],
-    });
+      return res.render("admin/users/edit", {
+        userIsAdmin: req.user.is_admin,
+        user: user[0],
+      });
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   async create(req, res) {
-    return res.render("admin/users/create", {
-      userIsAdmin: req.user.is_admin,
-    });
+    try {
+      return res.render("admin/users/create", {
+        userIsAdmin: req.user.is_admin,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   },
   async post(req, res) {
     try {
@@ -50,7 +58,7 @@ module.exports = {
         name: removingWhiteSpacesInBeginningAndEnding(name),
         email: removingWhiteSpacesInBeginningAndEnding(email),
         password: password,
-        is_admin: is_admin ? true : false,
+        is_admin: is_admin || false,
         reset_token: token,
         reset_token_expires: now,
       };
@@ -92,13 +100,43 @@ module.exports = {
       //console.log(user);
     } catch (err) {
       console.error(err);
+      const users = await User.find();
+
+      return res.render("admin/users/list", {
+        users: users,
+        userIsAdmin: req.user.is_admin,
+        error: "Erro inesperado!",
+      });
     }
   },
 
   async put(req, res) {
     try {
+      const { id, name, email, is_admin } = req.body;
+
+      const user = {
+        name: name,
+        email: email,
+        is_admin: is_admin || false,
+      };
+
+      await User.updating(id, user);
+      const users = await User.find();
+
+      return res.render("admin/users/list", {
+        success: `Dados do usuário de id=${id} foram atualizados com sucesso!`,
+        users: users,
+        userIsAdmin: req.user.is_admin,
+      });
     } catch (err) {
       console.error(err);
+      const users = await User.find();
+
+      return res.render("admin/users/list", {
+        users: users,
+        userIsAdmin: req.user.is_admin,
+        error: "Erro inesperado!",
+      });
     }
   },
 
@@ -106,6 +144,13 @@ module.exports = {
     try {
     } catch (err) {
       console.error(err);
+      const users = await User.find();
+
+      return res.render("admin/users/list", {
+        users: users,
+        userIsAdmin: req.user.is_admin,
+        error: "Erro inesperado!",
+      });
     }
   },
 };
