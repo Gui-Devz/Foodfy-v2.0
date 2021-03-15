@@ -148,8 +148,7 @@ async function checkRecipeOwner(req, res, next) {
     });
   }
 }
-
-async function checkingInputsBeforePosting(req, res, next) {
+async function checkInputFieldsUser(req, res, next) {
   try {
     if (validationOfBlankFields(req.body)) {
       return res.render("admin/users/create", {
@@ -176,5 +175,5 @@ module.exports = {
   isAdmin,
   login,
   checkRecipeOwner,
-  checkingInputsBeforePosting,
+  checkInputFieldsUser,
 };
