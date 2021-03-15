@@ -211,8 +211,9 @@ const controlContentRecipe = {
 const showingSearchBar = {
   showing() {
     const url = window.location.href;
+    const home = document.querySelector(".home");
     if (
-      url.includes("index") ||
+      home ||
       (url.includes("recipes") &&
         !url.includes("recipes/") &&
         !url.includes("admin") &&
