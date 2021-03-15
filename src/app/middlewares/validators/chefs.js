@@ -30,7 +30,7 @@ async function checkInputFieldsChef(req, res, next) {
   }
 }
 
-async function checkImageBeforePostChef(req, res, next) {
+async function checkIfHasAnyImage(req, res, next) {
   try {
     // console.log(req.body.file_id);
     if (req.files.length === 0 && req.body.file_id === 0) {
@@ -86,6 +86,6 @@ async function checkIfChefHasRecipeBeforeDelete(req, res, next) {
 
 module.exports = {
   checkInputFieldsChef,
-  checkImageBeforePostChef,
+  checkIfHasAnyImage,
   checkIfChefHasRecipeBeforeDelete,
 };
