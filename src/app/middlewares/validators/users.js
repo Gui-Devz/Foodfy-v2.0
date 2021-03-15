@@ -89,6 +89,7 @@ async function isAdmin(req, res, next) {
       return res.render("admin/home/index", {
         error: errorCreate,
         recipes: recipes,
+        userIsAdmin: req.user.is_admin,
       });
     }
     req.user = user[0];
@@ -130,6 +131,7 @@ async function checkRecipeOwner(req, res, next) {
           return res.render("admin/home/index", {
             error: "Essa receita não é sua para editar!",
             recipes: recipes,
+            userIsAdmin: req.user.is_admin,
           });
         }
       }
@@ -145,6 +147,7 @@ async function checkRecipeOwner(req, res, next) {
     return res.render(`admin/home/index`, {
       error: "Erro inesperado!",
       recipes: recipes,
+      userIsAdmin: req.user.is_admin,
     });
   }
 }
@@ -163,9 +166,38 @@ async function checkInputFieldsUser(req, res, next) {
     console.error(error);
     const allUsers = await User.find();
     return res.render("admin/users/list", {
-      success: "Erro inesperado!",
+      error: "Erro inesperado!",
       users: allUsers,
-      userIsAdmin: user[0].is_admin,
+      userIsAdmin: req.user.is_admin,
+    });
+  }
+}
+
+async function checkIfUserBeingDeletedIsAdmin(req, res, next) {
+  try {
+    const { id } = req.body;
+
+    const user = await User.find({ where: { id: id } });
+
+    if (user[0].is_admin) {
+      console.log("yeahh");
+      const allUsers = await User.find();
+      return res.render("admin/users/list", {
+        error: "Usuário administrador não pode ser deletado!",
+        users: allUsers,
+        userIsAdmin: req.user.is_admin,
+      });
+    }
+
+    req.userID = id;
+    next();
+  } catch (error) {
+    console.error(error);
+    const allUsers = await User.find();
+    return res.render("admin/users/list", {
+      error: "Erro inesperado!",
+      users: allUsers,
+      userIsAdmin: req.user.is_admin,
     });
   }
 }
@@ -176,4 +208,5 @@ module.exports = {
   login,
   checkRecipeOwner,
   checkInputFieldsUser,
+  checkIfUserBeingDeletedIsAdmin,
 };
