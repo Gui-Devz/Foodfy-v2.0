@@ -6,6 +6,9 @@
   width: auto;
   height: 366px;
 
+  box-sizing: border-box;
+  margin-bottom: 3.1rem;
+
   display: grid;
   grid-template-columns: 350px 1fr 300px;
 
@@ -43,8 +46,6 @@
   height: auto;
 
   box-sizing: border-box;
-
-  margin-top: 30px;
 }
 
 .wrapper-grid h1 {
