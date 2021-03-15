@@ -82,12 +82,22 @@ module.exports = {
     let values = Object.values(filters);
     values.push(userID);
 
-    console.log(query);
-    console.log(values);
+    // console.log(query);
+    // console.log(values);
 
     const result = await db.query(query, values);
 
     //console.log(result.rows);
     return result.rows[0];
+  },
+
+  delete(userID) {
+    try {
+      const query = `DELETE FROM users WHERE id = $1`;
+
+      return db.query(query, [userID]);
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
