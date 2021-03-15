@@ -20,7 +20,7 @@
             <div><a href="/admin/users/{{user.id}}/edit">editar</a></div>
             <div>
               <form method="POST" action="/admin/users?_method=DELETE">
-                <input type="hidden" value="{{user.id}}">
+                <input type="hidden" name="id" value="{{user.id}}">
                 <button type="submit" onClick="confirmationOfButtons.verifyingBeforeDeleteUser(event)">remover</button>
               </form>
             </div>
