@@ -8,4 +8,6 @@ const routes = express.Router();
 routes.get("/", recipesController.list);
 routes.get("/:id", recipesController.show);
 
+routes.post("/", recipesController.filter);
+
 module.exports = routes;
