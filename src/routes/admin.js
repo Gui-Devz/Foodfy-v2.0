@@ -10,7 +10,7 @@ const {
   isLogged,
   isAdmin,
   checkRecipeOwner,
-  checkingInputsBeforePosting,
+  checkInputFieldsUser,
 } = require("../app/middlewares/validators/users");
 const {
   checkInputFields,
@@ -20,7 +20,7 @@ const {
 } = require("../app//middlewares/validators/recipes");
 const {
   checkInputFieldsChef,
-  checkImageBeforePostChef,
+  checkIfHasAnyImage,
   checkIfChefHasRecipeBeforeDelete,
 } = require("../app//middlewares/validators/chefs");
 
@@ -37,13 +37,8 @@ routes.get("/users", isAdmin, usersController.list);
 routes.get("/users/create", isAdmin, usersController.create);
 routes.get("/users/:id/edit", isAdmin, usersController.edit);
 
-routes.post(
-  "/users",
-  isAdmin,
-  checkingInputsBeforePosting,
-  usersController.post
-);
-routes.put("/users", isAdmin, usersController.put);
+routes.post("/users", isAdmin, checkInputFieldsUser, usersController.post);
+routes.put("/users", isAdmin, checkInputFieldsUser, usersController.put);
 routes.delete("/users", isAdmin, usersController.delete);
 
 //RECIPES ROUTES
@@ -91,7 +86,7 @@ routes.post(
   isAdmin,
   multer.array("avatar", 1),
   checkInputFieldsChef,
-  checkImageBeforePostChef,
+  checkIfHasAnyImage,
   chefsController.post
 );
 routes.put(
