@@ -12,24 +12,14 @@ const fs = require("fs");
 module.exports = {
   async list(req, res) {
     try {
-      const { filter } = req.query;
-      let results = "";
-
-      if (filter) {
-        results = await Recipe.searchFilter({
-          where: { "recipes.title": filter },
-          or: { "recipes.information": filter },
-        });
-      } else {
-        results = await Recipe.find();
-      }
+      const results = await Recipe.find();
 
       let recipes = formatPath(results, req);
 
       //Showing only one recipe instead of one recipe per file.
       recipes = renderingRecipesWithOnlyOneFile(recipes);
 
-      return res.render("main/recipes/recipes-list", { recipes, filter });
+      return res.render("main/recipes/recipes-list", { recipes });
     } catch (err) {
       console.error(err);
     }
@@ -93,6 +83,30 @@ module.exports = {
   },
 
   // FORM functions
+
+  async filter(req, res) {
+    try {
+      const { filter } = req.body;
+
+      let results = "";
+
+      if (filter) {
+        results = await Recipe.searchFilter({
+          where: { "recipes.title": filter },
+          or: { "recipes.information": filter },
+        });
+      } else {
+        results = await Recipe.find();
+      }
+
+      let recipes = formatPath(results, req);
+
+      //Showing only one recipe instead of one recipe per file.
+      recipes = renderingRecipesWithOnlyOneFile(recipes);
+
+      return res.render("main/recipes/recipes-list", { recipes, filter });
+    } catch (error) {}
+  },
 
   async post(req, res) {
     try {
