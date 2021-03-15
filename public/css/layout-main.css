@@ -67,6 +67,9 @@ footer div p {
   display: grid;
   grid-template: 1fr / 1fr 400px;
 
+  box-sizing: border-box;
+  padding-bottom: 3.7rem;
+
   align-items: center;
 }
 
@@ -140,6 +143,7 @@ footer div p {
   border: 1px solid #dddddd;
   border-radius: 4px;
   border-radius: 4px;
+  outline: none;
 
   box-sizing: border-box;
 }
