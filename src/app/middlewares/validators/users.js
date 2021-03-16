@@ -89,7 +89,7 @@ async function isAdmin(req, res, next) {
       return res.render("admin/home/index", {
         error: errorCreate,
         recipes: recipes,
-        userIsAdmin: req.user.is_admin,
+        userIsAdmin: user[0].is_admin,
       });
     }
     req.user = user[0];
@@ -160,7 +160,6 @@ async function checkInputFieldsUser(req, res, next) {
         userIsAdmin: req.user.is_admin,
       });
     }
-
     next();
   } catch (error) {
     console.error(error);
