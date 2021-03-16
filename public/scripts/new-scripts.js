@@ -170,14 +170,14 @@ const confirmationOfButtons = {
   },
 
   verifyingBeforeUpdateUser(e) {
-    const password = document.querySelector(".item input[type='password']");
+    // const password = document.querySelector(".item input[type='password']");
 
-    if (password) {
-      if (password.value === "" && password) {
-        alert("Coloque a sua senha para atualizar os dados!");
-        return e.preventDefault();
-      }
-    }
+    // if (password) {
+    //   if (password.value === "" && password) {
+    //     alert("Coloque a sua senha para atualizar os dados!");
+    //     return e.preventDefault();
+    //   }
+    // }
 
     const confirmation = confirm("Deseja atualizar os dados?!");
 
