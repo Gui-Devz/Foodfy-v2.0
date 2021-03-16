@@ -2,6 +2,8 @@
   max-width: 900px;
   height: auto;
 
+  margin: 0 auto;
+
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
@@ -51,7 +53,7 @@
   margin: 0 auto 0 auto;
   width: 940px;
 
-  padding: 20px;
+  padding-bottom: 20px;
   box-sizing: border-box;
 
   overflow: hidden;
