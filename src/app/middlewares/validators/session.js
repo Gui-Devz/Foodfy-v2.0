@@ -91,18 +91,18 @@ async function checkFormReset(req, res, next) {
 }
 async function checkFormForgot(req, res, next) {
   try {
-    next();
-  } catch (error) {
-    console.error(error);
-    return res.render("session/login", {
-      error: "Erro inesperado, tente novamente.",
-      user: req.body,
-    });
-  }
-}
+    const { email } = req.body;
 
-async function checkingBeforeResettingPassword(req, res, next) {
-  try {
+    const user = await User.find({ where: { email: email } });
+
+    if (!user[0]) {
+      return res.render("session/forgot-password", {
+        email: email,
+        error: "Email não existe, por favor verifique o email digitado!",
+      });
+    }
+
+    req.user = user[0];
     next();
   } catch (error) {
     console.error(error);
@@ -117,5 +117,4 @@ module.exports = {
   checkFormLogin,
   checkFormForgot,
   checkFormReset,
-  checkingBeforeResettingPassword,
 };
