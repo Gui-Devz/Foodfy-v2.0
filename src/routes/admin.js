@@ -18,12 +18,16 @@ const {
   checkInputImagesForPost,
   checkInputImagesForPut,
   checkIfRecipesExists,
-} = require("../app//middlewares/validators/recipes");
+} = require("../app/middlewares/validators/recipes");
 const {
   checkInputFieldsChef,
   checkIfHasAnyImage,
   checkIfChefHasRecipeBeforeDelete,
-} = require("../app//middlewares/validators/chefs");
+} = require("../app/middlewares/validators/chefs");
+
+const {
+  checkInputFieldsProfile,
+} = require("../app/middlewares/validators/profile");
 
 const routes = express.Router();
 
@@ -31,7 +35,12 @@ routes.get("/", isLogged, adminController.index);
 
 //PROFILE ROUTES
 routes.get("/profile", isLogged, profileController.index);
-routes.put("/profile", isLogged, profileController.put);
+routes.put(
+  "/profile",
+  isLogged,
+  checkInputFieldsProfile,
+  profileController.put
+);
 
 //USERS ROUTES
 routes.get("/users", isAdmin, usersController.list);
