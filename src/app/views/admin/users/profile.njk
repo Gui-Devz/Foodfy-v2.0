@@ -11,7 +11,7 @@
 <div class="admin">
 
     <div class="form user">
-        <form method="POST" action="/admin/users?_method=PUT">
+        <form method="POST" action="/admin/profile?_method=PUT">
             <div class="head">
                 <div>
                   <span><h1>Bem vindo {{user.name}}</h1></span>
@@ -27,19 +27,19 @@
                   <div class="item">
                     <div>Nome</div>
                     <div>
-                      <input type="text" name="name" placeholder="Digite o seu nome" value="{{user.name}}" required>
+                      <input type="text" name="name" placeholder="Digite o seu nome" value="{{user.name}}" >
                     </div>
                   </div>
                   <div class="item">
                       <div>Email</div>
                       <div>
-                        <input type="text" name="email" placeholder="Digite o seu email" value="{{user.email}}" required>
+                        <input type="text" name="email" placeholder="Digite o seu email" value="{{user.email}}" >
                       </div>
                   </div>
               </div>
               <div class="item">
                   <div>Senha</div>
-                  <div><input type="password" name="passwword" placeholder="Digite a sua senha" required></div>
+                  <div><input type="password" name="password" placeholder="Digite a sua senha" ></div>
               </div>
             </div>
         </form>
