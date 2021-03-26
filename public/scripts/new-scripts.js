@@ -75,6 +75,31 @@ const filteringFunctions = {
       }
     }
   },
+
+  filteringErrorEmailInput() {
+    const email = document.querySelector("input[name='email']");
+
+    if (email.value !== "") {
+      const filterRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+      let passed = null;
+
+      email.addEventListener("blur", (e) => {
+        //console.log(e.target.value);
+
+        passed = filterRegex.test(String(e.target.value).toLocaleLowerCase());
+
+        //console.log(passed);
+        const upperDiv = email.parentElement;
+        if (!passed) {
+          upperDiv.classList.add("error");
+          email.focus();
+        } else {
+          upperDiv.classList.remove("error");
+        }
+      });
+    }
+  },
 };
 
 const controllingFieldsInput = {
@@ -450,6 +475,7 @@ const changingRecipeImages = {
 filteringFunctions.commonFiltering(["filter"], addingFilterSearchH1.h1);
 
 filteringFunctions.removingWhiteSpacesInBeginningOfInputs();
+filteringFunctions.filteringErrorEmailInput();
 
 shortingTextsOnCards.shortChefsName();
 shortingTextsOnCards.shortRecipeChefName();
