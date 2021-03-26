@@ -64,6 +64,16 @@ module.exports = {
     return newValue;
   },
 
+  emailValidation(email) {
+    const filterRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+    const passed = filterRegex.test(String(email).toLocaleLowerCase());
+
+    //console.log(passed);
+
+    return passed;
+  },
+
   validationOfBlankFields(fields) {
     const keys = Object.keys(fields);
 
@@ -77,7 +87,7 @@ module.exports = {
         key != "file_id" &&
         key != "is_admin"
       ) {
-        return true;
+        return key;
       }
     }
     return false;
