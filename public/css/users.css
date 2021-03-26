@@ -29,6 +29,33 @@
   padding-bottom: 2.2rem;
 }
 
+.form.user .item .input::before {
+  content: "";
+  z-index: 100;
+  position: absolute;
+
+  background-color: #dc4747;
+  width: 28rem;
+  height: 1rem;
+
+  font-weight: bold;
+  color: white;
+
+  box-sizing: border-box;
+  padding-left: 1.3rem;
+
+  border-radius: 0.2rem 0.2rem 0 0;
+
+  opacity: 0;
+}
+
+.form.user .item .error::before {
+  content: "eita";
+  opacity: 1;
+
+  transition: 200ms;
+}
+
 /* === END OF USER PROFILE === */
 
 /* === USERS LIST === */
