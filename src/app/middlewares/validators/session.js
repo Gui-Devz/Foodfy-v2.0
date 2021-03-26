@@ -8,9 +8,12 @@ async function checkFormLogin(req, res, next) {
   try {
     const { email, password } = req.body;
 
-    if (validationOfBlankFields(req.body)) {
+    const validation = validationOfBlankFields(req.body);
+
+    if (validation) {
       return res.render("session/login", {
         error: "Por favor, preencha todos os campos!",
+        input: validation,
         user: req.body,
       });
     }
@@ -20,6 +23,7 @@ async function checkFormLogin(req, res, next) {
     if (!user[0]) {
       return res.render("session/login", {
         error: "Email não encontrado!",
+        input: "email",
         user: req.body,
       });
     }
@@ -29,6 +33,7 @@ async function checkFormLogin(req, res, next) {
     if (!passed) {
       return res.render("session/login", {
         error: "Senha incorreta!",
+        input: "password",
         user: req.body,
       });
     }
@@ -56,6 +61,7 @@ async function checkFormReset(req, res, next) {
     if (!user[0]) {
       return res.render("session/reset-password", {
         email: email,
+        input: "email",
         token: token,
         error: "Email não existe, por favor verifique o email digitado!",
       });
@@ -73,6 +79,7 @@ async function checkFormReset(req, res, next) {
     if (password !== repeatPassword) {
       return res.render("session/reset-password", {
         email: email,
+        input: "repeatPassword",
         token: token,
         error: "As senhas digitadas não são iguais!",
       });
@@ -98,6 +105,7 @@ async function checkFormForgot(req, res, next) {
     if (!user[0]) {
       return res.render("session/forgot-password", {
         email: email,
+        input: "email",
         error: "Email não existe, por favor verifique o email digitado!",
       });
     }

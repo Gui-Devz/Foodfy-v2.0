@@ -8,6 +8,7 @@ const {
 const Chef = require("../../models/chef");
 const Admin = require("../../models/admin");
 const Recipe = require("../../models/recipe");
+const File = require("../../models/file");
 
 async function checkInputImagesForPost(req, res, next) {
   try {
@@ -106,10 +107,17 @@ async function checkInputFields(req, res, next) {
     const result = await Chef.chefsIdAndNames();
     const chefs = result.rows;
 
-    if (validationOfBlankFields(req.body)) {
+    const validation = validationOfBlankFields(req.body);
+
+    if (validation) {
+      const results = await File.showRecipeFiles(req.body.id);
+
+      const files = formatPath(results.rows, req);
       return res.render("admin/recipes/create", {
         error: "Por favor, preencha todos os campos!",
+        input: validation,
         recipe: req.body,
+        recipeFiles: files,
         chefs,
         userIsAdmin: req.user.is_admin,
       });

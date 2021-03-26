@@ -1,12 +1,28 @@
 const { compare } = require("bcryptjs");
-const { validationOfBlankFields } = require("../../../lib/utils");
+const {
+  validationOfBlankFields,
+  emailValidation,
+} = require("../../../lib/utils");
 
 async function checkInputFieldsProfile(req, res, next) {
   try {
     const { password } = req.body;
-    if (validationOfBlankFields(req.body)) {
+    const validation = validationOfBlankFields(req.body);
+
+    if (validation) {
       return res.render("admin/users/profile", {
         error: "Por favor, preencha todos os campos!",
+        input: validation,
+        user: req.body,
+        userIsAdmin: req.user.is_admin,
+      });
+    }
+
+    //verifying if the email matches with the Regex conditional
+    if (!emailValidation(req.body.email)) {
+      return res.render("admin/users/profile", {
+        error: "Por favor, coloque um email válido!",
+        input: "email",
         user: req.body,
         userIsAdmin: req.user.is_admin,
       });

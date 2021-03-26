@@ -153,13 +153,16 @@ async function checkRecipeOwner(req, res, next) {
 }
 async function checkInputFieldsUser(req, res, next) {
   try {
-    if (validationOfBlankFields(req.body)) {
-      return res.render("admin/users/create", {
+    const validation = validationOfBlankFields(req.body);
+    if (validation) {
+      return res.render("admin/users/edit", {
         error: "Por favor, preencha todos os campos!",
+        input: validation,
         user: req.body,
         userIsAdmin: req.user.is_admin,
       });
     }
+
     next();
   } catch (error) {
     console.error(error);
