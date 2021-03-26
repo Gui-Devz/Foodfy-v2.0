@@ -45,6 +45,9 @@ module.exports = {
     //console.log(passwordHash);
 
     user.password = passwordHash;
+    user.email = String(user.email).toLowerCase();
+
+    //console.log(user.email);
 
     const values = Object.values(user);
 
@@ -78,6 +81,9 @@ module.exports = {
 
       filters.password = newPassword;
     }
+
+    filters.email = String(filters.email).toLowerCase();
+    //console.log(filters.email);
 
     let values = Object.values(filters);
     values.push(userID);
