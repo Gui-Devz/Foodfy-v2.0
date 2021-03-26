@@ -10,7 +10,8 @@ const {
   isLogged,
   isAdmin,
   checkRecipeOwner,
-  checkInputFieldsUser,
+  checkInputFieldsUserPost,
+  checkInputFieldsUserPut,
   checkIfUserBeingDeletedIsAdmin,
 } = require("../app/middlewares/validators/users");
 const {
@@ -47,8 +48,8 @@ routes.get("/users", isAdmin, usersController.list);
 routes.get("/users/create", isAdmin, usersController.create);
 routes.get("/users/:id/edit", isAdmin, usersController.edit);
 
-routes.post("/users", isAdmin, checkInputFieldsUser, usersController.post);
-routes.put("/users", isAdmin, checkInputFieldsUser, usersController.put);
+routes.post("/users", isAdmin, checkInputFieldsUserPost, usersController.post);
+routes.put("/users", isAdmin, checkInputFieldsUserPut, usersController.put);
 routes.delete(
   "/users",
   isAdmin,
