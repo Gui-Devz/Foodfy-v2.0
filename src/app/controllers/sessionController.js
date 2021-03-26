@@ -3,22 +3,55 @@ const crypto = require("crypto");
 const mailer = require("../../config/mailer");
 
 module.exports = {
-  loginForm(req, res) {
-    if (!req.session.userID) {
-      return res.render("session/login");
+  async loginForm(req, res) {
+    try {
+      if (!req.session.userID) {
+        return res.render("session/login");
+      }
+    } catch (error) {
+      console.error(error);
+      let results = await Recipe.find();
+
+      let recipes = formatPath(results, req);
+
+      //Showing only one recipe instead of one recipe per file.
+      recipes = renderingRecipesWithOnlyOneFile(recipes);
+
+      recipes = recipes.slice(0, 6);
+
+      return res.render("main/home/index", {
+        recipes,
+        error: "Erro Inesperado!",
+      });
     }
   },
 
-  forgotForm(req, res) {
-    return res.render("session/forgot-password");
+  async forgotForm(req, res) {
+    try {
+      return res.render("session/forgot-password");
+    } catch (error) {
+      console.error(error);
+      return res.render("session/login", {
+        error: "Erro inesperado, tente novamente.",
+        user: req.body,
+      });
+    }
   },
 
-  resetForm(req, res) {
-    const { token } = req.query;
-    return res.render("session/reset-password", { token: token });
+  async resetForm(req, res) {
+    try {
+      const { token } = req.query;
+      return res.render("session/reset-password", { token: token });
+    } catch (error) {
+      console.error(error);
+      return res.render("session/login", {
+        error: "Erro inesperado, tente novamente.",
+        user: req.body,
+      });
+    }
   },
 
-  login(req, res) {
+  async login(req, res) {
     try {
       const userID = req.user.id;
       req.session.userID = userID;
@@ -30,6 +63,10 @@ module.exports = {
       }
     } catch (error) {
       console.error(error);
+      return res.render("session/login", {
+        error: "Erro inesperado, tente novamente.",
+        user: req.body,
+      });
     }
   },
 
@@ -37,10 +74,13 @@ module.exports = {
     try {
       req.session.destroy();
 
-      console.log("yeah!");
+      //console.log("yeah!");
       return res.redirect("/");
     } catch (error) {
       console.error(error);
+      return res.render("session/login", {
+        error: "Erro inesperado, tente novamente.",
+      });
     }
   },
 
@@ -81,21 +121,33 @@ module.exports = {
       });
     } catch (error) {
       console.error(error);
+      return res.render("session/login", {
+        error: "Erro inesperado, tente novamente.",
+        user: req.body,
+      });
     }
   },
 
   async reset(req, res) {
-    const { password } = req.body;
+    try {
+      const { password } = req.body;
 
-    const id = await User.updating(req.user.id, {
-      password: password,
-      reset_token: "",
-      reset_token_expires: "",
-    });
-    console.log(id);
+      const id = await User.updating(req.user.id, {
+        password: password,
+        reset_token: "",
+        reset_token_expires: "",
+      });
+      console.log(id);
 
-    return res.render("session/login", {
-      success: "Senha alterada com sucesso!",
-    });
+      return res.render("session/login", {
+        success: "Senha alterada com sucesso!",
+      });
+    } catch (error) {
+      console.error(error);
+      return res.render("session/login", {
+        error: "Erro inesperado, tente novamente.",
+        user: req.body,
+      });
+    }
   },
 };

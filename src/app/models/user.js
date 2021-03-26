@@ -29,72 +29,80 @@ module.exports = {
   },
 
   async saving(user) {
-    const query = `
-        INSERT INTO users (
-          name,
-          email,
-          password,
-          is_admin,
-          reset_token,
-          reset_token_expires
-        ) VALUES ($1, $2, $3, $4, $5, $6)
-        RETURNING id
-      `;
+    try {
+      const query = `
+          INSERT INTO users (
+            name,
+            email,
+            password,
+            is_admin,
+            reset_token,
+            reset_token_expires
+          ) VALUES ($1, $2, $3, $4, $5, $6)
+          RETURNING id
+        `;
 
-    const passwordHash = await hash(user.password, 8);
-    //console.log(passwordHash);
+      const passwordHash = await hash(user.password, 8);
+      //console.log(passwordHash);
 
-    user.password = passwordHash;
-    user.email = String(user.email).toLowerCase();
+      user.password = passwordHash;
+      user.email = String(user.email).toLowerCase();
 
-    //console.log(user.email);
+      //console.log(user.email);
 
-    const values = Object.values(user);
+      const values = Object.values(user);
 
-    //console.log(values);
+      //console.log(values);
 
-    return db.query(query, values);
+      return db.query(query, values);
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   async updating(userID, filters) {
-    let query = `UPDATE users SET`;
+    try {
+      let query = `UPDATE users SET`;
 
-    Object.keys(filters).map((key, index) => {
-      //fields
+      Object.keys(filters).map((key, index) => {
+        //fields
+        query = `
+              ${query}
+                ${key} = $${index + 1},`;
+      });
+
+      //removing the last "," comma in the query.
+      query = query.slice(0, -1);
+
       query = `
-            ${query}
-              ${key} = $${index + 1},`;
-    });
+        ${query}
+          WHERE users.id = $${Object.keys(filters).length + 1}
+          RETURNING id
+        `;
 
-    //removing the last "," comma in the query.
-    query = query.slice(0, -1);
+      if (filters.password) {
+        //console.log(filters.password);
+        const newPassword = await hash(filters.password, 8);
 
-    query = `
-      ${query}
-        WHERE users.id = $${Object.keys(filters).length + 1}
-        RETURNING id
-      `;
+        filters.password = newPassword;
+      }
 
-    if (filters.password) {
-      //console.log(filters.password);
-      const newPassword = await hash(filters.password, 8);
+      filters.email = String(filters.email).toLowerCase();
+      //console.log(filters.email);
 
-      filters.password = newPassword;
+      let values = Object.values(filters);
+      values.push(userID);
+
+      // console.log(query);
+      // console.log(values);
+
+      const result = await db.query(query, values);
+
+      //console.log(result.rows);
+      return result.rows[0];
+    } catch (error) {
+      console.error(error);
     }
-
-    filters.email = String(filters.email).toLowerCase();
-    //console.log(filters.email);
-
-    let values = Object.values(filters);
-    values.push(userID);
-
-    // console.log(query);
-    // console.log(values);
-
-    const result = await db.query(query, values);
-
-    //console.log(result.rows);
-    return result.rows[0];
   },
 
   delete(userID) {

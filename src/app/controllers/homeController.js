@@ -20,6 +20,9 @@ module.exports = {
       return res.render("main/home/index", { recipes });
     } catch (err) {
       console.error(err);
+      return res.render(`main/home/about`, {
+        error: "Erro inesperado!",
+      });
     }
   },
 };

@@ -2,11 +2,15 @@ const db = require("../../config/db");
 
 module.exports = {
   chefsIdAndNames() {
-    const query = `
-        SELECT id, name FROM chefs
-    `;
+    try {
+      const query = `
+          SELECT id, name FROM chefs
+      `;
 
-    return db.query(query);
+      return db.query(query);
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   async show(filters) {

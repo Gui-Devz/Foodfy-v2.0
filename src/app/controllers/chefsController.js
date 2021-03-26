@@ -1,5 +1,6 @@
 const File = require("../models/file");
 const Chef = require("../models/chef");
+const Recipe = require("../models/recipe");
 const {
   formatPath,
   validationOfChefName,
@@ -20,11 +21,37 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+      let results = await Recipe.find();
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
+      return res.render(`main/home/index`, {
+        error: "Erro inesperado!",
+        recipes: recipes,
+      });
     }
   },
 
-  create(req, res) {
-    return res.render("admin/chefs/create", { userIsAdmin: req.user.is_admin });
+  async create(req, res) {
+    try {
+      return res.render("admin/chefs/create", {
+        userIsAdmin: req.user.is_admin,
+      });
+    } catch (error) {
+      let results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
+      return res.render(`admin/home/index`, {
+        error: "Erro inesperado!",
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
+      });
+    }
   },
 
   async show(req, res) {
@@ -46,6 +73,18 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+      let results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
+      return res.render(`admin/home/index`, {
+        error: "Erro inesperado!",
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
+      });
     }
   },
 
@@ -62,6 +101,18 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
+      let results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
+      return res.render(`admin/home/index`, {
+        error: "Erro inesperado!",
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
+      });
     }
   },
 
@@ -78,8 +129,17 @@ module.exports = {
       return res.redirect(`/admin/chefs/${chefID}`);
     } catch (err) {
       console.error(err);
+      let results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
         error: "Erro inesperado!",
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
       });
     }
   },
@@ -109,8 +169,17 @@ module.exports = {
       return res.redirect(`/admin/chefs/${chefID}`);
     } catch (err) {
       console.error(err);
+      let results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
         error: "Erro inesperado!",
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
       });
     }
   },
@@ -132,8 +201,17 @@ module.exports = {
       return res.redirect("/admin/chefs");
     } catch (err) {
       console.error(err);
+      let results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
         error: "Erro inesperado!",
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
       });
     }
   },

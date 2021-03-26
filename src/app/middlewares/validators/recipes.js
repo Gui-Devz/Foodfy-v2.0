@@ -118,7 +118,7 @@ async function checkInputFields(req, res, next) {
         input: validation,
         recipe: req.body,
         recipeFiles: files,
-        chefs,
+        chefs: chefs,
         userIsAdmin: req.user.is_admin,
       });
     }
@@ -147,31 +147,46 @@ async function checkInputFields(req, res, next) {
 }
 
 async function checkIfRecipesExists(req, res, next) {
-  const results = await Recipe.find();
+  try {
+    const results = await Recipe.find();
 
-  //Showing only one recipe instead of one recipe per file.
-  let recipes = renderingRecipesWithOnlyOneFile(results);
+    //Showing only one recipe instead of one recipe per file.
+    let recipes = renderingRecipesWithOnlyOneFile(results);
 
-  recipes = formatPath(recipes, req);
+    recipes = formatPath(recipes, req);
 
-  const recipesID = recipes.map((recipe) => recipe.id);
-  // console.log(recipesID);
-  // console.log(req.params.id);
-  const found = recipesID.some((recipeID) => {
-    if (recipeID == req.params.id) {
-      return recipeID;
+    const recipesID = recipes.map((recipe) => recipe.id);
+    // console.log(recipesID);
+    // console.log(req.params.id);
+    const found = recipesID.some((recipeID) => {
+      if (recipeID == req.params.id) {
+        return recipeID;
+      }
+    });
+
+    if (!found) {
+      return res.render("admin/home/index", {
+        error: "Essa receita não existe no banco de dados!",
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
+      });
     }
-  });
 
-  if (!found) {
-    return res.render("admin/home/index", {
-      error: "Essa receita não existe no banco de dados!",
+    next();
+  } catch (error) {
+    console.error(error);
+    let results = await Recipe.find({
+      where: { user_id: req.session.userID },
+    });
+    //Showing only one recipe instead of one recipe per file.
+    let recipes = renderingRecipesWithOnlyOneFile(results);
+
+    recipes = formatPath(recipes, req);
+    return res.render(`admin/home/index`, {
+      error: "Erro inesperado!",
       recipes: recipes,
-      userIsAdmin: req.user.is_admin,
     });
   }
-
-  next();
 }
 
 module.exports = {
