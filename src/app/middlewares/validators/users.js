@@ -151,13 +151,61 @@ async function checkRecipeOwner(req, res, next) {
     });
   }
 }
-async function checkInputFieldsUser(req, res, next) {
+async function checkInputFieldsUserPost(req, res, next) {
   try {
+    const { email } = req.body;
+    const validation = validationOfBlankFields(req.body);
+    if (validation) {
+      return res.render("admin/users/create", {
+        error: "Por favor, preencha todos os campos!",
+        input: validation,
+        user: req.body,
+        userIsAdmin: req.user.is_admin,
+      });
+    }
+
+    const emailExists = await User.find({ where: { email: email } });
+
+    if (emailExists[0]) {
+      return res.render("admin/users/create", {
+        error: "Esse email já existe em nossa base de dados!",
+        input: "email",
+        user: req.body,
+        userIsAdmin: req.user.is_admin,
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.error(error);
+    const allUsers = await User.find();
+    return res.render("admin/users/list", {
+      error: "Erro inesperado!",
+      users: allUsers,
+      userIsAdmin: req.user.is_admin,
+    });
+  }
+}
+async function checkInputFieldsUserPut(req, res, next) {
+  try {
+    const { email } = req.body;
     const validation = validationOfBlankFields(req.body);
     if (validation) {
       return res.render("admin/users/edit", {
         error: "Por favor, preencha todos os campos!",
         input: validation,
+        user: req.body,
+        userIsAdmin: req.user.is_admin,
+      });
+    }
+
+    const emailExists = await User.find({ where: { email: email } });
+    const userBeingUpdated = await User.find({ where: { id: req.body.id } });
+
+    if (emailExists[0].id !== userBeingUpdated[0].id) {
+      return res.render("admin/users/edit", {
+        error: "Esse email já existe em nossa base de dados!",
+        input: "email",
         user: req.body,
         userIsAdmin: req.user.is_admin,
       });
@@ -209,6 +257,7 @@ module.exports = {
   isAdmin,
   login,
   checkRecipeOwner,
-  checkInputFieldsUser,
+  checkInputFieldsUserPost,
+  checkInputFieldsUserPut,
   checkIfUserBeingDeletedIsAdmin,
 };
