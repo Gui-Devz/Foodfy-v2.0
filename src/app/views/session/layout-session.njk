@@ -26,6 +26,11 @@
 
       {% block content %}{% endblock %}
 
+    {% if input %}
+      <div class="inputBack-end" style="display:none">{{input}}</div>
+      <script src="/validationForms.js">
+      </script>
+    {% endif %}
 
       <div class="push"></div>
 
