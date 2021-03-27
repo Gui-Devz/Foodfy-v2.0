@@ -13,8 +13,10 @@ const addingLinksToCards = {
 
 const addingFilterSearchH1 = {
   h1() {
-    let filter = document.querySelector("#filter").dataset.filter;
-    if (filter != "") {
+    let filter = document.querySelector("#filter");
+    //console.log(filter);
+    if (filter != null && filter.dataset.filter !== "") {
+      filter = filter.dataset.filter;
       const element = document.createElement("h1");
       const wrapperGrid = document.querySelector(".wrapper-grid");
 
@@ -472,7 +474,8 @@ const changingRecipeImages = {
   },
 };
 
-filteringFunctions.commonFiltering(["filter"], addingFilterSearchH1.h1);
+//filteringFunctions.commonFiltering(["filter"], addingFilterSearchH1.h1);
+addingFilterSearchH1.h1();
 
 filteringFunctions.removingWhiteSpacesInBeginningOfInputs();
 // filteringFunctions.filteringErrorEmailInput();
