@@ -135,7 +135,6 @@ module.exports = {
         reset_token: "",
         reset_token_expires: "",
       });
-      console.log(id);
 
       return res.render("session/login", {
         success: "Senha alterada com sucesso!",
