@@ -70,7 +70,6 @@ async function isLogged(req, res, next) {
 }
 async function isAdmin(req, res, next) {
   try {
-    //console.log("ola");
     const userID = req.session.userID;
     if (!userID) {
       const errorCreate =
