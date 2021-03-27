@@ -97,6 +97,6 @@ INSERT INTO users
   email,
   password,
   is_admin
-) VALUES ('Guilherme', 'gui1234@gmail.com', '1234', 'true');
+) VALUES ('admin', 'admin', 'admin', 'true');
 
 
