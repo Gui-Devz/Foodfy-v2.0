@@ -87,8 +87,10 @@ module.exports = {
         filters.password = newPassword;
       }
 
-      filters.email = String(filters.email).toLowerCase();
-      //console.log(filters.email);
+      if (filters.email) {
+        filters.email = String(filters.email).toLowerCase();
+        //console.log(filters.email);
+      }
 
       let values = Object.values(filters);
       values.push(userID);
