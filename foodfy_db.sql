@@ -99,4 +99,9 @@ INSERT INTO users
   is_admin
 ) VALUES ('admin', 'admin', 'admin', 'true');
 
+INSERT INTO chefs
+(
+  name
+) VALUES ('Pelizzetti');
+
 
