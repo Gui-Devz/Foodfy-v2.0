@@ -70,6 +70,7 @@ async function isLogged(req, res, next) {
 }
 async function isAdmin(req, res, next) {
   try {
+    //console.log("ola");
     const userID = req.session.userID;
     if (!userID) {
       const errorCreate =
@@ -102,6 +103,8 @@ async function isAdmin(req, res, next) {
     let recipes = renderingRecipesWithOnlyOneFile(results);
 
     recipes = formatPath(recipes, req);
+
+    recipes = recipes.slice(0, 6);
     return res.render(`main/home/index`, {
       error: "Erro inesperado!",
       recipes: recipes,
