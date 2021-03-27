@@ -105,22 +105,20 @@ module.exports = {
       console.error(error);
     }
   },
-  update(dataPut, userID) {
+  update(dataPut) {
     try {
       const query = `
           UPDATE recipes SET
           chef_id = $1,
-          user_id = $2,
-          title = $3,
-          ingredients = $4,
-          preparation = $5,
-          information = $6
-        WHERE id=$7
+          title = $2,
+          ingredients = $3,
+          preparation = $4,
+          information = $5
+        WHERE id=6$
         RETURNING id`;
 
       let values = [
         dataPut.chef_id,
-        userID,
         dataPut.title,
         arrayDB(dataPut.ingredients),
         arrayDB(dataPut.preparation),

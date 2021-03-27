@@ -212,7 +212,7 @@ module.exports = {
 
   async put(req, res) {
     try {
-      let results = await Recipe.update(req.recipe, req.user.id);
+      let results = await Recipe.update(req.recipe);
       const recipeID = results.rows[0].id;
 
       //deleting files from DB and server
