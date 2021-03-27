@@ -3,7 +3,7 @@ const Chef = require("../models/chef");
 const Recipe = require("../models/recipe");
 const {
   formatPath,
-  validationOfChefName,
+  removingWhiteSpacesInBeginningAndEnding,
   renderingRecipesWithOnlyOneFile,
 } = require("../../lib/utils");
 
@@ -122,7 +122,7 @@ module.exports = {
       const fileID = results.rows[0].id;
       console.log(fileID);
 
-      const chefName = validationOfChefName(req.body.name);
+      const chefName = removingWhiteSpacesInBeginningAndEnding(req.body.name);
       results = await Chef.saving(chefName, fileID);
       const chefID = results.rows[0].id;
 
