@@ -55,7 +55,7 @@ First of all you'll need to install the NodeJs in your machine, if you are a Win
   > When you create the app's Database you'll have the user admin with password admin to make the first login.
 
     <div style="background-color: rgba(7, 7, 7, 0.17); padding: 20px;">
-      <ol type="1">
+      <ol type="number">
         <li>
           Use the command 'git clone https://github.com/Gui-Devz/Foodfy-v2.0.git'.
         </li><br>
