@@ -53,31 +53,28 @@ First of all you'll need to install the NodeJs in your machine, if you are a Win
   > Second you need to know that the database management system being used is PostgreSQL.
   >
   > When you create the app's Database you'll have the user admin with password admin to make the first login.
+  > <br>
 
-      <div style="background-color: rgba(7, 7, 7, 0.17); padding: 20px;">
+1. Use the command 'git clone https://github.com/Gui-Devz/Foodfy-v2.0.git'.
 
-        1. Use the command 'git clone https://github.com/Gui-Devz/Foodfy-v2.0.git'.
+2. Use the command 'npm ci' <a href="https://stackoverflow.com/a/48524475/13916618">(See here the advantages of using 'npm ci' instead of 'npm install')</a>
 
-        2. Use the command 'npm ci' <a href="https://stackoverflow.com/a/48524475/13916618">(See here the advantages of using 'npm ci' instead of 'npm install')</a>
+3. Go to file 'foodfy_db.sql', there'll be the query to create the database and
 
-        3. Go to file 'foodfy_db.sql', there'll be the query to create the database and
+4. After creating the database you'll have to configure the Pool for the postgres.
+   You'll find the file in 'src/config/db.js' there you'll have to make sure the name of
+   the DB and the port it's being connected is correct.
 
-        4. After creating the database you'll have to configure the Pool for the postgres.
-            You'll find the file in 'src/config/db.js' there you'll have to make sure the name of
-            the DB and the port it's being connected is correct.
+5. You'll have to configure the 'nodemailer' lib as well, cause otherwise you won't be
+   able to use the app properly.
 
-        5. You'll have to configure the 'nodemailer' lib as well, cause otherwise you won't be
-            able to use the app properly.
+6. So, go to 'src/config/mailer.js', there you'll have to fill all the fields using the
+   'SMTP Settings' that is given in the website <a href="https://mailtrap.io/">'mailtrap.io'</a>. Like shown in
+   the image bellow.
 
-        6. So, go to 'src/config/mailer.js', there you'll have to fill all the fields using the
-            'SMTP Settings' that is given in the website <a href="https://mailtrap.io/">'mailtrap.io'</a>. Like shown in
-            the image bellow.
+  <img style="object-fit: cover;" src="https://user-images.githubusercontent.com/62578862/112759260-94f13900-8fc8-11eb-8bd8-d249912000b2.png" height="400">
 
-          <img style="object-fit: cover;" src="https://user-images.githubusercontent.com/62578862/112759260-94f13900-8fc8-11eb-8bd8-d249912000b2.png" height="400">
-
-        7. And finally just start the app using the command 'npm start'.
-
-      </div>
+7. And finally just start the app using the command 'npm start'.
 
 ## License
 
