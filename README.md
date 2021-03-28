@@ -24,7 +24,7 @@ Web page about food recipes
 <div align="center" style="display: grid; grid-template-columns: 400px 400px; justify-content: center; align-items:center; gap: 10px">
   
   | | | |
-|:-------------------------:|:-------------------------:|:
+|:-------------------------:|:-------------------------:|:-
 |<img width="1604" alt="" src="https://i.imgur.com/3jRc4LC.gif">  blah |  <img width="1604" alt="" src="https://i.imgur.com/6HGeiHd.gif">|
 |<img width="1604" alt="" src="https://user-images.githubusercontent.com/62578862/112757803-aaaf3000-8fc1-11eb-9f05-dcc9ff2f52f8.JPG">|<img width="1604" alt="" src="https://user-images.githubusercontent.com/62578862/112758271-cadfee80-8fc3-11eb-8123-9b1e7921abe2.JPG">
 
