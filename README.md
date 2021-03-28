@@ -59,7 +59,7 @@ First of all you'll need to install the NodeJs in your machine, if you are a Win
 
 2. Use the command 'npm ci' <a href="https://stackoverflow.com/a/48524475/13916618">(See here the advantages of using 'npm ci' instead of 'npm install')</a>
 
-3. Go to file 'foodfy_db.sql', there'll be the query to create the database and
+3. Go to file 'foodfy_db.sql', there'll be the query to create the database and all the tables
 
 4. After creating the database you'll have to configure the Pool for the postgres.
    You'll find the file in 'src/config/db.js' there you'll have to make sure the name of
