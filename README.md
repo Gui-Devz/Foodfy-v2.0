@@ -22,11 +22,12 @@ Web page about food recipes
 [//]: # "Add your gifs/images here:"
 
 <div align="center" style="display: grid; grid-template-columns: 400px 400px; justify-content: center; align-items:center; gap: 10px">
+  
+  | | | |
+|:-------------------------:|:-------------------------:|:-------------------------:|
+|<img width="1604" alt="screen shot 2017-08-07 at 12 18 15 pm" src=https://i.imgur.com/3jRc4LC.gif">  blah |  <img width="1604" alt="screen shot 2017-08-07 at 12 18 15 pm" src="https://user-images.githubusercontent.com/297678/29892310-03e92256-8d83-11e7-9b58-986dcb6f702e.png">|<img width="1604" alt="screen shot 2017-08-07 at 12 18 15 pm" src="https://user-images.githubusercontent.com/297678/29892310-03e92256-8d83-11e7-9b58-986dcb6f702e.png">|
 
-  <img src="https://i.imgur.com/3jRc4LC.gif" alt="demo" width="auto" max-height="350">
-  <img src="https://i.imgur.com/6HGeiHd.gif" alt="demo" max-height="350">
-  <img src="https://user-images.githubusercontent.com/62578862/112757803-aaaf3000-8fc1-11eb-9f05-dcc9ff2f52f8.JPG" width="" max-height="350">
-  <img src="https://user-images.githubusercontent.com/62578862/112758271-cadfee80-8fc3-11eb-8123-9b1e7921abe2.JPG" max-height="350">
+  
 
 </div>
 
