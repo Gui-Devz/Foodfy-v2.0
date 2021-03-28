@@ -48,12 +48,12 @@ Web page about food recipes
 
 First of all you'll need to install the NodeJs in your machine, if you are a Windows user I'd recommend to install via Chocolatey (If you're user of other OS search for the best way to install Nodejs in your case)
 
-- Now, let's get started. Use the following commands on your terminal:
+> Second you need to know that the database management system being used is PostgreSQL.
+>
+> When you create the app's Database you'll have the user admin with password admin to make the first login.
+> <br>
 
-  > Second you need to know that the database management system being used is PostgreSQL.
-  >
-  > When you create the app's Database you'll have the user admin with password admin to make the first login.
-  > <br>
+- Now, let's get started. Use the following commands on your terminal:
 
 1. Use the command 'git clone https://github.com/Gui-Devz/Foodfy-v2.0.git'.
 
