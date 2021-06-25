@@ -1,81 +1,109 @@
-<h1 align="center">Foodfy</h1>
 <div align="center">
+  <h1 align="center">Foodfy</h1>
   <img src="https://user-images.githubusercontent.com/62578862/112757494-4b045500-8fc0-11eb-9d4b-c4afd079b0a6.png" height ="150" width="150">
 
 </div>
-<br>
-<br>
-<br>
-<h2 align="center">
-Web page about food recipes
 
-</h2>
-
-<p align="center">The project is all about learning technologies such as JS6, NodeJs, HMTL5 and CSS3 </p>
-
+<h4 align="center">
+  LaunchBase 🚀 Done!
+</h4>
 <p align="center">
-  <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License MIT">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/Gui-Devz/Foodfy-v2.0">
+
+  <a href="https://www.linkedin.com/in/guilherme-batalha-2b913448/">
+    <img alt="Made by GuilhermeZagari" src="https://img.shields.io/badge/made%20by-GuilhermeZagari-%2304D361">
+  </a>
+  <a href="https://rocketseat.com.br/">
+  <img src="https://img.shields.io/badge/NLW-done-brightgreen?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAALVBMVEVHcExxWsF0XMJzXMJxWcFsUsD///9jRrzY0u6Xh9Gsn9n39fyMecy0qd2bjNJWBT0WAAAABHRSTlMA2Do606wF2QAAAGlJREFUGJVdj1cWwCAIBLEsRU3uf9xobDH8+GZwUYi8i6ucJwrxKE+7D0G9Q4vlYqtmCSjndr4CgCgzlyFgfKfKCVO0LrPKjmiqMxGXkJwNnXskqWG+1oSM+BSwD8f29YLNjvx/OQrn+g99oQSoNmt3PgAAAABJRU5ErkJggg=="></img>
+  </a>
+
+  <a href="https://github.com/Gui-Devz/Foodfy-v2.0/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Gui-Devz/Foodfy-v2.0">
+  </a>
+
+   <a href="https://github.com/Gui-Devz/Foodfy-v2.0/stargazers">
+    <img alt="Stargazers" src="https://img.shields.io/github/stars/Gui-Devz/Foodfy-v2.0?style=social">
   </a>
 </p>
 
+<p align="center">
+  <a href="#-project">Project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#rocket-Technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-how-to-use">How to use</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-how-to-contribute">How to contribute</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-license">License</a>
+</p>
+
+</h2>
+
+## 💻 Project
+
+<p align="center"> Foodfy is an App where people can share all of their recipes in the Web. </p>
+
 [//]: # "Add your gifs/images here:"
 
-<div align="center" style="display: grid; grid-template-columns: 400px 400px; justify-content: center; align-items:center; gap: 10px">
+<div align="center">
 
-|                                                                                                                                       |                                                                                                                                       |
-| :-----------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------: |
-|                                    <img width="1604" alt="" src="https://i.imgur.com/3jRc4LC.gif">                                    |                                    <img width="1604" alt="" src="https://i.imgur.com/6HGeiHd.gif">                                    |
-| <img width="1604" alt="" src="https://user-images.githubusercontent.com/62578862/112757803-aaaf3000-8fc1-11eb-9f05-dcc9ff2f52f8.JPG"> | <img width="1604" alt="" src="https://user-images.githubusercontent.com/62578862/112758271-cadfee80-8fc3-11eb-8123-9b1e7921abe2.JPG"> |
+<img width="1604" alt="" src="https://user-images.githubusercontent.com/62578862/123466883-4141bc00-d5c6-11eb-904f-6c0ff410802b.png">
 
 </div>
 
 <hr />
 
-## Features
+## :rocket: Technologies
 
 [//]: # "Add the features of your project here:"
 
-- 💹 **Node Js** — A JavaScript runtime
-- 🔵 **Express** — A web framework for Node Js
-- 💹 **PostgreSQL** — A DBMS well known and very reliable.
-- 💹 **Express-session** — A lib that allows to work with sessions for different users using the app.
-- 💹 **Nodemailer** — A lib that makes possible to send emails from the app.
-- 💹 **bcryptJs** — A lib that helps us make the passwords of our users safer.
-- 💹 **Multer** — A lib that helps us to handle images upload in an easier way.
+- 💹 [Nodejs][nodejs] — A JavaScript runtime
+- 🔵 [Express][express] — A web framework for Node Js
+- 💹 [PostgreSQL][postgresql] — A DBMS well known and very reliable.
+- 💹 [Nodemailer][nodemailer] — A lib that makes possible to send emails from the app.
 
-## Getting started
+## :information_source: How To Use
 
-First of all you'll need to install the NodeJs in your machine, if you are a Windows user I'd recommend to install via Chocolatey (If you're user of other OS search for the best way to install Nodejs in your case)
+To clone and run this application, you'll need [Git](https://git-scm.com), [Node.js][nodejs] + [PostgreSQL][postgresql] installed on your computer.
 
-> Second you need to know that the database management system being used is PostgreSQL.
->
-> When you create the app's Database you'll have the user admin with password admin to make the first login.
-> <br>
+### Install Front-end
 
-- Now, let's get started. Use the following commands on your terminal:
+```bash
+# Clone this repository
+$ git clone https://github.com/Gui-Devz/Foodfy-v2.0.git
 
-1. Use the command 'git clone https://github.com/Gui-Devz/Foodfy-v2.0.git'.
+# Go into the repository
+$ cd foodfy-v2.0
 
-2. Use the command 'npm ci' <a href="https://stackoverflow.com/a/48524475/13916618">(See here the advantages of using 'npm ci' instead of 'npm install')</a>
+# Install dependencies
+$ npm install
 
-3. Go to file 'foodfy_db.sql', there'll be the query to create the database and all the tables
+# Run
+$ npm start
 
-4. After creating the database you'll have to configure the Pool for the postgres.
-   You'll find the file in 'src/config/db.js' there you'll have to make sure the name of
-   the DB and the port it's being connected is correct.
+# running on port 3000
+```
 
-5. You'll have to configure the 'nodemailer' lib as well, cause otherwise you won't be
-   able to use the app properly.
+### :alert: Important
 
-6. So, go to 'src/config/mailer.js', there you'll have to fill all the fields using the
-   'SMTP Settings' that is given in the website <a href="https://mailtrap.io/">'mailtrap.io'</a>. Like shown in
-   the image bellow.
+- Go to 'src/config/mailer.js', there you'll have to fill all the fields using the 'SMTP Settings' that is given in the website <a href="https://mailtrap.io/">'mailtrap.io'</a>. Like shown in
+the image bellow.
 
   <img style="object-fit: cover;" src="https://user-images.githubusercontent.com/62578862/112759260-94f13900-8fc8-11eb-8bd8-d249912000b2.png" height="400">
 
-7. And finally just start the app using the command 'npm start'.
+## ✍️ How to contribute
+
+- Make a fork;
+- Create a branch with your feature: `git checkout -b my-feature`;
+- Commit changes: `git commit -m 'feat: My new feature'`;
+- Make a push to your branch: `git push origin my-feature`.
+
+After merging your receipt request to done, you can delete a branch from yours.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) page for details.
+his project is under the MIT license.
+
+Made with ♥ by Guilherme Zagari :wave: [Get in touch!](https://www.linkedin.com/in/guilherme-batalha-2b913448/)
+
+[nodejs]: https://nodejs.org/
+[nodemailer]: https://nodemailer.com/about/
+[postgresql]: https://www.postgresql.org/
+[express]: https://expressjs.com/
