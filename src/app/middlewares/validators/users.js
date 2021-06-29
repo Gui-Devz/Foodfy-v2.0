@@ -1,11 +1,11 @@
-const User = require("../../models/user");
-const Recipe = require("../../models/recipe");
+const User = require('../../models/User');
+const Recipe = require('../../models/Recipe');
 
 const {
   formatPath,
   validationOfBlankFields,
   renderingRecipesWithOnlyOneFile,
-} = require("../../../lib/utils");
+} = require('../../../lib/utils');
 
 async function login(req, res, next) {
   try {
@@ -14,16 +14,16 @@ async function login(req, res, next) {
 
       if (user[0].is_admin) {
         const allUsers = await User.find();
-        return res.render("admin/users/list", {
-          success: "Você está logado!",
+        return res.render('admin/users/list', {
+          success: 'Você está logado!',
           users: allUsers,
           userIsAdmin: user[0].is_admin,
         });
       }
 
       req.user = user;
-      return res.render("admin/users/profile", {
-        success: "Você está logado!",
+      return res.render('admin/users/profile', {
+        success: 'Você está logado!',
         user: user[0],
       });
     }
@@ -37,7 +37,7 @@ async function login(req, res, next) {
 
     recipes = formatPath(recipes, req);
     return res.render(`main/home/index`, {
-      error: "Erro inesperado!",
+      error: 'Erro inesperado!',
       recipes: recipes,
     });
   }
@@ -46,8 +46,8 @@ async function isLogged(req, res, next) {
   try {
     if (!req.session.userID) {
       const errorCreate =
-        "Crie uma conta para ter acesso a essa funcionalidade!";
-      return res.render("session/login", { error: errorCreate });
+        'Crie uma conta para ter acesso a essa funcionalidade!';
+      return res.render('session/login', { error: errorCreate });
     }
 
     const user = await User.find({ where: { id: req.session.userID } });
@@ -63,7 +63,7 @@ async function isLogged(req, res, next) {
 
     recipes = formatPath(recipes, req);
     return res.render(`main/home/index`, {
-      error: "Erro inesperado!",
+      error: 'Erro inesperado!',
       recipes: recipes,
     });
   }
@@ -73,8 +73,8 @@ async function isAdmin(req, res, next) {
     const userID = req.session.userID;
     if (!userID) {
       const errorCreate =
-        "Crie uma conta para ter acesso a essa funcionalidade!";
-      return res.render("session/login", { error: errorCreate });
+        'Crie uma conta para ter acesso a essa funcionalidade!';
+      return res.render('session/login', { error: errorCreate });
     }
 
     const user = await User.find({ where: { id: userID } });
@@ -85,8 +85,8 @@ async function isAdmin(req, res, next) {
 
       //Showing only one recipe instead of one recipe per file.
       recipes = renderingRecipesWithOnlyOneFile(recipes);
-      const errorCreate = "Apenas o Admin tem acesso a essa funcionalidade!";
-      return res.render("admin/home/index", {
+      const errorCreate = 'Apenas o Admin tem acesso a essa funcionalidade!';
+      return res.render('admin/home/index', {
         error: errorCreate,
         recipes: recipes,
         userIsAdmin: user[0].is_admin,
@@ -105,7 +105,7 @@ async function isAdmin(req, res, next) {
 
     recipes = recipes.slice(0, 6);
     return res.render(`main/home/index`, {
-      error: "Erro inesperado!",
+      error: 'Erro inesperado!',
       recipes: recipes,
     });
   }
@@ -130,8 +130,8 @@ async function checkRecipeOwner(req, res, next) {
           recipes = formatPath(recipes, req);
           //console.log(recipes);
 
-          return res.render("admin/home/index", {
-            error: "Essa receita não é sua para editar!",
+          return res.render('admin/home/index', {
+            error: 'Essa receita não é sua para editar!',
             recipes: recipes,
             userIsAdmin: req.user.is_admin,
           });
@@ -147,7 +147,7 @@ async function checkRecipeOwner(req, res, next) {
 
     recipes = formatPath(recipes, req);
     return res.render(`admin/home/index`, {
-      error: "Erro inesperado!",
+      error: 'Erro inesperado!',
       recipes: recipes,
       userIsAdmin: req.user.is_admin,
     });
@@ -158,8 +158,8 @@ async function checkInputFieldsUserPost(req, res, next) {
     const { email } = req.body;
     const validation = validationOfBlankFields(req.body);
     if (validation) {
-      return res.render("admin/users/create", {
-        error: "Por favor, preencha todos os campos!",
+      return res.render('admin/users/create', {
+        error: 'Por favor, preencha todos os campos!',
         input: validation,
         user: req.body,
         userIsAdmin: req.user.is_admin,
@@ -169,9 +169,9 @@ async function checkInputFieldsUserPost(req, res, next) {
     const emailExists = await User.find({ where: { email: email } });
 
     if (emailExists[0]) {
-      return res.render("admin/users/create", {
-        error: "Esse email já existe em nossa base de dados!",
-        input: "email",
+      return res.render('admin/users/create', {
+        error: 'Esse email já existe em nossa base de dados!',
+        input: 'email',
         user: req.body,
         userIsAdmin: req.user.is_admin,
       });
@@ -181,8 +181,8 @@ async function checkInputFieldsUserPost(req, res, next) {
   } catch (error) {
     console.error(error);
     const allUsers = await User.find();
-    return res.render("admin/users/list", {
-      error: "Erro inesperado!",
+    return res.render('admin/users/list', {
+      error: 'Erro inesperado!',
       users: allUsers,
       userIsAdmin: req.user.is_admin,
     });
@@ -192,9 +192,10 @@ async function checkInputFieldsUserPut(req, res, next) {
   try {
     const { email } = req.body;
     const validation = validationOfBlankFields(req.body);
+
     if (validation) {
-      return res.render("admin/users/edit", {
-        error: "Por favor, preencha todos os campos!",
+      return res.render('admin/users/edit', {
+        error: 'Por favor, preencha todos os campos!',
         input: validation,
         user: req.body,
         userIsAdmin: req.user.is_admin,
@@ -205,9 +206,9 @@ async function checkInputFieldsUserPut(req, res, next) {
     const userBeingUpdated = await User.find({ where: { id: req.body.id } });
 
     if (emailExists[0].id !== userBeingUpdated[0].id) {
-      return res.render("admin/users/edit", {
-        error: "Esse email já existe em nossa base de dados!",
-        input: "email",
+      return res.render('admin/users/edit', {
+        error: 'Esse email já existe em nossa base de dados!',
+        input: 'email',
         user: req.body,
         userIsAdmin: req.user.is_admin,
       });
@@ -217,8 +218,8 @@ async function checkInputFieldsUserPut(req, res, next) {
   } catch (error) {
     console.error(error);
     const allUsers = await User.find();
-    return res.render("admin/users/list", {
-      error: "Erro inesperado!",
+    return res.render('admin/users/list', {
+      error: 'Erro inesperado!',
       users: allUsers,
       userIsAdmin: req.user.is_admin,
     });
@@ -232,10 +233,10 @@ async function checkIfUserBeingDeletedIsAdmin(req, res, next) {
     const user = await User.find({ where: { id: id } });
 
     if (user[0].is_admin) {
-      console.log("yeahh");
+      console.log('yeahh');
       const allUsers = await User.find();
-      return res.render("admin/users/list", {
-        error: "Usuário administrador não pode ser deletado!",
+      return res.render('admin/users/list', {
+        error: 'Usuário administrador não pode ser deletado!',
         users: allUsers,
         userIsAdmin: req.user.is_admin,
       });
@@ -246,8 +247,8 @@ async function checkIfUserBeingDeletedIsAdmin(req, res, next) {
   } catch (error) {
     console.error(error);
     const allUsers = await User.find();
-    return res.render("admin/users/list", {
-      error: "Erro inesperado!",
+    return res.render('admin/users/list', {
+      error: 'Erro inesperado!',
       users: allUsers,
       userIsAdmin: req.user.is_admin,
     });

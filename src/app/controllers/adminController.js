@@ -1,16 +1,16 @@
-const Recipe = require("../models/recipe");
-const File = require("../models/file");
-const Chef = require("../models/chef");
+const Recipe = require('../models/Recipe');
+const File = require('../models/File');
+const Chef = require('../models/Chef');
 const {
   formatPath,
   renderingRecipesWithOnlyOneFile,
-} = require("../../lib/utils");
+} = require('../../lib/utils');
 
 module.exports = {
   async index(req, res) {
     try {
-      let results = "";
-      let recipes = "";
+      let results = '';
+      let recipes = '';
 
       if (req.user.is_admin) {
         results = await Recipe.find();
@@ -21,7 +21,7 @@ module.exports = {
         recipes = renderingRecipesWithOnlyOneFile(recipes);
       } else {
         results = await Recipe.find({
-          where: { "recipes.user_id": req.session.userID },
+          where: { 'recipes.user_id': req.session.userID },
         });
 
         recipes = formatPath(results, req);
@@ -30,7 +30,7 @@ module.exports = {
         recipes = renderingRecipesWithOnlyOneFile(recipes);
       }
 
-      return res.render("admin/home/index", {
+      return res.render('admin/home/index', {
         recipes,
         userIsAdmin: req.user.is_admin,
       });
@@ -45,7 +45,7 @@ module.exports = {
       recipes = formatPath(recipes, req);
       recipes = recipes.slice(0, 6);
       return res.render(`main/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
       });
     }
@@ -55,14 +55,14 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      let result = await Recipe.find({ where: { "recipes.id": id } });
+      let result = await Recipe.find({ where: { 'recipes.id': id } });
       const recipe = result[0];
 
       result = await File.showRecipeFiles(id);
       //Formatting the path of the photos to send to the front-end
       let recipeFiles = formatPath(result.rows, req);
 
-      return res.render("admin/recipes/show", {
+      return res.render('admin/recipes/show', {
         recipe,
         files: recipeFiles,
         userIsAdmin: req.user.is_admin,
@@ -77,7 +77,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
@@ -90,7 +90,7 @@ module.exports = {
       const results = await Chef.show();
       const chefsWithAvatarFormated = formatPath(results, req);
 
-      return res.render("admin/chefs/list", {
+      return res.render('admin/chefs/list', {
         chefs: chefsWithAvatarFormated,
         userIsAdmin: req.user.is_admin,
       });
@@ -104,7 +104,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });

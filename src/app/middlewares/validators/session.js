@@ -1,8 +1,8 @@
-const { validationOfBlankFields } = require("../../../lib/utils");
+const { validationOfBlankFields } = require('../../../lib/utils');
 
-const { compare } = require("bcryptjs");
+const { compare } = require('bcryptjs');
 
-const User = require("../../models/user");
+const User = require('../../models/User');
 
 async function checkFormLogin(req, res, next) {
   try {
@@ -11,8 +11,8 @@ async function checkFormLogin(req, res, next) {
     const validation = validationOfBlankFields(req.body);
 
     if (validation) {
-      return res.render("session/login", {
-        error: "Por favor, preencha todos os campos!",
+      return res.render('session/login', {
+        error: 'Por favor, preencha todos os campos!',
         input: validation,
         user: req.body,
       });
@@ -21,25 +21,25 @@ async function checkFormLogin(req, res, next) {
     const user = await User.find({ where: { email: email } });
 
     if (!user[0]) {
-      return res.render("session/login", {
-        error: "Email não encontrado!",
-        input: "email",
+      return res.render('session/login', {
+        error: 'Email não encontrado!',
+        input: 'email',
         user: req.body,
       });
     }
 
-    if (user[0].email === "admin" && password === "admin") {
+    if (user[0].email === 'admin' && password === 'admin') {
       req.session.userID = user[0].id;
 
-      return res.redirect("/admin/users");
+      return res.redirect('/admin/users');
     }
 
     const passed = await compare(password, user[0].password);
 
     if (!passed) {
-      return res.render("session/login", {
-        error: "Senha incorreta!",
-        input: "password",
+      return res.render('session/login', {
+        error: 'Senha incorreta!',
+        input: 'password',
         user: req.body,
       });
     }
@@ -49,8 +49,8 @@ async function checkFormLogin(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("session/login", {
-      error: "Erro inesperado, tente novamente.",
+    return res.render('session/login', {
+      error: 'Erro inesperado, tente novamente.',
       user: req.body,
     });
   }
@@ -65,29 +65,29 @@ async function checkFormReset(req, res, next) {
     now = now.setHours(now.getHours());
 
     if (!user[0]) {
-      return res.render("session/reset-password", {
+      return res.render('session/reset-password', {
         email: email,
-        input: "email",
+        input: 'email',
         token: token,
-        error: "Email não existe, por favor verifique o email digitado!",
+        error: 'Email não existe, por favor verifique o email digitado!',
       });
     }
 
     if (now > user[0].reset_token_expires || token !== user[0].reset_token) {
-      return res.render("session/reset-password", {
+      return res.render('session/reset-password', {
         email: email,
         token: token,
         error:
-          "Token inválido, por favor solicite novamente alteração de senha!",
+          'Token inválido, por favor solicite novamente alteração de senha!',
       });
     }
 
     if (password !== repeatPassword) {
-      return res.render("session/reset-password", {
+      return res.render('session/reset-password', {
         email: email,
-        input: "repeatPassword",
+        input: 'repeatPassword',
         token: token,
-        error: "As senhas digitadas não são iguais!",
+        error: 'As senhas digitadas não são iguais!',
       });
     }
 
@@ -96,8 +96,8 @@ async function checkFormReset(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("session/login", {
-      error: "Erro inesperado, tente novamente.",
+    return res.render('session/login', {
+      error: 'Erro inesperado, tente novamente.',
       user: req.body,
     });
   }
@@ -109,10 +109,10 @@ async function checkFormForgot(req, res, next) {
     const user = await User.find({ where: { email: email } });
 
     if (!user[0]) {
-      return res.render("session/forgot-password", {
+      return res.render('session/forgot-password', {
         email: email,
-        input: "email",
-        error: "Email não existe, por favor verifique o email digitado!",
+        input: 'email',
+        error: 'Email não existe, por favor verifique o email digitado!',
       });
     }
 
@@ -120,8 +120,8 @@ async function checkFormForgot(req, res, next) {
     next();
   } catch (error) {
     console.error(error);
-    return res.render("session/login", {
-      error: "Erro inesperado, tente novamente.",
+    return res.render('session/login', {
+      error: 'Erro inesperado, tente novamente.',
       user: req.body,
     });
   }
