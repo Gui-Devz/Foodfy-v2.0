@@ -89,14 +89,6 @@ ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFE
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
 
--- Populate tables for testing.
 
-INSERT INTO users
-(
-  name,
-  email,
-  password,
-  is_admin
-) VALUES ('admin', 'admin', 'admin', 'true');
 
 
