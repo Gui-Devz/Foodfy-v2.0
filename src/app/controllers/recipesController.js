@@ -1,13 +1,14 @@
-const Admin = require("../models/admin");
-const Recipe = require("../models/recipe");
-const File = require("../models/file");
-const Chef = require("../models/chef");
+const RecipesFiles = require('../models/RecipesFiles');
+const Recipe = require('../models/recipe');
+const File = require('../models/file');
+const Chef = require('../models/chef');
 const {
   formatPath,
   renderingRecipesWithOnlyOneFile,
-} = require("../../lib/utils");
+  arrayDB,
+} = require('../../lib/utils');
 
-const fs = require("fs");
+const fs = require('fs');
 
 module.exports = {
   async list(req, res) {
@@ -19,7 +20,7 @@ module.exports = {
       //Showing only one recipe instead of one recipe per file.
       recipes = renderingRecipesWithOnlyOneFile(recipes);
 
-      return res.render("main/recipes/recipes-list", { recipes });
+      return res.render('main/recipes/recipes-list', { recipes });
     } catch (err) {
       console.error(err);
       let results = await Recipe.find();
@@ -31,9 +32,9 @@ module.exports = {
 
       recipes = recipes.slice(0, 6);
 
-      return res.render("main/home/index", {
+      return res.render('main/home/index', {
         recipes,
-        error: "Erro Inesperado!",
+        error: 'Erro Inesperado!',
       });
     }
   },
@@ -42,14 +43,14 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      let results = await Recipe.find({ where: { "recipes.id": id } });
+      let results = await Recipe.find({ where: { 'recipes.id': id } });
       const recipe = results[0];
 
       results = await File.showRecipeFiles(id);
       const files = formatPath(results.rows, req);
 
       //console.log(recipe);
-      return res.render("main/recipes/show", {
+      return res.render('main/recipes/show', {
         recipe,
         files,
       });
@@ -64,9 +65,9 @@ module.exports = {
 
       recipes = recipes.slice(0, 6);
 
-      return res.render("main/home/index", {
+      return res.render('main/home/index', {
         recipes,
-        error: "Erro Inesperado!",
+        error: 'Erro Inesperado!',
       });
     }
   },
@@ -74,7 +75,7 @@ module.exports = {
   async edit(req, res) {
     try {
       const { id } = req.params;
-      let results = await Recipe.find({ where: { "recipes.id": id } });
+      let results = await Recipe.find({ where: { 'recipes.id': id } });
       const recipe = results[0];
 
       results = await File.showRecipeFiles(id);
@@ -84,7 +85,7 @@ module.exports = {
       results = await Chef.chefsIdAndNames();
       const chefs = results.rows;
 
-      return res.render("admin/recipes/edit", {
+      return res.render('admin/recipes/edit', {
         recipe,
         recipeFiles,
         chefs: chefs,
@@ -100,18 +101,19 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
     }
   },
+
   async create(req, res) {
     try {
       const result = await Chef.chefsIdAndNames();
       const chefs = result.rows;
 
-      return res.render("admin/recipes/create", {
+      return res.render('admin/recipes/create', {
         chefs,
         userIsAdmin: req.user.is_admin,
       });
@@ -125,7 +127,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
@@ -138,12 +140,12 @@ module.exports = {
     try {
       const { filter } = req.body;
 
-      let results = "";
+      let results = '';
 
       if (filter) {
         results = await Recipe.searchFilter({
-          where: { "recipes.title": filter },
-          or: { "recipes.information": filter },
+          where: { 'recipes.title': filter },
+          or: { 'recipes.information': filter },
         });
       } else {
         results = await Recipe.find();
@@ -154,7 +156,7 @@ module.exports = {
       //Showing only one recipe instead of one recipe per file.
       recipes = renderingRecipesWithOnlyOneFile(recipes);
 
-      return res.render("main/recipes/recipes-list", { recipes, filter });
+      return res.render('main/recipes/recipes-list', { recipes, filter });
     } catch (error) {
       console.error(err);
       let results = await Recipe.find();
@@ -166,33 +168,58 @@ module.exports = {
 
       recipes = recipes.slice(0, 6);
 
-      return res.render("main/home/index", {
+      return res.render('main/home/index', {
         recipes,
-        error: "Erro Inesperado!",
+        error: 'Erro Inesperado!',
       });
     }
   },
 
   async post(req, res) {
     try {
-      let results = await Recipe.saving(req.recipe, req.user.id);
-      const recipeID = results.rows[0].id;
+      //I have to add in this object the user_id,
+      //but in the right position to have success in
+      //the exec of the query create()
+      const recipeObject = {
+        chef_id: req.recipe.chef_id,
+        user_id: req.user.id,
+        title: req.recipe.title,
+        ingredients: arrayDB(req.recipe.ingredients),
+        preparation: arrayDB(req.recipe.preparation),
+        information: req.recipe.information,
+      };
+
+      const recipeID = await Recipe.create(recipeObject);
 
       const imagesPromises = req.files.map((file) => {
-        return File.saving(file.filename, file.path);
+        return File.create({ name: file.filename, path: file.path });
       });
 
-      results = await Promise.all(imagesPromises);
-      const filesID = results.map((file) => file.rows[0].id);
+      let results = await Promise.all(imagesPromises);
+
+      const filesID = results.map((file) => file);
 
       //INSERT INTO recipe_files
       const populateRecipeFiles = filesID.map((fileID) =>
-        Admin.savingRecipeFiles(fileID, recipeID)
+        RecipesFiles.savingRecipeFiles(fileID, recipeID)
       );
 
       await Promise.all(populateRecipeFiles);
 
-      return res.redirect(`/admin/recipes/${recipeID}`);
+      //rendering all the elements for the index page
+      results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
+
+      return res.render(`admin/home/index`, {
+        success: 'Receita criada com sucesso!',
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
+      });
     } catch (err) {
       console.error(err);
       let results = await Recipe.find({
@@ -203,7 +230,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
@@ -212,8 +239,16 @@ module.exports = {
 
   async put(req, res) {
     try {
-      let results = await Recipe.update(req.recipe);
-      const recipeID = results.rows[0].id;
+      const recipeObj = {
+        chef_id: req.recipe.chef_id,
+        user_id: req.user.id,
+        title: req.recipe.title,
+        ingredients: arrayDB(req.recipe.ingredients),
+        preparation: arrayDB(req.recipe.preparation),
+        information: req.recipe.information,
+      };
+
+      const recipeID = await Recipe.update({ id: req.recipe.id }, recipeObj);
 
       //deleting files from DB and server
       if (req.imagesRemoved.length > 0) {
@@ -221,7 +256,7 @@ module.exports = {
           return File.show(fileID);
         });
 
-        results = await Promise.all(promisesFilesPath);
+        let results = await Promise.all(promisesFilesPath);
 
         const filesPath = results.map((file) => file.rows[0].file_path);
 
@@ -237,18 +272,32 @@ module.exports = {
       //saving the new images
       if (req.files.length != 0) {
         const promisesOfSavingFiles = req.files.map((file) => {
-          return File.saving(file.filename, file.path);
+          return File.create({ name: file.filename, path: file.path });
         });
 
         results = await Promise.all(promisesOfSavingFiles);
-        const promisesRecipeFiles = results.map((file) => {
-          return Admin.savingRecipeFiles(file.rows[0].id, recipeID);
+
+        const promisesRecipeFiles = results.map((filesId) => {
+          return RecipesFiles.savingRecipeFiles(filesId, recipeID);
         });
 
         await Promise.all(promisesRecipeFiles);
       }
 
-      return res.redirect(`/admin/recipes/${recipeID}`);
+      //rendering all the elements for the index page
+      results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
+
+      return res.render(`admin/home/index`, {
+        success: 'Receita atualizada com sucesso!',
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
+      });
     } catch (err) {
       console.error(err);
       let results = await Recipe.find({
@@ -259,7 +308,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
@@ -274,18 +323,33 @@ module.exports = {
       const filesPath = results.rows.map((file) => file.file_path);
       const filesID = results.rows.map((file) => file.file_id);
 
-      //deleting images from server
-      filesPath.forEach((filePath) => fs.unlinkSync(filePath));
-
-      //deleting recipe
+      //deleting recipe from db
       await Recipe.delete(id);
       const promisesDeletingFiles = filesID.map((fileID) =>
         File.delete(fileID)
       );
-
+      //deleting files from db
       await Promise.all(promisesDeletingFiles);
 
-      return res.redirect("/admin");
+      //deleting images from server
+      if (filesPath) {
+        filesPath.forEach((filePath) => fs.unlinkSync(filePath));
+      }
+
+      //rendering all the elements for the index page
+      results = await Recipe.find({
+        where: { user_id: req.session.userID },
+      });
+      //Showing only one recipe instead of one recipe per file.
+      let recipes = renderingRecipesWithOnlyOneFile(results);
+
+      recipes = formatPath(recipes, req);
+
+      return res.render(`admin/home/index`, {
+        success: 'Receita deletada com sucesso!',
+        recipes: recipes,
+        userIsAdmin: req.user.is_admin,
+      });
     } catch (err) {
       console.error(err);
       let results = await Recipe.find({
@@ -296,7 +360,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });

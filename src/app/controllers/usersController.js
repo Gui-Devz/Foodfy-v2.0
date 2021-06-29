@@ -1,8 +1,10 @@
-const crypto = require("crypto");
-const User = require("../models/user");
-const mailer = require("../../config/mailer");
+const crypto = require('crypto');
+const { hash } = require('bcryptjs');
+const mailer = require('../../config/mailer');
 
-const { removingWhiteSpacesInBeginningAndEnding } = require("../../lib/utils");
+const User = require('../models/User');
+
+const { removingWhiteSpacesInBeginningAndEnding } = require('../../lib/utils');
 
 module.exports = {
   async list(req, res) {
@@ -11,7 +13,7 @@ module.exports = {
 
       // console.log(users);
 
-      return res.render("admin/users/list", {
+      return res.render('admin/users/list', {
         users: users,
         userIsAdmin: req.user.is_admin,
       });
@@ -25,7 +27,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
@@ -38,7 +40,7 @@ module.exports = {
 
       const user = await User.find({ where: { id } });
 
-      return res.render("admin/users/edit", {
+      return res.render('admin/users/edit', {
         userIsAdmin: req.user.is_admin,
         user: user[0],
       });
@@ -52,7 +54,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
@@ -61,7 +63,7 @@ module.exports = {
 
   async create(req, res) {
     try {
-      return res.render("admin/users/create", {
+      return res.render('admin/users/create', {
         userIsAdmin: req.user.is_admin,
       });
     } catch (error) {
@@ -74,39 +76,44 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
     }
   },
+
   async post(req, res) {
     try {
       const { name, email, is_admin } = req.body;
 
-      const password = crypto.randomBytes(5).toString("hex");
-      const token = crypto.randomBytes(20).toString("hex");
+      const password = crypto.randomBytes(5).toString('hex');
+      const passwordHash = await hash(password, 8);
+
+      const emailFiltered = String(email).toLowerCase();
+
+      const token = crypto.randomBytes(20).toString('hex');
 
       let now = new Date();
       now = now.setHours(now.getHours() + 1);
 
       const user = {
         name: removingWhiteSpacesInBeginningAndEnding(name),
-        email: removingWhiteSpacesInBeginningAndEnding(email),
-        password: password,
+        email: removingWhiteSpacesInBeginningAndEnding(emailFiltered),
+        password: passwordHash,
         is_admin: is_admin || false,
         reset_token: token,
         reset_token_expires: now,
       };
 
-      await User.saving(user);
+      await User.create(user);
 
       const users = await User.find();
 
       const mailMessage = {
-        from: "no-reply@foodfy.com.br",
+        from: 'no-reply@foodfy.com.br',
         to: `${user.email}`,
-        subject: "Conta cadastrada com sucesso!",
+        subject: 'Conta cadastrada com sucesso!',
         html: `
           <h1 style="text-align=center">
             Sua conta foi registrada com sucesso!
@@ -126,22 +133,20 @@ module.exports = {
 
       await mailer.sendMail(mailMessage);
 
-      return res.render("admin/users/list", {
+      return res.render('admin/users/list', {
         users: users,
         userIsAdmin: req.user.is_admin,
         success:
-          "Usuário Cadastrado com sucesso! Por favor verifique o seu email.",
+          'Usuário Cadastrado com sucesso! Por favor verifique o seu email.',
       });
-
-      //console.log(user);
     } catch (err) {
       console.error(err);
       const users = await User.find();
 
-      return res.render("admin/users/list", {
+      return res.render('admin/users/list', {
         users: users,
         userIsAdmin: req.user.is_admin,
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
       });
     }
   },
@@ -151,15 +156,15 @@ module.exports = {
       const { id, name, email, is_admin } = req.body;
 
       const user = {
-        name: name,
-        email: email,
+        name: removingWhiteSpacesInBeginningAndEnding(name),
+        email: removingWhiteSpacesInBeginningAndEnding(email),
         is_admin: is_admin || false,
       };
 
-      await User.updating(id, user);
+      await User.update({ id }, user);
       const users = await User.find();
 
-      return res.render("admin/users/list", {
+      return res.render('admin/users/list', {
         success: `Dados do usuário de id=${id} foram atualizados com sucesso!`,
         users: users,
         userIsAdmin: req.user.is_admin,
@@ -168,21 +173,21 @@ module.exports = {
       console.error(err);
       const users = await User.find();
 
-      return res.render("admin/users/list", {
+      return res.render('admin/users/list', {
         users: users,
         userIsAdmin: req.user.is_admin,
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
       });
     }
   },
 
   async delete(req, res) {
     try {
-      const users = await User.find();
       await User.delete(req.userID);
+      const users = await User.find();
 
-      return res.render("admin/users/list", {
-        success: "Usuário deletado com sucesso!",
+      return res.render('admin/users/list', {
+        success: 'Usuário deletado com sucesso!',
         users: users,
         userIsAdmin: req.user.is_admin,
       });
@@ -190,10 +195,10 @@ module.exports = {
       console.error(err);
       const users = await User.find();
 
-      return res.render("admin/users/list", {
+      return res.render('admin/users/list', {
         users: users,
         userIsAdmin: req.user.is_admin,
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
       });
     }
   },
