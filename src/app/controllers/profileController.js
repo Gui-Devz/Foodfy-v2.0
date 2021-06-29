@@ -1,11 +1,14 @@
-const { renderingRecipesWithOnlyOneFile } = require("../../lib/utils");
-const User = require("../models/user");
-const Recipe = require("../models/recipe");
+const {
+  renderingRecipesWithOnlyOneFile,
+  removingWhiteSpacesInBeginningAndEnding,
+} = require('../../lib/utils');
+const User = require('../models/User');
+const Recipe = require('../models/Recipe');
 
 module.exports = {
   async index(req, res) {
     try {
-      return res.render("admin/users/profile", {
+      return res.render('admin/users/profile', {
         userIsAdmin: req.user.is_admin,
         user: req.user,
       });
@@ -19,7 +22,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
@@ -30,17 +33,20 @@ module.exports = {
     try {
       const { name, email } = req.body;
 
-      const profile = { name: name, email: email };
+      const profile = {
+        name: removingWhiteSpacesInBeginningAndEnding(name),
+        email: removingWhiteSpacesInBeginningAndEnding(email),
+      };
 
-      await User.updating(req.user.id, profile);
+      await User.update({ id: req.user.id }, profile);
 
-      return res.render("admin/users/profile", {
-        success: "Dados atualizados com sucesso!",
+      return res.render('admin/users/profile', {
+        success: 'Dados atualizados com sucesso!',
         userIsAdmin: req.user.is_admin,
         user: profile,
       });
     } catch (error) {
-      console.error(err);
+      console.error(error);
       let results = await Recipe.find({
         where: { user_id: req.session.userID },
       });
@@ -49,7 +55,7 @@ module.exports = {
 
       recipes = formatPath(recipes, req);
       return res.render(`admin/home/index`, {
-        error: "Erro inesperado!",
+        error: 'Erro inesperado!',
         recipes: recipes,
         userIsAdmin: req.user.is_admin,
       });
