@@ -1,6 +1,11 @@
-const db = require("../../config/db");
+const db = require('../../config/db');
+
+const Base = require('../models/Base');
+
+Base.init({ table: 'chefs' });
 
 module.exports = {
+  ...Base,
   chefsIdAndNames() {
     try {
       const query = `
@@ -71,48 +76,6 @@ module.exports = {
           WHERE recipes.chef_id = $1
           ORDER BY recipes.created_at DESC
         `;
-
-      return db.query(query, [id]);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-
-  saving(name, fileID) {
-    try {
-      const query = `
-          INSERT INTO chefs (
-          name,
-          file_id
-          ) VALUES ($1, $2)
-          RETURNING id
-        `;
-
-      return db.query(query, [name, fileID]);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-
-  update(id, name) {
-    try {
-      const query = `
-          UPDATE chefs SET
-            name = $1
-          WHERE id = $2
-          RETURNING id;`;
-
-      let values = [name, id];
-
-      return db.query(query, values);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-
-  delete(id) {
-    try {
-      const query = `DELETE FROM chefs WHERE id = $1`;
 
       return db.query(query, [id]);
     } catch (error) {

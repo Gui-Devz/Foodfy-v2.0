@@ -1,6 +1,11 @@
-const db = require("../../config/db");
+const db = require('../../config/db');
+
+const Base = require('../models/Base');
+
+Base.init({ table: 'files' });
 
 module.exports = {
+  ...Base,
   showRecipeFiles(recipe_ID) {
     try {
       const query = `
@@ -47,49 +52,6 @@ module.exports = {
           FROM recipe_files LEFT JOIN files ON (recipe_files.file_id = files.id)
           WHERE recipe_files.file_id = $1
         `;
-
-      return db.query(query, [fileID]);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-
-  saving(filename, filePath) {
-    try {
-      const query = `
-              INSERT INTO files (
-                  name,
-                  path
-              ) VALUES ($1, $2)
-              RETURNING id
-          `;
-
-      return db.query(query, [filename, filePath]);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-
-  update(id, name, filePath) {
-    try {
-      const query = `
-          UPDATE files SET
-            name = $1,
-            path = $2
-          WHERE id = $3
-          RETURNING id`;
-
-      let values = [name, filePath, id];
-
-      return db.query(query, values);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-
-  delete(fileID) {
-    try {
-      const query = `DELETE FROM files WHERE id = $1`;
 
       return db.query(query, [fileID]);
     } catch (error) {
