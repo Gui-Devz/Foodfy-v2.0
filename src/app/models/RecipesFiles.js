@@ -1,19 +1,11 @@
 const db = require('../../config/db');
 
-module.exports = {
-  savingRecipeFiles(fileID, recipeID) {
-    try {
-      const query = `
-              INSERT INTO recipe_files (
-                recipe_id,
-                file_id
-              ) VALUES ($1, $2)`;
+const Base = require('../models/Base');
 
-      return db.query(query, [recipeID, fileID]);
-    } catch (error) {
-      console.error(error);
-    }
-  },
+Base.init({ table: 'recipe_files' });
+
+module.exports = {
+  ...Base,
 
   showAllRecipesFiles(recipeID) {
     try {
