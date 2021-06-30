@@ -11,8 +11,6 @@ module.exports = {
     try {
       const users = await User.find();
 
-      // console.log(users);
-
       return res.render('admin/users/list', {
         users: users,
         userIsAdmin: req.user.is_admin,
@@ -165,7 +163,7 @@ module.exports = {
       const users = await User.find();
 
       return res.render('admin/users/list', {
-        success: `Dados do usuário de id=${id} foram atualizados com sucesso!`,
+        success: `Dados do usuário foram atualizados com sucesso!`,
         users: users,
         userIsAdmin: req.user.is_admin,
       });
