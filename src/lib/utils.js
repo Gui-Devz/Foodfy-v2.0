@@ -1,35 +1,4 @@
 module.exports = {
-  // age(timestamp) {
-  //   const today = new Date();
-  //   const birthDate = new Date(timestamp);
-
-  //   //2020 - 1997 = 23
-  //   let age = today.getUTCFullYear() - birthDate.getFullYear();
-  //   const month = today.getUTCMonth() - birthDate.getMonth();
-
-  //   if (month < 0 || (month == 0 && today.getUTCDate() < birthDate.getDate())) {
-  //     age = age - 1;
-  //   }
-
-  //   return age;
-  // },
-
-  // formatBrowser(timestamp) {
-  //   const date = new Date(timestamp);
-  //   const day = `0${date.getUTCDate()}`.slice(-2);
-  //   const month = `0${date.getUTCMonth() + 1}`.slice(-2);
-  //   const year = `${date.getUTCFullYear()}`;
-
-  //   return {
-  //     day: day,
-  //     month: month,
-  //     year: year,
-  //     iso: `${year}-${month}-${day}`,
-  //     birthday: `${day}/${month}`,
-  //     format: `${day}/${month}/${year}`,
-  //   };
-  // },
-
   //Function guarantees that the arrays are set for the database
   arrayDB(array) {
     let newArray = [];
@@ -50,7 +19,7 @@ module.exports = {
     for (let i = 0; i < inputs.length; i++) {
       const inputClone = inputs[i].trim();
 
-      if (inputClone != "") {
+      if (inputClone != '') {
         newInputs.push(inputs[i]);
       }
     }
@@ -59,13 +28,14 @@ module.exports = {
   },
 
   removingWhiteSpacesInBeginningAndEnding(value) {
-    let newValue = value.replace(/^\s+|\s+$/g, "");
+    let newValue = value.replace(/^\s+|\s+$/g, '');
 
     return newValue;
   },
 
   emailValidation(email) {
-    const filterRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const filterRegex =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
     const passed = filterRegex.test(String(email).toLocaleLowerCase());
 
@@ -81,11 +51,11 @@ module.exports = {
 
     for (const key of keys) {
       if (
-        fields[key] == "" &&
-        key != "removed_files" &&
-        key != "information" &&
-        key != "file_id" &&
-        key != "is_admin"
+        fields[key] == '' &&
+        key != 'removed_files' &&
+        key != 'information' &&
+        key != 'file_id' &&
+        key != 'is_admin'
       ) {
         return key;
       }
@@ -96,9 +66,9 @@ module.exports = {
     let photos = files.map((file) => ({
       ...file,
       file_path: `${req.protocol}://${req.headers.host}${file.file_path
-        .replace("public", "")
-        .split("\\")
-        .join("/")}`,
+        .replace('public', '')
+        .split('\\')
+        .join('/')}`,
     }));
 
     return photos;

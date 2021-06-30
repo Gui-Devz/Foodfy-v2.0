@@ -25,7 +25,6 @@ module.exports = {
       }
       const result = await db.query(query);
 
-      //console.log(result.rows);
       return result.rows;
     } catch (error) {
       console.error(error);
