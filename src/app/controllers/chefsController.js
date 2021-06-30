@@ -169,7 +169,10 @@ module.exports = {
             path: req.files[0].path,
           }
         );
-        fs.unlinkSync(oldFile.path);
+        //deleting file removed from server.
+        if (fs.existsSync(oldFile.path)) {
+          fs.unlinkSync(oldFile.path);
+        }
       }
 
       await Chef.update({ id: req.body.id }, { name: req.body.name });
@@ -210,7 +213,10 @@ module.exports = {
       await Chef.delete(id);
       await File.delete(file_id);
 
-      fs.unlinkSync(file_path);
+      //deleting file removed from server.
+      if (fs.existsSync(file_path)) {
+        fs.unlinkSync(file_path);
+      }
 
       //rendering all the elements for the chefs page
       results = await Chef.show();

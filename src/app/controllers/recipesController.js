@@ -145,7 +145,6 @@ module.exports = {
       if (filter) {
         results = await Recipe.searchFilter({
           where: { 'recipes.title': filter },
-          or: { 'recipes.information': filter },
         });
       } else {
         results = await Recipe.find();
@@ -177,9 +176,6 @@ module.exports = {
 
   async post(req, res) {
     try {
-      //I have to add in this object the user_id,
-      //but in the right position to have success in
-      //the exec of the query create()
       const recipeObject = {
         chef_id: req.recipe.chef_id,
         user_id: req.user.id,
@@ -201,18 +197,19 @@ module.exports = {
 
       //INSERT INTO recipe_files
       const populateRecipeFiles = filesID.map((fileID) =>
-        RecipesFiles.savingRecipeFiles(fileID, recipeID)
+        RecipesFiles.create({ recipe_id: recipeID, file_id: fileID })
       );
 
       await Promise.all(populateRecipeFiles);
 
-      //rendering all the elements for the index page
+      //rendering all the recipes with author and images for the index page
       results = await Recipe.find({
-        where: { user_id: req.session.userID },
+        where: { user_id: recipeObject.user_id },
       });
       //Showing only one recipe instead of one recipe per file.
       let recipes = renderingRecipesWithOnlyOneFile(results);
 
+      //fixing the path of the files
       recipes = formatPath(recipes, req);
 
       return res.render(`admin/home/index`, {
@@ -239,9 +236,14 @@ module.exports = {
 
   async put(req, res) {
     try {
+      //I need the user_id of the recipe, So....
+      let results = await Recipe.finding(req.recipe.id);
+
+      const user_id = results.user_id;
+
       const recipeObj = {
         chef_id: req.recipe.chef_id,
-        user_id: req.user.id,
+        user_id,
         title: req.recipe.title,
         ingredients: arrayDB(req.recipe.ingredients),
         preparation: arrayDB(req.recipe.preparation),
@@ -250,17 +252,22 @@ module.exports = {
 
       const recipeID = await Recipe.update({ id: req.recipe.id }, recipeObj);
 
-      //deleting files from DB and server
+      //deleting files from DB and server if needed.
       if (req.imagesRemoved.length > 0) {
         const promisesFilesPath = req.imagesRemoved.map((fileID) => {
           return File.show(fileID);
         });
 
-        let results = await Promise.all(promisesFilesPath);
+        results = await Promise.all(promisesFilesPath);
 
         const filesPath = results.map((file) => file.rows[0].file_path);
 
-        filesPath.forEach((filePath) => fs.unlinkSync(filePath));
+        //verifies if the directory exists before trying to delete file from server.
+        filesPath.forEach((filePath) => {
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+          }
+        });
 
         const promisesRemovedPhotos = req.imagesRemoved.map((fileID) => {
           return File.delete(fileID);
@@ -269,7 +276,7 @@ module.exports = {
         await Promise.all(promisesRemovedPhotos);
       }
 
-      //saving the new images
+      //saving the new images if needed.
       if (req.files.length != 0) {
         const promisesOfSavingFiles = req.files.map((file) => {
           return File.create({ name: file.filename, path: file.path });
@@ -278,7 +285,7 @@ module.exports = {
         results = await Promise.all(promisesOfSavingFiles);
 
         const promisesRecipeFiles = results.map((filesId) => {
-          return RecipesFiles.savingRecipeFiles(filesId, recipeID);
+          return RecipesFiles.create({ recipe_id: recipeID, file_id: filesId });
         });
 
         await Promise.all(promisesRecipeFiles);
@@ -288,9 +295,10 @@ module.exports = {
       results = await Recipe.find({
         where: { user_id: req.session.userID },
       });
-      //Showing only one recipe instead of one recipe per file.
+      //filter to only one recipe instead of one recipe per file.
       let recipes = renderingRecipesWithOnlyOneFile(results);
 
+      //formatting files path
       recipes = formatPath(recipes, req);
 
       return res.render(`admin/home/index`, {
@@ -323,23 +331,24 @@ module.exports = {
       const filesPath = results.rows.map((file) => file.file_path);
       const filesID = results.rows.map((file) => file.file_id);
 
-      //deleting recipe from db
+      //deleting recipe from db.
       await Recipe.delete(id);
+
+      //deleting files from db.
       const promisesDeletingFiles = filesID.map((fileID) =>
         File.delete(fileID)
       );
-      //deleting files from db
       await Promise.all(promisesDeletingFiles);
 
-      //deleting images from server
-      if (filesPath) {
-        filesPath.forEach((filePath) => fs.unlinkSync(filePath));
-      }
-
-      //rendering all the elements for the index page
-      results = await Recipe.find({
-        where: { user_id: req.session.userID },
+      //deleting files from server.
+      filesPath.forEach((filePath) => {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
       });
+
+      //rendering all the elements for the index page.
+      results = await Recipe.find({ where: { user_id: req.user.id } });
       //Showing only one recipe instead of one recipe per file.
       let recipes = renderingRecipesWithOnlyOneFile(results);
 
