@@ -9,6 +9,14 @@ const Base = {
     return this;
   },
 
+  async finding(id) {
+    const query = `SELECT * FROM ${this.table} WHERE id = ${id}`;
+
+    const results = await db.query(query);
+
+    return results.rows[0];
+  },
+
   async create(fields) {
     try {
       const keys = Object.keys(fields).join(',');
