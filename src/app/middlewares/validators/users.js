@@ -1,4 +1,5 @@
 const User = require('../../models/User');
+const Chef = require('../../models/Chef');
 const Recipe = require('../../models/Recipe');
 
 const {
@@ -80,16 +81,13 @@ async function isAdmin(req, res, next) {
     const user = await User.find({ where: { id: userID } });
 
     if (!user[0].is_admin) {
-      let results = await Recipe.find({ where: { user_id: userID } });
-      let recipes = formatPath(results, req);
+      let results = await Chef.show();
+      const chefsWithAvatarPathFormated = formatPath(results, req);
 
-      //Showing only one recipe instead of one recipe per file.
-      recipes = renderingRecipesWithOnlyOneFile(recipes);
-      const errorCreate = 'Apenas o Admin tem acesso a essa funcionalidade!';
-      return res.render('admin/home/index', {
-        error: errorCreate,
-        recipes: recipes,
-        userIsAdmin: user[0].is_admin,
+      return res.render(`admin/chefs/list`, {
+        error: 'Apenas o usuário Admin tem acesso a essa funcionalidade!',
+        chefs: chefsWithAvatarPathFormated,
+        userIsAdmin: user.is_admin,
       });
     }
     req.user = user[0];
@@ -120,22 +118,20 @@ async function checkRecipeOwner(req, res, next) {
       //Showing only one recipe instead of one recipe per file.
       let recipes = renderingRecipesWithOnlyOneFile(results, req);
 
-      //console.log(recipes);
-      const usersRecipesIds = recipes.map((recipe) => recipe.id);
+      const userRecipesId = recipes.map((recipe) => recipe.id);
 
-      // console.log(usersRecipesIds);
-      for (const recipeId of usersRecipesIds) {
-        if (req.params.id != recipeId) {
-          // console.log(req);
-          recipes = formatPath(recipes, req);
-          //console.log(recipes);
+      const passed = userRecipesId.some(
+        (currentId) => req.params.id == currentId
+      );
 
-          return res.render('admin/home/index', {
-            error: 'Essa receita não é sua para editar!',
-            recipes: recipes,
-            userIsAdmin: req.user.is_admin,
-          });
-        }
+      if (!passed) {
+        recipes = formatPath(recipes, req);
+
+        return res.render('admin/home/index', {
+          error: 'Essa receita não é sua para editar!',
+          recipes: recipes,
+          userIsAdmin: req.user.is_admin,
+        });
       }
     }
     next();
@@ -205,7 +201,10 @@ async function checkInputFieldsUserPut(req, res, next) {
     const emailExists = await User.find({ where: { email: email } });
     const userBeingUpdated = await User.find({ where: { id: req.body.id } });
 
-    if (emailExists[0].id !== userBeingUpdated[0].id) {
+    if (
+      emailExists.length > 0 &&
+      emailExists[0].id !== userBeingUpdated[0].id
+    ) {
       return res.render('admin/users/edit', {
         error: 'Esse email já existe em nossa base de dados!',
         input: 'email',
